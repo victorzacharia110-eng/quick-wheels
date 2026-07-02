@@ -1,0 +1,581 @@
+<template>
+  <div class="contracts-page">
+    <!-- Header -->
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Contracts</h1>
+        <p class="page-sub">Manage hire purchase and rental contracts</p>
+      </div>
+      <button class="btn-primary" @click="openCreateModal">
+        <font-awesome-icon icon="fa-solid fa-plus" />
+        New Contract
+      </button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value">{{ contractStore.totalContracts }}</div>
+        <div class="stat-label">Total Contracts</div>
+      </div>
+      <div class="stat-card active">
+        <div class="stat-value">{{ contractStore.activeContracts.length }}</div>
+        <div class="stat-label">Active</div>
+      </div>
+      <div class="stat-card completed">
+        <div class="stat-value">{{ contractStore.completedContracts.length }}</div>
+        <div class="stat-label">Completed</div>
+      </div>
+      <div class="stat-card purchase">
+        <div class="stat-value">{{ contractStore.hirePurchaseContracts.length }}</div>
+        <div class="stat-label">Hire Purchase</div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-bar">
+      <div class="search-bar">
+        <font-awesome-icon icon="fa-solid fa-search" class="search-icon" />
+        <input v-model="searchQuery" type="text" placeholder="Search contracts..." class="search-input" />
+      </div>
+      <div class="filter-group">
+        <select v-model="filterType" class="filter-select">
+          <option value="all">All Types</option>
+          <option value="hire_purchase">Hire Purchase</option>
+          <option value="rental">Rental Only</option>
+        </select>
+        <select v-model="filterStatus" class="filter-select">
+          <option value="all">All Status</option>
+          <option value="active">Active</option>
+          <option value="completed">Completed</option>
+          <option value="pending">Pending</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div v-if="contractStore.isLoading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading contracts...</p>
+    </div>
+
+    <!-- Table -->
+    <div v-else-if="filteredContracts.length > 0" class="table-container">
+      <table class="contracts-table">
+        <thead>
+          <tr>
+            <th>Contract #</th>
+            <th>Driver</th>
+            <th>Vehicle</th>
+            <th>Type</th>
+            <th>Progress</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="contract in filteredContracts" :key="contract.id">
+            <td><strong>{{ contract.contract_number }}</strong></td>
+            <td>{{ contract.driver_name }}</td>
+            <td>
+              <font-awesome-icon :icon="getTypeIcon(contract.vehicle_type)" size="xs" />
+              {{ contract.vehicle_name }}
+            </td>
+            <td>
+              <span class="type-badge" :class="contract.contract_type">
+                {{ contract.contract_type === 'hire_purchase' ? 'Hire Purchase' : 'Rental' }}
+              </span>
+            </td>
+            <td>
+              <div class="progress-container">
+                <div class="progress-bar">
+                  <div class="progress-fill" :style="{ width: contractStore.getProgress(contract) + '%' }"></div>
+                </div>
+                <span class="progress-text">{{ contractStore.getProgress(contract) }}%</span>
+              </div>
+            </td>
+            <td>
+              <span class="status-badge" :style="{ background: contractStore.getStatusColor(contract.status) }">
+                {{ contractStore.getStatusLabel(contract.status) }}
+              </span>
+            </td>
+            <td>
+              <button @click="viewContract(contract)" class="btn-icon" title="View">
+                <font-awesome-icon icon="fa-regular fa-eye" />
+              </button>
+              <button @click="editContract(contract)" class="btn-icon" title="Edit">
+                <font-awesome-icon icon="fa-solid fa-pen" />
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Empty -->
+    <div v-else class="empty-state">
+      <font-awesome-icon icon="fa-solid fa-file-contract" size="3x" />
+      <h3>No Contracts</h3>
+      <p>Start by creating your first contract.</p>
+      <button class="btn-primary" @click="openCreateModal">
+        <font-awesome-icon icon="fa-solid fa-plus" /> Create Contract
+      </button>
+    </div>
+
+    <!-- Create Modal -->
+    <Transition name="modal">
+      <div v-if="showCreateModal" class="modal-overlay" @click.self="showCreateModal = false">
+        <div class="modal-box large">
+          <div class="modal-header">
+            <h3>New Contract</h3>
+            <button class="modal-close" @click="showCreateModal = false">
+              <font-awesome-icon icon="fa-solid fa-times" />
+            </button>
+          </div>
+          <form @submit.prevent="saveContract">
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Driver <span class="required">*</span></label>
+                <select v-model="form.driver_id" class="form-input" required>
+                  <option value="">Select Driver</option>
+                  <option v-for="driver in employeeStore.activeEmployees" :key="driver.id" :value="driver.id">
+                    {{ driver.name }} - {{ driver.phone }}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Vehicle <span class="required">*</span></label>
+                <select v-model="form.vehicle_id" class="form-input" required>
+                  <option value="">Select Vehicle</option>
+                  <option v-for="vehicle in vehicleStore.availableVehicles" :key="vehicle.id" :value="vehicle.id">
+                    {{ vehicle.name }} ({{ vehicle.type }})
+                  </option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Contract Type <span class="required">*</span></label>
+                <select v-model="form.contract_type" class="form-input" required>
+                  <option value="hire_purchase">Hire Purchase (Ownership)</option>
+                  <option value="rental">Rental Only</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Payment Frequency <span class="required">*</span></label>
+                <select v-model="form.payment_frequency" class="form-input" required>
+                  <option value="weekly">Weekly</option>
+                  <option value="daily">Daily</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Start Date <span class="required">*</span></label>
+                <input v-model="form.start_date" type="date" class="form-input" required />
+              </div>
+              <div class="form-group">
+                <label>End Date <span class="required">*</span></label>
+                <input v-model="form.end_date" type="date" class="form-input" required />
+              </div>
+              <div class="form-group">
+                <label>Amount <span class="required">*</span></label>
+                <input v-model="form.amount" type="number" class="form-input" placeholder="TZS" required />
+              </div>
+              <div class="form-group">
+                <label>Deposit</label>
+                <input v-model="form.deposit" type="number" class="form-input" placeholder="TZS" />
+              </div>
+              <div class="form-group full-width">
+                <label>Notes</label>
+                <textarea v-model="form.notes" class="form-input" rows="2" placeholder="Additional notes..."></textarea>
+              </div>
+            </div>
+            <div class="modal-actions">
+              <button type="button" @click="showCreateModal = false" class="btn-outline">Cancel</button>
+              <button type="submit" class="btn-primary" :disabled="isSaving">
+                <span v-if="isSaving"><span class="spinner-sm"></span> Creating...</span>
+                <span v-else>Create Contract</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </Transition>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useContractStore } from '@/stores/contracts'
+import { useVehicleStore } from '@/stores/vehicles'
+import { useEmployeeStore } from '@/stores/employees'
+
+const contractStore = useContractStore()
+const vehicleStore = useVehicleStore()
+const employeeStore = useEmployeeStore()
+
+const searchQuery = ref('')
+const filterType = ref('all')
+const filterStatus = ref('all')
+const showCreateModal = ref(false)
+const isSaving = ref(false)
+
+const form = ref({
+  driver_id: '',
+  vehicle_id: '',
+  contract_type: 'hire_purchase',
+  payment_frequency: 'weekly',
+  start_date: new Date().toISOString().split('T')[0],
+  end_date: '',
+  amount: '',
+  deposit: '',
+  notes: ''
+})
+
+const filteredContracts = computed(() => {
+  let filtered = contractStore.contracts
+  if (filterType.value !== 'all') {
+    filtered = filtered.filter(c => c.contract_type === filterType.value)
+  }
+  if (filterStatus.value !== 'all') {
+    filtered = filtered.filter(c => c.status === filterStatus.value)
+  }
+  if (searchQuery.value) {
+    const q = searchQuery.value.toLowerCase()
+    filtered = filtered.filter(c => 
+      c.driver_name?.toLowerCase().includes(q) ||
+      c.vehicle_name?.toLowerCase().includes(q) ||
+      c.contract_number?.toLowerCase().includes(q)
+    )
+  }
+  return filtered
+})
+
+function getTypeIcon(type) {
+  const icons = {
+    Motorcycle: 'fa-solid fa-motorcycle',
+    Bajaji: 'fa-solid fa-truck-front',
+    Car: 'fa-solid fa-car',
+    SUV: 'fa-solid fa-truck'
+  }
+  return icons[type] || 'fa-solid fa-car'
+}
+
+function openCreateModal() { showCreateModal.value = true }
+function viewContract(contract) { /* view logic */ }
+function editContract(contract) { /* edit logic */ }
+
+async function saveContract() {
+  isSaving.value = true
+  try {
+    await contractStore.createContract(form.value)
+    showCreateModal.value = false
+  } catch (err) {
+    console.error(err)
+  } finally { isSaving.value = false }
+}
+
+onMounted(async () => {
+  await Promise.all([
+    contractStore.fetchContracts(),
+    vehicleStore.fetchVehicles(),
+    employeeStore.fetchEmployees()
+  ])
+})
+</script>
+
+<style scoped>
+.contracts-page { animation: fadeIn 0.4s ease; padding: 0; }
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.page-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.page-sub { color: rgba(255, 255, 255, 0.4); font-size: 0.95rem; }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 16px 20px;
+  text-align: center;
+}
+.stat-value {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #fff;
+}
+.stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-top: 4px; }
+.stat-card.active .stat-value { color: #00E5FF; }
+.stat-card.completed .stat-value { color: #4ADE80; }
+.stat-card.purchase .stat-value { color: #FFD93D; }
+
+.filters-bar {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.search-bar {
+  flex: 1;
+  position: relative;
+  min-width: 200px;
+}
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255,255,255,0.25);
+}
+.search-input {
+  width: 100%;
+  padding: 10px 16px 10px 44px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.2s;
+  font-family: 'Space Grotesk', sans-serif;
+}
+.search-input:focus { border-color: rgba(0,229,255,0.4); box-shadow: 0 0 0 3px rgba(0,229,255,0.06); }
+.filter-group { display: flex; gap: 10px; }
+.filter-select {
+  padding: 10px 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 0.9rem;
+  outline: none;
+  font-family: 'Space Grotesk', sans-serif;
+  cursor: pointer;
+}
+.filter-select:focus { border-color: rgba(0,229,255,0.4); }
+
+.table-container {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 12px;
+  overflow-x: auto;
+}
+.contracts-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+.contracts-table th {
+  text-align: left;
+  padding: 14px 16px;
+  color: rgba(255,255,255,0.4);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.contracts-table td {
+  padding: 14px 16px;
+  color: rgba(255,255,255,0.7);
+  font-size: 0.9rem;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.contracts-table tr:hover td { background: rgba(255,255,255,0.02); }
+.contracts-table tr:last-child td { border-bottom: none; }
+
+.type-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+.type-badge.hire_purchase { background: rgba(0,196,212,0.15); color: #00C4D4; }
+.type-badge.rental { background: rgba(37,99,196,0.15); color: #2563C4; }
+
+.status-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #0a0818;
+}
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.progress-bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 3px;
+  overflow: hidden;
+  min-width: 60px;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00C4D4, #00E5FF);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+.progress-text { font-size: 0.7rem; color: rgba(255,255,255,0.3); }
+
+.btn-icon {
+  padding: 4px 8px;
+  border: none;
+  background: rgba(255,255,255,0.05);
+  border-radius: 4px;
+  color: rgba(255,255,255,0.4);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-icon:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  gap: 16px;
+  color: rgba(255,255,255,0.3);
+}
+.spinner {
+  width: 44px; height: 44px;
+  border: 3px solid rgba(0,196,212,0.1);
+  border-top-color: #00C4D4;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: rgba(255,255,255,0.3);
+}
+.empty-state svg { opacity: 0.3; margin-bottom: 16px; }
+.empty-state h3 { color: #fff; margin-bottom: 8px; }
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(6px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.modal-box {
+  background: #13102a;
+  border: 1px solid rgba(0,229,255,0.15);
+  border-radius: 16px;
+  padding: 30px;
+  width: 100%;
+  max-width: 640px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.modal-box.large { max-width: 720px; }
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.modal-header h3 { color: #fff; font-family: 'Syne', sans-serif; font-size: 1.2rem; }
+.modal-close {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  padding: 6px 10px;
+  transition: all 0.2s;
+}
+.modal-close:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-group.full-width { grid-column: 1 / -1; }
+.form-group label { font-size: 0.85rem; font-weight: 500; color: rgba(255,255,255,0.65); }
+.required { color: #ff6b6b; }
+.form-input {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #fff;
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.2s;
+  font-family: 'Space Grotesk', sans-serif;
+}
+.form-input:focus { border-color: rgba(0,229,255,0.4); box-shadow: 0 0 0 3px rgba(0,229,255,0.06); }
+.form-input::placeholder { color: rgba(255,255,255,0.25); }
+select.form-input {
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.4)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+textarea.form-input { resize: vertical; min-height: 60px; }
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+.spinner-sm {
+  display: inline-block;
+  width: 16px; height: 16px;
+  border: 2px solid rgba(10,8,24,0.2);
+  border-top-color: #0a0818;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@media (max-width: 768px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .filters-bar { flex-direction: column; }
+  .filter-group { flex-wrap: wrap; }
+  .form-grid { grid-template-columns: 1fr; }
+  .modal-box { padding: 24px; }
+  .page-header { flex-direction: column; align-items: stretch; }
+}
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .modal-box { padding: 20px; }
+  .modal-actions { flex-direction: column; }
+  .modal-actions .btn-primary,
+  .modal-actions .btn-outline { width: 100%; justify-content: center; }
+}
+</style>
