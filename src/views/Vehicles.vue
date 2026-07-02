@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted } from "vue";
-import VehicleCard3D from "../components/owner/VehicleCard3D.vue";
+import VehicleCard3D from "../components/common/VehicleCard3D.vue";
 import { useVehicleStore } from '@/stores/vehicles'
 import { storeToRefs } from 'pinia'
 

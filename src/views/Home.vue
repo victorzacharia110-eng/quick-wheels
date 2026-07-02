@@ -2,7 +2,7 @@
 import { ref, onMounted, computed } from 'vue'
 import Hero3D from '../components/common/Hero3D.vue'
 import SkillsOrbit from '../components/common/SkillsOrbit.vue'
-import VehicleCard3D from '../components/owner/VehicleCard3D.vue'
+import VehicleCard3D from '@/components/common/VehicleCard3D.vue'
 import { useVehicleStore } from '@/stores/vehicles'
 import { storeToRefs } from 'pinia'
 
