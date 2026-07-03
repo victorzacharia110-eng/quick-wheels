@@ -103,7 +103,7 @@ router.beforeEach(async (to, from) => {
   const isAuthenticated = authStore.isAuthenticated
   const userRole = authStore.userRole
 
-  if (isAuthenticated && (to.meta.guest || to.meta.public)) {
+  if (isAuthenticated && to.meta.guest) {
     if (userRole === 'owner') return '/owner'
     if (userRole === 'employee') return '/employee'
     if (userRole === 'customer') return '/customer'

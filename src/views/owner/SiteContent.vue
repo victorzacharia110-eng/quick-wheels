@@ -50,12 +50,19 @@
         <SectionCard :title="$t('siteContent.aboutSection')" :editing="editing.about" @toggle="toggleEdit('about')">
           <div class="form-grid">
             <FormField :label="$t('siteContent.title')" v-model="local.about.title" :disabled="!editing.about" />
+            <FormField :label="$t('siteContent.subtitle')" v-model="local.about.subtitle" :disabled="!editing.about" type="textarea" />
             <FormField :label="$t('siteContent.mission')" v-model="local.about.mission" :disabled="!editing.about" type="textarea" />
             <FormField :label="$t('siteContent.vision')" v-model="local.about.vision" :disabled="!editing.about" type="textarea" />
             <FormField :label="$t('siteContent.storyTitle')" v-model="local.about.story_title" :disabled="!editing.about" />
             <FormField :label="$t('siteContent.storyParagraph1')" v-model="local.about.story_paragraph_1" :disabled="!editing.about" type="textarea" />
             <FormField :label="$t('siteContent.storyParagraph2')" v-model="local.about.story_paragraph_2" :disabled="!editing.about" type="textarea" />
             <FormField :label="$t('siteContent.valuesTitle')" v-model="local.about.values_title" :disabled="!editing.about" />
+            <FormField :label="$t('siteContent.value1Title')" v-model="local.about.value1_title" :disabled="!editing.about" />
+            <FormField :label="$t('siteContent.value1Desc')" v-model="local.about.value1_desc" :disabled="!editing.about" type="textarea" />
+            <FormField :label="$t('siteContent.value2Title')" v-model="local.about.value2_title" :disabled="!editing.about" />
+            <FormField :label="$t('siteContent.value2Desc')" v-model="local.about.value2_desc" :disabled="!editing.about" type="textarea" />
+            <FormField :label="$t('siteContent.value3Title')" v-model="local.about.value3_title" :disabled="!editing.about" />
+            <FormField :label="$t('siteContent.value3Desc')" v-model="local.about.value3_desc" :disabled="!editing.about" type="textarea" />
           </div>
         </SectionCard>
 
@@ -133,7 +140,7 @@ const sectionFields = {
   hero: ['title', 'subtitle', 'cta_text', 'cta_link'],
   stats: ['vehicles_label', 'drivers_label', 'contracts_label', 'years_label', 'vehicles_count', 'drivers_count', 'contracts_count', 'years_count'],
   services: ['title', 'subtitle'],
-  about: ['title', 'mission', 'vision', 'story_title', 'story_paragraph_1', 'story_paragraph_2', 'values_title'],
+  about: ['title', 'subtitle', 'mission', 'vision', 'story_title', 'story_paragraph_1', 'story_paragraph_2', 'values_title', 'value1_title', 'value1_desc', 'value1_icon', 'value2_title', 'value2_desc', 'value2_icon', 'value3_title', 'value3_desc', 'value3_icon'],
   contact: ['title', 'subtitle', 'address', 'phone', 'email', 'map_embed_url'],
   footer: ['description', 'copyright', 'facebook_url', 'instagram_url', 'twitter_url', 'youtube_url'],
   seo: ['site_name', 'meta_description']
