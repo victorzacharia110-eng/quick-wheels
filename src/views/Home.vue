@@ -8,7 +8,7 @@ import { useVehicleStore } from '@/stores/vehicles'
 import { useSiteContentStore } from '@/stores/siteContent'
 import { storeToRefs } from 'pinia'
 
-const { t, tc } = useI18n()
+const { t } = useI18n()
 const store = useVehicleStore()
 const scStore = useSiteContentStore()
 const { vehicles, isLoading, error, availableVehicles } = storeToRefs(store)
@@ -71,9 +71,12 @@ const featuredVehicles = computed(() => {
   return availableVehicles.value.slice(0, 3)
 })
 
-const showingText = computed(() =>
-  tc('home.showing', featuredVehicles.value.length, { count: featuredVehicles.value.length })
-)
+const showingText = computed(() => {
+  const count = featuredVehicles.value.length
+  return count === 1
+    ? t('home.showing', { count })
+    : t('home.showing_plural', { count })
+})
 
 async function loadVehicles() {
   await store.fetchVehicles()
