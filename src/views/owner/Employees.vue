@@ -91,12 +91,12 @@
                 <input v-model="form.address" class="form-input" :placeholder="$t('employee.address') + '...'" />
               </div>
               <div class="form-group">
-                <label>{{ $t('employee.nidaNumber') }}</label>
-                <input v-model="form.nida_number" class="form-input" :placeholder="$t('employee.nidaNumber') + '...'" />
+                <label>{{ $t('employee.nidaNumber') }} <span class="required">*</span></label>
+                <input v-model="form.nida_number" class="form-input" required :placeholder="$t('employee.nidaNumber') + '...'" />
               </div>
               <div class="form-group">
-                <label>{{ $t('employee.licenseNumber') }}</label>
-                <input v-model="form.license_number" class="form-input" :placeholder="$t('employee.licenseNumber') + '...'" />
+                <label>{{ $t('employee.licenseNumber') }} <span class="required">*</span></label>
+                <input v-model="form.license_number" class="form-input" required :placeholder="$t('employee.licenseNumber') + '...'" />
               </div>
               <div class="form-group">
                 <label>{{ $t('employee.department') }}</label>

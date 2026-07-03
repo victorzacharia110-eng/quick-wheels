@@ -96,17 +96,22 @@
 
           <div class="form-group" :class="{ 'has-error': errors.password }">
             <label for="password">{{ $t('auth.password') }} <span class="required">*</span></label>
-            <input
-              id="password"
-              v-model="form.password"
-              type="password"
-              :placeholder="$t('auth.passwordMinChars')"
-              required
-              class="form-input"
-              :class="{ 'input-error': errors.password }"
-              @blur="validateField('password')"
-              @input="clearError('password')"
-            />
+            <div class="password-wrapper">
+              <input
+                id="password"
+                v-model="form.password"
+                :type="showPassword ? 'text' : 'password'"
+                :placeholder="$t('auth.passwordMinChars')"
+                required
+                class="form-input"
+                :class="{ 'input-error': errors.password }"
+                @blur="validateField('password')"
+                @input="clearError('password')"
+              />
+              <button type="button" class="password-toggle" @click="showPassword = !showPassword" tabindex="-1">
+                <font-awesome-icon :icon="showPassword ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'" />
+              </button>
+            </div>
             <span v-if="errors.password" class="field-error">
               <font-awesome-icon icon="fa-solid fa-circle-exclamation" size="xs" />
               {{ errors.password }}
@@ -133,17 +138,22 @@
 
           <div class="form-group" :class="{ 'has-error': errors.password_confirmation }">
             <label for="password_confirmation">{{ $t('auth.confirmPassword') }} <span class="required">*</span></label>
-            <input
-              id="password_confirmation"
-              v-model="form.password_confirmation"
-              type="password"
-              :placeholder="$t('auth.confirmPasswordPlaceholder')"
-              required
-              class="form-input"
-              :class="{ 'input-error': errors.password_confirmation }"
-              @blur="validateField('password_confirmation')"
-              @input="clearError('password_confirmation')"
-            />
+            <div class="password-wrapper">
+              <input
+                id="password_confirmation"
+                v-model="form.password_confirmation"
+                :type="showConfirmPassword ? 'text' : 'password'"
+                :placeholder="$t('auth.confirmPasswordPlaceholder')"
+                required
+                class="form-input"
+                :class="{ 'input-error': errors.password_confirmation }"
+                @blur="validateField('password_confirmation')"
+                @input="clearError('password_confirmation')"
+              />
+              <button type="button" class="password-toggle" @click="showConfirmPassword = !showConfirmPassword" tabindex="-1">
+                <font-awesome-icon :icon="showConfirmPassword ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'" />
+              </button>
+            </div>
             <span v-if="errors.password_confirmation" class="field-error">
               <font-awesome-icon icon="fa-solid fa-circle-exclamation" size="xs" />
               {{ errors.password_confirmation }}
@@ -190,6 +200,8 @@ const errors = ref({})
 const isLoading = ref(false)
 const error = ref(null)
 const touched = ref({})
+const showPassword = ref(false)
+const showConfirmPassword = ref(false)
 
 const validationRules = {
   name: [
@@ -437,6 +449,33 @@ async function handleRegister() {
 .form-input.input-error:focus {
   border-color: #ff6b6b;
   box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper .form-input {
+  padding-right: 44px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  padding: 8px;
+  font-size: 1rem;
+  transition: color 0.2s;
+  line-height: 1;
+}
+
+.password-toggle:hover {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .has-error label {
