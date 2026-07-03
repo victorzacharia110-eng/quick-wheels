@@ -118,6 +118,15 @@
                   <option value="flexible">{{ $t('employee.flexible') }}</option>
                 </select>
               </div>
+              <div class="form-group">
+                <label>{{ $t('employee.vehicle') }}</label>
+                <select v-model="form.vehicle_id" class="form-input">
+                  <option value="">{{ $t('common.selectVehicle') }}...</option>
+                  <option v-for="v in vehicleStore.availableVehicles" :key="v.id" :value="v.id">
+                    {{ v.name }} ({{ v.registration_number || v.plate_number || v.type }})
+                  </option>
+                </select>
+              </div>
             </div>
             <div class="modal-actions">
               <button type="button" @click="showModal = false" class="btn-outline">{{ $t('common.cancel') }}</button>
@@ -137,10 +146,12 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useEmployeeStore } from '@/stores/employees'
+import { useVehicleStore } from '@/stores/vehicles'
 import Pagination from '@/components/common/Pagination.vue'
 
 const { t } = useI18n()
 const employeeStore = useEmployeeStore()
+const vehicleStore = useVehicleStore()
 const searchQuery = ref('')
 const showModal = ref(false)
 const isEditing = ref(false)
@@ -151,7 +162,8 @@ const perPage = 15
 
 const defaultForm = () => ({
   name: '', phone: '', email: '', address: '', nida_number: '',
-  license_number: '', department: '', position: '', salary: '', shift: 'day'
+  license_number: '', department: '', position: '', salary: '', shift: 'day',
+  vehicle_id: ''
 })
 const form = ref(defaultForm())
 
@@ -181,7 +193,8 @@ function openEditModal(emp) {
     name: emp.name, phone: emp.phone, email: emp.email, address: emp.address || '',
     nida_number: emp.nida_number || '', license_number: emp.license_number || '',
     department: emp.department || '', position: emp.position || '',
-    salary: emp.salary || '', shift: emp.shift || 'day'
+    salary: emp.salary || '', shift: emp.shift || 'day',
+    vehicle_id: emp.vehicle_id || ''
   }
   showModal.value = true
 }
@@ -189,8 +202,17 @@ function openEditModal(emp) {
 async function handleSave() {
   saving.value = true
   try {
-    if (isEditing.value) await employeeStore.updateEmployee(editingId.value, form.value)
-    else await employeeStore.createEmployee(form.value)
+    if (isEditing.value) {
+      await employeeStore.updateEmployee(editingId.value, form.value)
+      if (form.value.vehicle_id) {
+        await employeeStore.assignVehicle(editingId.value, form.value.vehicle_id)
+      }
+    } else {
+      const res = await employeeStore.createEmployee(form.value)
+      if (res.success && form.value.vehicle_id) {
+        await employeeStore.assignVehicle(res.data.id, form.value.vehicle_id)
+      }
+    }
     showModal.value = false
   } catch (_) {} finally { saving.value = false }
 }
@@ -199,7 +221,10 @@ async function deleteEmployee(id) {
   if (confirm(t('employee.deleteConfirm'))) await employeeStore.deleteEmployee(id)
 }
 
-onMounted(() => { employeeStore.fetchEmployees() })
+onMounted(() => {
+  employeeStore.fetchEmployees()
+  vehicleStore.fetchVehicles()
+})
 </script>
 
 <style scoped>
