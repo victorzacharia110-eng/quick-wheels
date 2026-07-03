@@ -30,14 +30,19 @@
 
         <div class="form-group">
           <label for="password">{{ $t('auth.password') }}</label>
-          <input
-            id="password"
-            v-model="form.password"
-            type="password"
-            :placeholder="$t('auth.passwordPlaceholder')"
-            required
-            class="form-input"
-          />
+          <div class="password-wrapper">
+            <input
+              id="password"
+              v-model="form.password"
+              :type="showPassword ? 'text' : 'password'"
+              :placeholder="$t('auth.passwordPlaceholder')"
+              required
+              class="form-input"
+            />
+            <button type="button" class="password-toggle" @click="showPassword = !showPassword" tabindex="-1">
+              <font-awesome-icon :icon="showPassword ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'" />
+            </button>
+          </div>
         </div>
 
         <button type="submit" class="btn-primary" :disabled="isLoading">
@@ -73,6 +78,7 @@ const form = reactive({
 
 const isLoading = ref(false)
 const error = ref(null)
+const showPassword = ref(false)
 
 async function handleLogin() {
   isLoading.value = true
@@ -201,6 +207,33 @@ async function handleLogin() {
 
 .form-input::placeholder {
   color: rgba(255, 255, 255, 0.25);
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper .form-input {
+  padding-right: 44px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  padding: 8px;
+  font-size: 1rem;
+  transition: color 0.2s;
+  line-height: 1;
+}
+
+.password-toggle:hover {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .error-msg {
