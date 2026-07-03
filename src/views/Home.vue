@@ -8,7 +8,7 @@ import { useVehicleStore } from '@/stores/vehicles'
 import { useSiteContentStore } from '@/stores/siteContent'
 import { storeToRefs } from 'pinia'
 
-const { t } = useI18n()
+const { t, tc } = useI18n()
 const store = useVehicleStore()
 const scStore = useSiteContentStore()
 const { vehicles, isLoading, error, availableVehicles } = storeToRefs(store)
@@ -70,6 +70,10 @@ const services = computed(() => [
 const featuredVehicles = computed(() => {
   return availableVehicles.value.slice(0, 3)
 })
+
+const showingText = computed(() =>
+  tc('home.showing', featuredVehicles.value.length, { count: featuredVehicles.value.length })
+)
 
 async function loadVehicles() {
   await store.fetchVehicles()
@@ -155,7 +159,7 @@ onMounted(() => {
         <p class="section-label">{{ $t('home.ourFleet') }}</p>
         <h2 class="section-title">{{ $t('home.featuredVehicles') }}</h2>
         <p v-if="!isLoading && !error && featuredVehicles.length > 0" class="section-sub">
-          {{ $tc('home.showing', featuredVehicles.length, { count: featuredVehicles.length }) }}
+          {{ showingText }}
         </p>
       </div>
 
