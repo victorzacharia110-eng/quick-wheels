@@ -17,4 +17,9 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  // Configure build output and public directory for Netlify deployment
+  build: {
+    outDir: 'dist', 
+  },
+  publicDir: 'public',
 })
