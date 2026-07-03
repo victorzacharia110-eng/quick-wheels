@@ -2,6 +2,22 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import api from '@/composables/api'
 
+// Turn an axios error into a message that reflects the real cause, so a
+// backend crash (5xx) or a connectivity problem is not mislabelled as an
+// invalid-credentials error. Prefer a validation/auth message from the API
+// (401/422), otherwise fall back to a category-appropriate message.
+function resolveAuthError(err, fallback) {
+  if (!err.response) {
+    return 'Cannot reach the server. Please check your connection and try again.'
+  }
+  const status = err.response.status
+  const apiMessage = err.response.data?.message
+  if (status >= 500) {
+    return 'The server is currently unavailable. Please try again later.'
+  }
+  return apiMessage || fallback
+}
+
 export const useAuthStore = defineStore('auth', () => {
   const user = ref(null)
   const isLoading = ref(false)
@@ -60,7 +76,7 @@ export const useAuthStore = defineStore('auth', () => {
         return { success: true, user: response.data.data.user }
       }
     } catch (err) {
-      error.value = err.response?.data?.message || 'Registration failed'
+      error.value = resolveAuthError(err, 'Registration failed')
       return { success: false, message: error.value }
     } finally { isLoading.value = false }
   }
@@ -76,7 +92,7 @@ export const useAuthStore = defineStore('auth', () => {
         return { success: true, user: response.data.data.user }
       }
     } catch (err) {
-      error.value = err.response?.data?.message || 'Login failed'
+      error.value = resolveAuthError(err, 'Login failed')
       return { success: false, message: error.value }
     } finally { isLoading.value = false }
   }
