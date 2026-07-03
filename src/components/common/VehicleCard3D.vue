@@ -54,7 +54,8 @@ function getIcon() {
     'SUV': 'fa-solid fa-truck',
     'Luxury': 'fa-solid fa-car-side',
   }
-  return props.vehicle.icon || categoryIcons[props.vehicle.category] || 'fa-solid fa-car'
+  const cat = props.vehicle.type || props.vehicle.category
+  return props.vehicle.icon || categoryIcons[cat] || 'fa-solid fa-car'
 }
 
 function getCategoryBadgeClass() {
@@ -65,7 +66,8 @@ function getCategoryBadgeClass() {
     'SUV': 'suv',
     'Luxury': 'luxury',
   }
-  return classes[props.vehicle.category] || 'car'
+  const cat = props.vehicle.type || props.vehicle.category
+  return classes[cat] || 'car'
 }
 
 function hasValidLink(url) {
@@ -108,11 +110,11 @@ const glareStyle = computed(() => ({
         <font-awesome-icon :icon="getIcon()" size="2x" />
       </div>
 
-      <span v-if="vehicle.category" class="category-badge" :class="getCategoryBadgeClass()">
-        {{ vehicle.category }}
+      <span v-if="vehicle.type || vehicle.category" class="category-badge" :class="getCategoryBadgeClass()">
+        {{ vehicle.type || vehicle.category }}
       </span>
 
-      <h3 class="vehicle-title">{{ vehicle.title || $t('vehicle.untitled') }}</h3>
+      <h3 class="vehicle-title">{{ vehicle.name || vehicle.title || $t('vehicle.untitled') }}</h3>
 
       <p class="vehicle-desc">{{ vehicle.description || $t('vehicle.noDescription') }}</p>
 
