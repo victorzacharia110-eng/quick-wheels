@@ -2,12 +2,12 @@
   <div class="reports-page">
     <div class="page-header">
       <div>
-        <h1 class="page-title">Reports</h1>
-        <p class="page-sub">View business analytics and reports</p>
+        <h1 class="page-title">{{ $t('nav.reports') }}</h1>
+        <p class="page-sub">{{ $t('reports.subtitle') }}</p>
       </div>
       <button class="btn-primary" @click="exportReport">
         <font-awesome-icon icon="fa-solid fa-download" />
-        Export Report
+        {{ $t('common.exportReport') }}
       </button>
     </div>
 
@@ -15,26 +15,26 @@
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-value">TZS {{ totalRevenue.toLocaleString() }}</div>
-        <div class="stat-label">Total Revenue</div>
+        <div class="stat-label">{{ $t('reports.totalRevenue') }}</div>
       </div>
       <div class="stat-card">
         <div class="stat-value">{{ totalActiveContracts }}</div>
-        <div class="stat-label">Active Contracts</div>
+        <div class="stat-label">{{ $t('reports.activeContracts') }}</div>
       </div>
       <div class="stat-card">
         <div class="stat-value">{{ totalEmployees }}</div>
-        <div class="stat-label">Total Drivers</div>
+        <div class="stat-label">{{ $t('reports.totalDrivers') }}</div>
       </div>
       <div class="stat-card">
         <div class="stat-value">{{ totalVehicles }}</div>
-        <div class="stat-label">Total Vehicles</div>
+        <div class="stat-label">{{ $t('reports.totalVehicles') }}</div>
       </div>
     </div>
 
     <!-- Charts Section -->
     <div class="charts-grid">
       <div class="chart-card glass-card">
-        <h3>Revenue by Month</h3>
+        <h3>{{ $t('reports.revenueByMonth') }}</h3>
         <div class="chart-placeholder">
           <div class="bar-chart">
             <div v-for="(data, index) in monthlyRevenue" :key="index" class="bar-item">
@@ -46,7 +46,7 @@
       </div>
 
       <div class="chart-card glass-card">
-        <h3>Vehicle Distribution</h3>
+        <h3>{{ $t('reports.vehicleDistribution') }}</h3>
         <div class="chart-placeholder">
           <div class="pie-chart">
             <div v-for="(count, type) in vehicleTypes" :key="type" class="pie-item">
@@ -60,9 +60,9 @@
 
     <!-- Recent Activity -->
     <div class="recent-section">
-      <h3 class="section-title">Recent Activity</h3>
+      <h3 class="section-title">{{ $t('common.recentActivity') }}</h3>
       <div v-if="recentActivity.length === 0" class="empty-state-small">
-        <p>No recent activity</p>
+        <p>{{ $t('common.noRecentActivity') }}</p>
       </div>
       <div v-for="activity in recentActivity" :key="activity.id" class="activity-item">
         <span class="activity-icon" :style="{ color: activity.color }">
@@ -79,11 +79,13 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useContractStore } from '@/stores/contracts'
 import { useVehicleStore } from '@/stores/vehicles'
 import { useEmployeeStore } from '@/stores/employees'
 import { usePaymentStore } from '@/stores/payments'
 
+const { t } = useI18n()
 const contractStore = useContractStore()
 const vehicleStore = useVehicleStore()
 const employeeStore = useEmployeeStore()
@@ -149,7 +151,7 @@ function formatDate(date) {
 }
 
 function exportReport() {
-  alert('Report exporting functionality will be implemented here')
+  alert(t('common.exportReport') + ' functionality will be implemented here')
 }
 
 onMounted(async () => {
@@ -163,7 +165,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.reports-page { animation: fadeIn 0.4s ease; padding: 0; }
+.reports-page { padding: 0; }
 .page-header {
   display: flex;
   justify-content: space-between;

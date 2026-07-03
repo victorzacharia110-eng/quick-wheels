@@ -1,45 +1,45 @@
 <template>
   <div class="contact-page">
     <div class="page-header">
-      <h1 class="page-title">Get In <span class="gradient-text">Touch</span></h1>
-      <p class="page-sub">We'd love to hear from you</p>
+      <h1 class="page-title">{{ scStore.contents?.contact?.title || $t('contact.title') }}</h1>
+      <p class="page-sub">{{ scStore.contents?.contact?.subtitle || $t('contact.subtitle') }}</p>
     </div>
 
     <div class="contact-content">
       <form @submit.prevent="handleSubmit" class="contact-form">
         <div class="form-group">
-          <label>Full Name <span class="required">*</span></label>
-          <input v-model="form.name" type="text" class="form-input" placeholder="John Doe" required />
+          <label>{{ $t('common.fullName') }} <span class="required">*</span></label>
+          <input v-model="form.name" type="text" class="form-input" :placeholder="$t('auth.name')" required />
         </div>
         <div class="form-group">
-          <label>Email <span class="required">*</span></label>
+          <label>{{ $t('auth.email') }} <span class="required">*</span></label>
           <input v-model="form.email" type="email" class="form-input" placeholder="john@example.com" required />
         </div>
         <div class="form-group">
-          <label>Phone Number</label>
+          <label>{{ $t('auth.phone') }}</label>
           <input v-model="form.phone" type="tel" class="form-input" placeholder="+255 712 345 678" />
         </div>
         <div class="form-group">
-          <label>Service <span class="required">*</span></label>
+          <label>{{ $t('contact.service') }} <span class="required">*</span></label>
           <select v-model="form.service" class="form-input" required>
-            <option value="">Select a service</option>
-            <option value="Motorcycle Hire">Motorcycle Hire</option>
-            <option value="Bajaji Hire">Bajaji Hire</option>
-            <option value="Car Rental">Car Rental</option>
-            <option value="Hire Purchase">Hire Purchase</option>
-            <option value="General">General Inquiry</option>
+            <option value="">{{ $t('contact.selectService') }}</option>
+            <option value="Motorcycle Hire">{{ $t('contact.motorcycleHire') }}</option>
+            <option value="Bajaji Hire">{{ $t('contact.bajajiHire') }}</option>
+            <option value="Car Rental">{{ $t('contact.carRental') }}</option>
+            <option value="Hire Purchase">{{ $t('contact.hirePurchase') }}</option>
+            <option value="General">{{ $t('contact.generalInquiry') }}</option>
           </select>
         </div>
         <div class="form-group">
-          <label>Message <span class="required">*</span></label>
-          <textarea v-model="form.message" class="form-input" rows="4" placeholder="Tell us about your needs..." required />
+          <label>{{ $t('contact.message') }} <span class="required">*</span></label>
+          <textarea v-model="form.message" class="form-input" rows="4" :placeholder="$t('contact.messagePlaceholder')" required />
         </div>
         <button type="submit" class="btn-primary" :disabled="isSubmitting">
           <span v-if="isSubmitting" class="btn-content">
-            <span class="spinner-sm"></span> Sending...
+            <span class="spinner-sm"></span> {{ $t('contact.sending') }}
           </span>
           <span v-else class="btn-content">
-            <font-awesome-icon icon="fa-solid fa-paper-plane" /> Send Message
+            <font-awesome-icon icon="fa-solid fa-paper-plane" /> {{ $t('contact.sendMessage') }}
           </span>
         </button>
       </form>
@@ -48,38 +48,63 @@
         <div class="info-item">
           <font-awesome-icon icon="fa-solid fa-phone" />
           <div>
-            <h4>Phone</h4>
-            <p>+255 712 345 678</p>
+            <h4>{{ $t('contact.phone') }}</h4>
+            <p>{{ scStore.contents?.contact?.phone || '+255 712 345 678' }}</p>
           </div>
         </div>
         <div class="info-item">
           <font-awesome-icon icon="fa-regular fa-envelope" />
           <div>
-            <h4>Email</h4>
-            <p>info@quick-wheels.co.tz</p>
+            <h4>{{ $t('contact.email') }}</h4>
+            <p>{{ scStore.contents?.contact?.email || 'info@quick-wheels.co.tz' }}</p>
           </div>
         </div>
         <div class="info-item">
           <font-awesome-icon icon="fa-solid fa-location-dot" />
           <div>
-            <h4>Location</h4>
-            <p>Dar es Salaam, Tanzania</p>
+            <h4>{{ $t('contact.location') }}</h4>
+            <p>{{ scStore.contents?.contact?.address || 'Dar es Salaam, Tanzania' }}</p>
           </div>
         </div>
         <div class="info-item">
           <font-awesome-icon icon="fa-regular fa-clock" />
           <div>
-            <h4>Working Hours</h4>
-            <p>Mon - Sat: 8:00 AM - 6:00 PM</p>
+            <h4>{{ $t('contact.workingHours') }}</h4>
+            <p>{{ $t('contact.hours') }}</p>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div class="map-section">
+      <h2 class="map-title">{{ $t('contact.findUs') }}</h2>
+      <div class="map-container">
+        <iframe
+          :src="scStore.contents?.contact?.map_embed_url || 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126916.65633634257!2d39.22904694130917!3d-6.792354075916521!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x185c4fe8f2b3f4e5%3A0x8b5b5b5b5b5b5b5b!2sDar%20es%20Salaam%2C%20Tanzania!5e0!3m2!1sen!2s!4v1'"
+          width="100%"
+          height="400"
+          style="border:0; border-radius: 12px;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          :title="$t('contact.mapTitle')"
+        ></iframe>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useSiteContentStore } from '@/stores/siteContent'
+
+const { t } = useI18n()
+const scStore = useSiteContentStore()
+
+onMounted(() => {
+  scStore.fetchContents()
+})
 
 const form = reactive({
   name: '',
@@ -93,9 +118,8 @@ const isSubmitting = ref(false)
 
 async function handleSubmit() {
   isSubmitting.value = true
-  // Simulate API call
   await new Promise(resolve => setTimeout(resolve, 1000))
-  alert('Thank you! We will get back to you soon.')
+  alert(t('contact.thankYou'))
   Object.assign(form, { name: '', email: '', phone: '', service: '', message: '' })
   isSubmitting.value = false
 }
@@ -139,7 +163,6 @@ async function handleSubmit() {
   gap: 48px;
 }
 
-/* ── Form ── */
 .contact-form { 
   display: flex; 
   flex-direction: column; 
@@ -185,7 +208,6 @@ textarea.form-input {
   min-height: 100px; 
 }
 
-/* ── Button - FIXED CENTERED ── */
 .btn-primary {
   padding: 12px 28px;
   border-radius: 30px;
@@ -241,7 +263,6 @@ textarea.form-input {
   to { transform: rotate(360deg); } 
 }
 
-/* ── Contact Info ── */
 .contact-info { 
   display: flex; 
   flex-direction: column; 
@@ -284,7 +305,26 @@ textarea.form-input {
   margin-top: 2px; 
 }
 
-/* ── Responsive ── */
+.map-section {
+  max-width: 1000px;
+  margin: 48px auto 0;
+}
+
+.map-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.map-container {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
 @media (max-width: 768px) {
   .contact-content { 
     grid-template-columns: 1fr; 

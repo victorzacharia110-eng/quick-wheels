@@ -1,66 +1,71 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import Hero3D from '../components/common/Hero3D.vue'
 import SkillsOrbit from '../components/common/SkillsOrbit.vue'
 import VehicleCard3D from '@/components/common/VehicleCard3D.vue'
 import { useVehicleStore } from '@/stores/vehicles'
+import { useSiteContentStore } from '@/stores/siteContent'
 import { storeToRefs } from 'pinia'
 
+const { t } = useI18n()
 const store = useVehicleStore()
+const scStore = useSiteContentStore()
 const { vehicles, isLoading, error, availableVehicles } = storeToRefs(store)
 
 const activeService = ref(null)
 
-const stats = [
-  { value: '50+', label: 'Vehicles Available', icon: 'fa-solid fa-car' },
-  { value: '8+', label: 'Years Experience', icon: 'fa-solid fa-clock' },
-  { value: '100+', label: 'Happy Drivers', icon: 'fa-solid fa-users' },
-  { value: '99%', label: 'Uptime SLA', icon: 'fa-solid fa-star' },
-]
+const stats = computed(() => [
+  { value: scStore.contents?.stats?.vehicles_count || '50+', labelKey: 'hero.vehiclesAvailable', icon: 'fa-solid fa-car' },
+  { value: scStore.contents?.stats?.years_experience || '8+', labelKey: 'hero.yearsExperience', icon: 'fa-solid fa-clock' },
+  { value: scStore.contents?.stats?.happy_drivers || '100+', labelKey: 'hero.happyDrivers', icon: 'fa-solid fa-users' },
+  { value: scStore.contents?.stats?.uptime_sla || '99%', labelKey: 'hero.uptimeSla', icon: 'fa-solid fa-star' },
+])
 
-const marquee = [
-  'Motorcycles', 'Bajajis', 'Cars', 'SUVs', 'Luxury Vehicles',
-  'Hire Purchase', 'Daily Rentals', 'Weekly Rentals', 'Delivery Services',
-]
+const marquee = computed(() => [
+  t('vehicle.motorcycles'), t('vehicle.bajajis'), t('vehicle.cars'), t('vehicle.suvs'),
+  t('vehicle.luxuryVehicles'), t('vehicle.hirePurchase'), t('vehicle.dailyRentals'),
+  t('vehicle.weeklyRentals'), t('vehicle.deliveryServices'),
+])
 
-const services = [
+const services = computed(() => [
   {
     icon: 'fa-solid fa-motorcycle',
-    title: 'Motorcycle Hire Purchase',
-    desc: 'Get your own motorcycle through our flexible hire purchase program. Own it after completing payments.',
-    features: ['Daily/Weekly Payments', 'Ownership After Completion', 'Maintenance Included'],
+    title: t('services.motorcycleHP'),
+    desc: t('services.motorcycleHPDesc'),
+    features: [t('services.motorcycleHPFeat1'), t('services.motorcycleHPFeat2'), t('services.motorcycleHPFeat3')],
   },
   {
     icon: 'fa-solid fa-truck-front',
-    title: 'Bajaji Hire Purchase',
-    desc: 'Start your delivery business with our Bajaji hire purchase. Perfect for urban transport and deliveries.',
-    features: ['Flexible Payment Plans', 'Ownership After Completion', 'Insurance Covered'],
+    title: t('services.bajajiHP'),
+    desc: t('services.bajajiHPDesc'),
+    features: [t('services.bajajiHPFeat1'), t('services.bajajiHPFeat2'), t('services.bajajiHPFeat3')],
   },
   {
     icon: 'fa-solid fa-car',
-    title: 'Car Rentals',
-    desc: 'Wide range of cars from economy to luxury. Self-drive or with professional drivers.',
-    features: ['Daily & Weekly Rentals', 'Full Insurance', '24/7 Support'],
+    title: t('services.carRentals'),
+    desc: t('services.carRentalsDesc'),
+    features: [t('services.carRentalsFeat1'), t('services.carRentalsFeat2'), t('services.carRentalsFeat3')],
   },
   {
     icon: 'fa-solid fa-route',
-    title: 'Fleet Management',
-    desc: 'Complete fleet management solutions for businesses with multiple vehicles.',
-    features: ['Maintenance Tracking', 'Fuel Management', 'Driver Management'],
+    title: t('services.fleetManagement'),
+    desc: t('services.fleetManagementDesc'),
+    features: [t('services.fleetManagementFeat1'), t('services.fleetManagementFeat2'), t('services.fleetManagementFeat3')],
   },
   {
     icon: 'fa-solid fa-shield-halved',
-    title: 'Insurance Coverage',
-    desc: 'Comprehensive insurance coverage for all vehicles. Drive with peace of mind.',
-    features: ['Third Party', 'Comprehensive', 'Accidental Coverage'],
+    title: t('services.insurance'),
+    desc: t('services.insuranceDesc'),
+    features: [t('services.insuranceFeat1'), t('services.insuranceFeat2'), t('services.insuranceFeat3')],
   },
   {
     icon: 'fa-solid fa-headset',
-    title: '24/7 Support',
-    desc: 'Round-the-clock customer support for all your rental needs and emergencies.',
-    features: ['Emergency Response', 'Roadside Assistance', 'Dedicated Support'],
+    title: t('services.support'),
+    desc: t('services.supportDesc'),
+    features: [t('services.supportFeat1'), t('services.supportFeat2'), t('services.supportFeat3')],
   },
-]
+])
 
 const featuredVehicles = computed(() => {
   return availableVehicles.value.slice(0, 3)
@@ -72,51 +77,46 @@ async function loadVehicles() {
 
 onMounted(() => {
   loadVehicles()
+  scStore.fetchContents()
 })
 </script>
 
 <template>
   <div class="home">
-    <!-- ── HERO ── -->
     <section class="hero">
       <Hero3D />
       <div class="hero-content">
         <div class="hero-eyebrow">
           <span class="eyebrow-dot"></span>
-          <span class="section-label">Quick-Wheels</span>
+          <span class="section-label">{{ $t('hero.quickWheels') }}</span>
         </div>
         <h1 class="hero-title">
-          <span class="line1">Your Journey</span><br>
-          <span class="line2 gradient-text">Our Wheels</span>
+          {{ scStore.contents?.hero?.title || $t('hero.journey') }}
         </h1>
-        <p class="hero-sub">
-          Rent motorcycles, bajajis, and cars for daily commutes, business trips, 
-          or weekend adventures. Own your vehicle through our flexible hire purchase program.
-        </p>
+        <p class="hero-sub">{{ scStore.contents?.hero?.subtitle || $t('hero.subtitle') }}</p>
         <div class="hero-actions">
-          <RouterLink to="/vehicles" class="btn-primary">
-            View Our Fleet <font-awesome-icon icon="fa-solid fa-arrow-right" />
+          <RouterLink :to="scStore.contents?.hero?.cta_link || '/vehicles'" class="btn-primary">
+            {{ scStore.contents?.hero?.cta_text || $t('hero.viewFleet') }} <font-awesome-icon icon="fa-solid fa-arrow-right" />
           </RouterLink>
           <RouterLink to="/contact" class="btn-outline">
-            <font-awesome-icon icon="fa-solid fa-rocket" /> Get a Quote
+            <font-awesome-icon icon="fa-solid fa-rocket" /> {{ $t('hero.getQuote') }}
           </RouterLink>
         </div>
         <div class="hero-stats">
-          <div v-for="stat in stats" :key="stat.label" class="stat-item">
+          <div v-for="stat in stats" :key="stat.labelKey" class="stat-item">
             <span class="stat-value gradient-text">{{ stat.value }}</span>
             <span class="stat-label">
-              <font-awesome-icon :icon="stat.icon" class="stat-icon" /> {{ stat.label }}
+              <font-awesome-icon :icon="stat.icon" class="stat-icon" /> {{ $t(stat.labelKey) }}
             </span>
           </div>
         </div>
       </div>
       <div class="scroll-hint">
         <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
-        <span>Scroll</span>
+        <span>{{ $t('hero.scroll') }}</span>
       </div>
     </section>
 
-    <!-- ── MARQUEE ── -->
     <div class="marquee-strip">
       <div class="marquee-track">
         <span v-for="item in [...marquee, ...marquee]" :key="Math.random()" class="marquee-item">
@@ -125,12 +125,11 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- ── SERVICES ── -->
     <section class="services-section">
       <div class="section-header">
-        <p class="section-label">What We Offer</p>
-        <h2 class="section-title">Services That <span class="gradient-text">Drive</span></h2>
-        <p class="section-sub">End-to-end transport solutions from daily rentals to full fleet management.</p>
+        <p class="section-label">{{ $t('home.whatWeOffer') }}</p>
+        <h2 class="section-title">{{ scStore.contents?.services?.title || $t('home.servicesTitle') }}</h2>
+        <p class="section-sub">{{ scStore.contents?.services?.subtitle || $t('home.servicesSub') }}</p>
       </div>
       <div class="services-grid">
         <div v-for="(svc, i) in services" :key="svc.title" class="service-card glass-card"
@@ -149,65 +148,58 @@ onMounted(() => {
       </div>
     </section>
 
-    <!-- ── SKILLS ORBIT ── -->
     <SkillsOrbit />
 
-    <!-- ── VEHICLES PREVIEW ── -->
     <section class="vehicles-preview">
       <div class="section-header">
-        <p class="section-label">Our Fleet</p>
-        <h2 class="section-title">Featured <span class="gradient-text">Vehicles</span></h2>
+        <p class="section-label">{{ $t('home.ourFleet') }}</p>
+        <h2 class="section-title">{{ $t('home.featuredVehicles') }}</h2>
         <p v-if="!isLoading && !error && featuredVehicles.length > 0" class="section-sub">
-          Showing {{ featuredVehicles.length }} vehicle{{ featuredVehicles.length > 1 ? 's' : '' }}
+          {{ $tc('home.showing', featuredVehicles.length, { count: featuredVehicles.length }) }}
         </p>
       </div>
 
-      <!-- Loading State -->
       <div v-if="isLoading" class="loading-state">
         <div class="spinner"></div>
-        <p>Loading vehicles...</p>
+        <p>{{ $t('home.loadingVehicles') }}</p>
       </div>
 
-      <!-- Error State -->
       <div v-else-if="error" class="error-banner">
         <font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ error }}
         <button @click="loadVehicles" class="btn-retry">
-          <font-awesome-icon icon="fa-solid fa-rotate" /> Retry
+          <font-awesome-icon icon="fa-solid fa-rotate" /> {{ $t('home.retry') }}
         </button>
       </div>
 
-      <!-- No Vehicles -->
       <div v-else-if="featuredVehicles.length === 0" class="empty-state">
         <font-awesome-icon icon="fa-solid fa-car" size="3x" />
-        <h3>No Vehicles Available</h3>
-        <p>No vehicles available at the moment. Please check back later.</p>
+        <h3>{{ $t('home.noVehiclesAvailable') }}</h3>
+        <p>{{ $t('home.noVehiclesDesc') }}</p>
         <RouterLink to="/contact" class="btn-primary" style="margin-top: 16px;">
-          Contact Us <font-awesome-icon icon="fa-solid fa-arrow-right" />
+          {{ $t('home.contactUs') }} <font-awesome-icon icon="fa-solid fa-arrow-right" />
         </RouterLink>
       </div>
 
-      <!-- Vehicles Grid -->
       <div v-else class="vehicles-grid">
         <VehicleCard3D v-for="vehicle in featuredVehicles" :key="vehicle.id" :vehicle="vehicle" />
       </div>
 
       <div v-if="featuredVehicles.length > 0" style="text-align:center; margin-top:48px">
         <RouterLink to="/vehicles" class="btn-outline">
-          See All Vehicles <font-awesome-icon icon="fa-solid fa-arrow-right" />
+          {{ $t('home.seeAllVehicles') }} <font-awesome-icon icon="fa-solid fa-arrow-right" />
         </RouterLink>
       </div>
     </section>
 
-    <!-- ── CTA BANNER ── -->
     <section class="cta-banner">
       <div class="cta-inner glass-card">
         <div class="cta-glow-orb orb1"></div>
         <div class="cta-glow-orb orb2"></div>
-        <p class="section-label">Ready to ride?</p>
-        <h2 class="cta-title">Book Your <span class="gradient-text">Dream Ride</span></h2>
-        <p class="cta-sub">From motorcycles to luxury cars, we have the perfect vehicle for every journey.</p>
+        <p class="section-label">{{ $t('hero.readyToRide') }}</p>
+        <h2 class="cta-title">{{ $t('hero.dreamRide') }}</h2>
+        <p class="cta-sub">{{ $t('hero.ctaSub') }}</p>
         <RouterLink to="/vehicles" class="btn-primary" style="font-size:1rem; padding:16px 40px">
-          <font-awesome-icon icon="fa-solid fa-rocket" /> Book Now
+          <font-awesome-icon icon="fa-solid fa-rocket" /> {{ $t('hero.bookNow') }}
         </RouterLink>
       </div>
     </section>
@@ -215,7 +207,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-/* ── HERO ── */
 .hero {
   min-height: 100vh;
   position: relative;
@@ -321,7 +312,6 @@ onMounted(() => {
   100% { transform: translateY(12px); opacity: 0; }
 }
 
-/* ── MARQUEE ── */
 .marquee-strip {
   position: relative;
   z-index: 1;
@@ -352,7 +342,6 @@ onMounted(() => {
 .marquee-dot { color: #00C4D4; font-size: 0.6rem; opacity: 0.7; }
 @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-/* ── SECTIONS ── */
 .section-header {
   text-align: center;
   margin-bottom: 40px;
@@ -369,7 +358,6 @@ onMounted(() => {
   line-height: 1.7;
 }
 
-/* ── SERVICES ── */
 .services-section {
   padding: 80px 32px;
   position: relative;
@@ -422,12 +410,10 @@ onMounted(() => {
 }
 .svc-feat svg { font-size: 0.5rem; color: #00C4D4; }
 
-/* ── SKILLS ORBIT ── */
 .skills-orbit {
   padding: 60px 32px;
 }
 
-/* ── VEHICLES PREVIEW ── */
 .vehicles-preview {
   padding: 80px 32px 100px;
   position: relative;
@@ -441,7 +427,6 @@ onMounted(() => {
   margin: 0 auto;
 }
 
-/* ── LOADING ── */
 .loading-state {
   display: flex;
   flex-direction: column;
@@ -460,7 +445,6 @@ onMounted(() => {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── ERROR ── */
 .error-banner {
   display: flex;
   align-items: center;
@@ -494,7 +478,6 @@ onMounted(() => {
   background: rgba(255,255,255,0.2);
 }
 
-/* ── EMPTY ── */
 .empty-state {
   text-align: center;
   padding: 60px 20px;
@@ -504,7 +487,6 @@ onMounted(() => {
 .empty-state svg { opacity: 0.3; margin-bottom: 16px; }
 .empty-state h3 { color: #fff; margin-bottom: 8px; }
 
-/* ── CTA ── */
 .cta-banner { padding: 80px 32px 120px; position: relative; z-index: 1; }
 .cta-inner {
   max-width: 760px;
@@ -536,7 +518,6 @@ onMounted(() => {
 }
 .cta-sub { color: rgba(255,255,255,0.6); margin-bottom: 36px; line-height: 1.7; }
 
-/* ── BUTTONS ── */
 .btn-primary {
   display: inline-flex;
   align-items: center;
@@ -578,7 +559,6 @@ onMounted(() => {
   background: rgba(0,229,255,0.05);
 }
 
-/* ── RESPONSIVE ── */
 @media (max-width: 1024px) {
   .services-grid, .vehicles-grid { grid-template-columns: repeat(2, 1fr); }
 }

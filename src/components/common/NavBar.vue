@@ -3,11 +3,11 @@
     <div class="nav-container">
       <RouterLink to="/" class="nav-logo" @click="closeMenu">
         <span class="logo-mark">QW</span>
-        <span class="logo-text">Quick-Wheels</span>
+        <span class="logo-text">{{ scStore.contents?.seo?.site_name || 'Quick-Wheels' }}</span>
       </RouterLink>
       
       <!-- Hamburger Button -->
-      <button class="hamburger-btn" @click="toggleMenu" aria-label="Toggle menu">
+      <button class="hamburger-btn" @click="toggleMenu" :aria-label="$t('common.toggleMenu')">
         <font-awesome-icon :icon="isMenuOpen ? 'fa-solid fa-times' : 'fa-solid fa-bars'" />
       </button>
       
@@ -21,27 +21,33 @@
           @click="closeMenu"
         >
           <font-awesome-icon :icon="link.icon" class="link-icon" />
-          {{ link.name }}
+          {{ $t(link.nameKey) }}
         </RouterLink>
         
+        <div class="lang-switcher">
+          <select v-model="currentLocale" @change="switchLang" class="lang-select">
+            <option v-for="loc in locales" :key="loc.value" :value="loc.value">{{ $t(loc.labelKey) }}</option>
+          </select>
+        </div>
+
         <div v-if="!authStore.isAuthenticated" class="nav-auth">
           <RouterLink to="/auth/login" class="btn-outline-sm" @click="closeMenu">
             <font-awesome-icon icon="fa-solid fa-arrow-right-to-bracket" />
-            Login
+            {{ $t('nav.login') }}
           </RouterLink>
           <RouterLink to="/auth/register" class="btn-primary-sm" @click="closeMenu">
             <font-awesome-icon icon="fa-solid fa-user-plus" />
-            Register
+            {{ $t('nav.register') }}
           </RouterLink>
         </div>
         
         <div v-else class="nav-user">
           <span class="user-name">{{ authStore.userName }}</span>
-          <span v-if="authStore.isOwner" class="user-role">(Owner)</span>
-          <span v-else-if="authStore.isEmployee" class="user-role">(Driver)</span>
+          <span v-if="authStore.isOwner" class="user-role">({{ $t('nav.owner') }})</span>
+          <span v-else-if="authStore.isEmployee" class="user-role">({{ $t('nav.driver') }})</span>
           <button @click="handleLogout" class="btn-outline-sm logout-btn">
             <font-awesome-icon icon="fa-solid fa-sign-out-alt" />
-            Logout
+            {{ $t('nav.logout') }}
           </button>
         </div>
       </div>
@@ -50,22 +56,55 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { useSiteContentStore } from '@/stores/siteContent'
 import { useRouter, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 const authStore = useAuthStore()
+const scStore = useSiteContentStore()
 const router = useRouter()
 const route = useRoute()
+const { t, locale } = useI18n()
+const currentLocale = ref(locale.value)
+
+const locales = [
+  { value: 'en', labelKey: 'locale.en' },
+  { value: 'sw', labelKey: 'locale.sw' },
+  { value: 'fr', labelKey: 'locale.fr' },
+  { value: 'es', labelKey: 'locale.es' },
+  { value: 'pt', labelKey: 'locale.pt' },
+  { value: 'ar', labelKey: 'locale.ar' },
+  { value: 'zh', labelKey: 'locale.zh' },
+  { value: 'hi', labelKey: 'locale.hi' },
+  { value: 'ru', labelKey: 'locale.ru' },
+  { value: 'ja', labelKey: 'locale.ja' },
+  { value: 'de', labelKey: 'locale.de' },
+  { value: 'it', labelKey: 'locale.it' },
+  { value: 'ko', labelKey: 'locale.ko' },
+  { value: 'tr', labelKey: 'locale.tr' },
+  { value: 'vi', labelKey: 'locale.vi' },
+]
+
+function switchLang() {
+  locale.value = currentLocale.value
+  localStorage.setItem('locale', currentLocale.value)
+}
+
 const isMenuOpen = ref(false)
 const isScrolled = ref(false)
 
-const navLinks = [
-  { name: 'Home', path: '/', icon: 'fa-solid fa-house' },
-  { name: 'Vehicles', path: '/vehicles', icon: 'fa-solid fa-car' },
-  { name: 'About', path: '/about', icon: 'fa-solid fa-info-circle' },
-  { name: 'Contact', path: '/contact', icon: 'fa-solid fa-envelope' }
+const allLinks = [
+  { nameKey: 'nav.home', path: '/', icon: 'fa-solid fa-house' },
+  { nameKey: 'nav.vehicles', path: '/vehicles', icon: 'fa-solid fa-car' },
+  { nameKey: 'nav.about', path: '/about', icon: 'fa-solid fa-info-circle' },
+  { nameKey: 'nav.contact', path: '/contact', icon: 'fa-solid fa-envelope' }
 ]
+
+const navLinks = computed(() =>
+  authStore.isAuthenticated ? [] : allLinks
+)
 
 function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value
@@ -83,12 +122,12 @@ async function handleLogout() {
   closeMenu()
 }
 
-// Handle scroll effect
 function handleScroll() {
   isScrolled.value = window.scrollY > 20
 }
 
 onMounted(() => {
+  scStore.fetchContents()
   window.addEventListener('scroll', handleScroll)
 })
 
@@ -126,7 +165,6 @@ onBeforeUnmount(() => {
   align-items: center;
 }
 
-/* ── Logo ── */
 .nav-logo {
   display: flex;
   align-items: center;
@@ -168,7 +206,6 @@ onBeforeUnmount(() => {
   transition: color 0.3s ease;
 }
 
-/* ── Hamburger Button ── */
 .hamburger-btn {
   display: none;
   background: none;
@@ -194,7 +231,6 @@ onBeforeUnmount(() => {
   transform: rotate(90deg);
 }
 
-/* ── Nav Links ── */
 .nav-links {
   display: flex;
   align-items: center;
@@ -258,7 +294,22 @@ onBeforeUnmount(() => {
   color: #00C4D4;
 }
 
-/* ── Auth Buttons ── */
+.lang-switcher { display: flex; align-items: center; margin-right: 8px; }
+.lang-select {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  color: rgba(255,255,255,0.7);
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  outline: none;
+  font-family: 'Space Grotesk', sans-serif;
+  appearance: none;
+}
+.lang-select:hover { border-color: rgba(0,229,255,0.3); }
+.lang-select:focus { border-color: rgba(0,229,255,0.4); }
+
 .nav-auth {
   display: flex;
   gap: 10px;
@@ -313,7 +364,6 @@ onBeforeUnmount(() => {
   box-shadow: 0 4px 25px rgba(0, 229, 255, 0.3);
 }
 
-/* ── Nav User ── */
 .nav-user {
   display: flex;
   align-items: center;
@@ -341,7 +391,6 @@ onBeforeUnmount(() => {
   box-shadow: 0 4px 15px rgba(255, 107, 107, 0.15) !important;
 }
 
-/* ── Mobile Responsive ── */
 @media (max-width: 768px) {
   .navbar {
     padding: 12px 16px;

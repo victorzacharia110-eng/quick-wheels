@@ -3,12 +3,12 @@
     <!-- Header -->
     <div class="page-header">
       <div>
-        <h1 class="page-title">Contracts</h1>
-        <p class="page-sub">Manage hire purchase and rental contracts</p>
+        <h1 class="page-title">{{ $t('contract.title') }}</h1>
+        <p class="page-sub">{{ $t('contract.subtitle') }}</p>
       </div>
       <button class="btn-primary" @click="openCreateModal">
         <font-awesome-icon icon="fa-solid fa-plus" />
-        New Contract
+        {{ $t('contract.newContract') }}
       </button>
     </div>
 
@@ -16,19 +16,19 @@
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-value">{{ contractStore.totalContracts }}</div>
-        <div class="stat-label">Total Contracts</div>
+        <div class="stat-label">{{ $t('contract.totalContracts') }}</div>
       </div>
       <div class="stat-card active">
         <div class="stat-value">{{ contractStore.activeContracts.length }}</div>
-        <div class="stat-label">Active</div>
+        <div class="stat-label">{{ $t('contract.active') }}</div>
       </div>
       <div class="stat-card completed">
         <div class="stat-value">{{ contractStore.completedContracts.length }}</div>
-        <div class="stat-label">Completed</div>
+        <div class="stat-label">{{ $t('contract.completed') }}</div>
       </div>
       <div class="stat-card purchase">
         <div class="stat-value">{{ contractStore.hirePurchaseContracts.length }}</div>
-        <div class="stat-label">Hire Purchase</div>
+        <div class="stat-label">{{ $t('contract.hirePurchase') }}</div>
       </div>
     </div>
 
@@ -36,19 +36,19 @@
     <div class="filters-bar">
       <div class="search-bar">
         <font-awesome-icon icon="fa-solid fa-search" class="search-icon" />
-        <input v-model="searchQuery" type="text" placeholder="Search contracts..." class="search-input" />
+        <input v-model="searchQuery" type="text" :placeholder="$t('contract.searchPlaceholder')" class="search-input" />
       </div>
       <div class="filter-group">
         <select v-model="filterType" class="filter-select">
-          <option value="all">All Types</option>
-          <option value="hire_purchase">Hire Purchase</option>
-          <option value="rental">Rental Only</option>
+          <option value="all">{{ $t('contract.allTypes') }}</option>
+          <option value="hire_purchase">{{ $t('contract.hirePurchase') }}</option>
+          <option value="rental">{{ $t('contract.rental') }}</option>
         </select>
         <select v-model="filterStatus" class="filter-select">
-          <option value="all">All Status</option>
-          <option value="active">Active</option>
-          <option value="completed">Completed</option>
-          <option value="pending">Pending</option>
+          <option value="all">{{ $t('contract.allStatus') }}</option>
+          <option value="active">{{ $t('contract.active') }}</option>
+          <option value="completed">{{ $t('contract.completed') }}</option>
+          <option value="pending">{{ $t('contract.pending') }}</option>
         </select>
       </div>
     </div>
@@ -56,78 +56,82 @@
     <!-- Loading -->
     <div v-if="contractStore.isLoading" class="loading-state">
       <div class="spinner"></div>
-      <p>Loading contracts...</p>
+      <p>{{ $t('contract.loading') }}</p>
     </div>
 
-    <!-- Table -->
-    <div v-else-if="filteredContracts.length > 0" class="table-container">
-      <table class="contracts-table">
-        <thead>
-          <tr>
-            <th>Contract #</th>
-            <th>Driver</th>
-            <th>Vehicle</th>
-            <th>Type</th>
-            <th>Progress</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="contract in filteredContracts" :key="contract.id">
-            <td><strong>{{ contract.contract_number }}</strong></td>
-            <td>{{ contract.driver_name }}</td>
-            <td>
-              <font-awesome-icon :icon="getTypeIcon(contract.vehicle_type)" size="xs" />
-              {{ contract.vehicle_name }}
-            </td>
-            <td>
-              <span class="type-badge" :class="contract.contract_type">
-                {{ contract.contract_type === 'hire_purchase' ? 'Hire Purchase' : 'Rental' }}
-              </span>
-            </td>
-            <td>
-              <div class="progress-container">
-                <div class="progress-bar">
-                  <div class="progress-fill" :style="{ width: contractStore.getProgress(contract) + '%' }"></div>
+    <!-- Table / Empty -->
+    <Transition v-if="!contractStore.isLoading" name="fade-slide">
+      <div v-if="filteredContracts.length > 0" key="table" class="table-container">
+        <table class="contracts-table">
+          <thead>
+            <tr>
+              <th>{{ $t('contract.number') }}</th>
+              <th>{{ $t('contract.driver') }}</th>
+              <th>{{ $t('contract.vehicle') }}</th>
+              <th>{{ $t('contract.type') }}</th>
+              <th>{{ $t('contract.progress') }}</th>
+              <th>{{ $t('contract.status') }}</th>
+              <th>{{ $t('common.actions') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="contract in paginatedData" :key="contract.id" class="table-row-fade">
+              <td><strong>{{ contract.contract_number }}</strong></td>
+              <td>{{ contract.driver_name }}</td>
+              <td>
+                <font-awesome-icon :icon="getTypeIcon(contract.vehicle_type)" size="xs" />
+                {{ contract.vehicle_name }}
+              </td>
+              <td>
+                <span class="type-badge" :class="contract.contract_type">
+                  {{ $t('status.' + contract.contract_type) }}
+                </span>
+              </td>
+              <td>
+                <div class="progress-container">
+                  <div class="progress-bar">
+                    <div class="progress-fill" :style="{ width: contractStore.getProgress(contract) + '%' }"></div>
+                  </div>
+                  <span class="progress-text">{{ contractStore.getProgress(contract) }}%</span>
                 </div>
-                <span class="progress-text">{{ contractStore.getProgress(contract) }}%</span>
-              </div>
-            </td>
-            <td>
-              <span class="status-badge" :style="{ background: contractStore.getStatusColor(contract.status) }">
-                {{ contractStore.getStatusLabel(contract.status) }}
-              </span>
-            </td>
-            <td>
-              <button @click="viewContract(contract)" class="btn-icon" title="View">
-                <font-awesome-icon icon="fa-regular fa-eye" />
-              </button>
-              <button @click="editContract(contract)" class="btn-icon" title="Edit">
-                <font-awesome-icon icon="fa-solid fa-pen" />
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Empty -->
-    <div v-else class="empty-state">
+              </td>
+              <td>
+                <span class="status-badge" :style="{ background: contractStore.getStatusColor(contract.status) }">
+                  {{ $t('status.' + contract.status) }}
+                </span>
+              </td>
+              <td>
+                <button @click="viewContract(contract)" class="btn-icon" :title="$t('common.view')">
+                  <font-awesome-icon icon="fa-regular fa-eye" />
+                </button>
+                <button @click="editContract(contract)" class="btn-icon" :title="$t('common.edit')">
+                  <font-awesome-icon icon="fa-solid fa-pen" />
+                </button>
+                <button @click="downloadPdf(contract)" class="btn-icon pdf" :title="$t('contract.downloadPdf')">
+                  <font-awesome-icon :icon="['far', 'file-pdf']" />
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <Pagination :current-page="page" :per-page="perPage" :total="filteredContracts.length" @page-change="page = $event" />
+      </div>
+      <div v-else key="empty" class="empty-state">
       <font-awesome-icon icon="fa-solid fa-file-contract" size="3x" />
-      <h3>No Contracts</h3>
-      <p>Start by creating your first contract.</p>
+      <h3>{{ $t('common.noContracts') }}</h3>
+      <p>{{ $t('contract.noContractsDesc') }}</p>
       <button class="btn-primary" @click="openCreateModal">
-        <font-awesome-icon icon="fa-solid fa-plus" /> Create Contract
+        <font-awesome-icon icon="fa-solid fa-plus" /> {{ $t('contract.createContract') }}
       </button>
     </div>
+    </Transition>
 
     <!-- Create Modal -->
     <Transition name="modal">
       <div v-if="showCreateModal" class="modal-overlay" @click.self="showCreateModal = false">
         <div class="modal-box large">
           <div class="modal-header">
-            <h3>New Contract</h3>
+            <h3>{{ $t('contract.newContract') }}</h3>
             <button class="modal-close" @click="showCreateModal = false">
               <font-awesome-icon icon="fa-solid fa-times" />
             </button>
@@ -135,63 +139,63 @@
           <form @submit.prevent="saveContract">
             <div class="form-grid">
               <div class="form-group">
-                <label>Driver <span class="required">*</span></label>
+                <label>{{ $t('contract.driver') }} <span class="required">*</span></label>
                 <select v-model="form.driver_id" class="form-input" required>
-                  <option value="">Select Driver</option>
+                  <option value="">{{ $t('contract.selectDriver') }}</option>
                   <option v-for="driver in employeeStore.activeEmployees" :key="driver.id" :value="driver.id">
                     {{ driver.name }} - {{ driver.phone }}
                   </option>
                 </select>
               </div>
               <div class="form-group">
-                <label>Vehicle <span class="required">*</span></label>
+                <label>{{ $t('contract.vehicle') }} <span class="required">*</span></label>
                 <select v-model="form.vehicle_id" class="form-input" required>
-                  <option value="">Select Vehicle</option>
+                  <option value="">{{ $t('contract.selectVehicle') }}</option>
                   <option v-for="vehicle in vehicleStore.availableVehicles" :key="vehicle.id" :value="vehicle.id">
                     {{ vehicle.name }} ({{ vehicle.type }})
                   </option>
                 </select>
               </div>
               <div class="form-group">
-                <label>Contract Type <span class="required">*</span></label>
+                <label>{{ $t('contract.type') }} <span class="required">*</span></label>
                 <select v-model="form.contract_type" class="form-input" required>
-                  <option value="hire_purchase">Hire Purchase (Ownership)</option>
-                  <option value="rental">Rental Only</option>
+                  <option value="hire_purchase">{{ $t('contract.hirePurchaseOwnership') }}</option>
+                  <option value="rental">{{ $t('contract.rental') }}</option>
                 </select>
               </div>
               <div class="form-group">
-                <label>Payment Frequency <span class="required">*</span></label>
+                <label>{{ $t('contract.paymentFreq') }} <span class="required">*</span></label>
                 <select v-model="form.payment_frequency" class="form-input" required>
-                  <option value="weekly">Weekly</option>
-                  <option value="daily">Daily</option>
+                  <option value="weekly">{{ $t('contract.weekly') }}</option>
+                  <option value="daily">{{ $t('contract.daily') }}</option>
                 </select>
               </div>
               <div class="form-group">
-                <label>Start Date <span class="required">*</span></label>
+                <label>{{ $t('contract.startDate') }} <span class="required">*</span></label>
                 <input v-model="form.start_date" type="date" class="form-input" required />
               </div>
               <div class="form-group">
-                <label>End Date <span class="required">*</span></label>
+                <label>{{ $t('contract.endDate') }} <span class="required">*</span></label>
                 <input v-model="form.end_date" type="date" class="form-input" required />
               </div>
               <div class="form-group">
-                <label>Amount <span class="required">*</span></label>
+                <label>{{ $t('contract.amount') }} <span class="required">*</span></label>
                 <input v-model="form.amount" type="number" class="form-input" placeholder="TZS" required />
               </div>
               <div class="form-group">
-                <label>Deposit</label>
+                <label>{{ $t('contract.deposit') }}</label>
                 <input v-model="form.deposit" type="number" class="form-input" placeholder="TZS" />
               </div>
               <div class="form-group full-width">
-                <label>Notes</label>
-                <textarea v-model="form.notes" class="form-input" rows="2" placeholder="Additional notes..."></textarea>
+                <label>{{ $t('contract.notes') }}</label>
+                <textarea v-model="form.notes" class="form-input" rows="2" :placeholder="$t('common.additionalNotes')"></textarea>
               </div>
             </div>
             <div class="modal-actions">
-              <button type="button" @click="showCreateModal = false" class="btn-outline">Cancel</button>
+              <button type="button" @click="showCreateModal = false" class="btn-outline">{{ $t('common.cancel') }}</button>
               <button type="submit" class="btn-primary" :disabled="isSaving">
-                <span v-if="isSaving"><span class="spinner-sm"></span> Creating...</span>
-                <span v-else>Create Contract</span>
+                <span v-if="isSaving"><span class="spinner-sm"></span> {{ $t('contract.creating') }}</span>
+                <span v-else>{{ $t('contract.createContract') }}</span>
               </button>
             </div>
           </form>
@@ -202,20 +206,27 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useContractStore } from '@/stores/contracts'
+import Pagination from '@/components/common/Pagination.vue'
 import { useVehicleStore } from '@/stores/vehicles'
 import { useEmployeeStore } from '@/stores/employees'
+import { useAuthStore } from '@/stores/auth'
 
+const { t } = useI18n()
 const contractStore = useContractStore()
 const vehicleStore = useVehicleStore()
 const employeeStore = useEmployeeStore()
+const authStore = useAuthStore()
 
 const searchQuery = ref('')
 const filterType = ref('all')
 const filterStatus = ref('all')
 const showCreateModal = ref(false)
 const isSaving = ref(false)
+const page = ref(1)
+const perPage = 15
 
 const form = ref({
   driver_id: '',
@@ -248,6 +259,13 @@ const filteredContracts = computed(() => {
   return filtered
 })
 
+const paginatedData = computed(() => {
+  const start = (page.value - 1) * perPage
+  return filteredContracts.value.slice(start, start + perPage)
+})
+
+watch(searchQuery, () => { page.value = 1 })
+
 function getTypeIcon(type) {
   const icons = {
     Motorcycle: 'fa-solid fa-motorcycle',
@@ -261,6 +279,29 @@ function getTypeIcon(type) {
 function openCreateModal() { showCreateModal.value = true }
 function viewContract(contract) { /* view logic */ }
 function editContract(contract) { /* edit logic */ }
+
+function downloadPdf(contract) {
+  const token = localStorage.getItem('auth_token')
+  const lang = localStorage.getItem('locale') || 'en'
+  fetch(`${import.meta.env.VITE_API_URL}/contracts/${contract.id}/pdf?lang=${lang}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  })
+    .then(res => {
+      if (!res.ok) throw new Error('PDF download failed')
+      return res.blob()
+    })
+    .then(blob => {
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `contract_${contract.contract_number}.pdf`
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+    })
+    .catch(err => alert(t('contract.downloadPdf') + ': ' + err.message))
+}
 
 async function saveContract() {
   isSaving.value = true
@@ -282,7 +323,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.contracts-page { animation: fadeIn 0.4s ease; padding: 0; }
+.contracts-page { padding: 0; }
 .page-header {
   display: flex;
   justify-content: space-between;
@@ -438,6 +479,14 @@ onMounted(async () => {
 }
 .progress-text { font-size: 0.7rem; color: rgba(255,255,255,0.3); }
 
+.table-row-fade { animation: fadeIn 0.3s ease both; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.fade-slide-enter-active { transition: all 0.25s ease; }
+.fade-slide-enter-from { opacity: 0; transform: translateY(12px); }
+
+.btn-icon.pdf:hover { background: rgba(255,77,77,0.15); color: #ff4d4d; }
+
 .btn-icon {
   padding: 4px 8px;
   border: none;
@@ -474,6 +523,13 @@ onMounted(async () => {
 }
 .empty-state svg { opacity: 0.3; margin-bottom: 16px; }
 .empty-state h3 { color: #fff; margin-bottom: 8px; }
+
+.modal-enter-active { transition: all 0.25s ease; }
+.modal-leave-active { transition: all 0.2s ease; }
+.modal-enter-from { opacity: 0; }
+.modal-enter-from .modal-box { transform: scale(0.92) translateY(20px); }
+.modal-leave-to { opacity: 0; }
+.modal-leave-to .modal-box { transform: scale(0.95); }
 
 .modal-overlay {
   position: fixed;

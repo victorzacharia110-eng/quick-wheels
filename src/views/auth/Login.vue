@@ -6,8 +6,8 @@
           <span class="logo-mark">QW</span>
           <span class="logo-text">Quick-Wheels</span>
         </div>
-        <h1>Welcome Back</h1>
-        <p>Sign in to your account</p>
+        <h1>{{ $t('auth.welcomeBack') }}</h1>
+        <p>{{ $t('auth.signInSub') }}</p>
       </div>
 
       <form @submit.prevent="handleLogin" class="auth-form">
@@ -17,7 +17,7 @@
         </div>
 
         <div class="form-group">
-          <label for="email">Email Address</label>
+          <label for="email">{{ $t('auth.email') }}</label>
           <input
             id="email"
             v-model="form.email"
@@ -29,27 +29,27 @@
         </div>
 
         <div class="form-group">
-          <label for="password">Password</label>
+          <label for="password">{{ $t('auth.password') }}</label>
           <input
             id="password"
             v-model="form.password"
             type="password"
-            placeholder="Enter your password"
+            :placeholder="$t('auth.passwordPlaceholder')"
             required
             class="form-input"
           />
         </div>
 
         <button type="submit" class="btn-primary" :disabled="isLoading">
-          <span v-if="isLoading"><span class="spinner-sm"></span> Signing in...</span>
+          <span v-if="isLoading"><span class="spinner-sm"></span> {{ $t('auth.signingIn') }}</span>
           <span v-else>
             <font-awesome-icon icon="fa-solid fa-arrow-right-to-bracket" />
-            Sign In
+            {{ $t('auth.signIn') }}
           </span>
         </button>
 
         <p class="auth-switch">
-          Don't have an account? <RouterLink to="/auth/register">Register</RouterLink>
+          {{ $t('auth.noAccount') }} <RouterLink to="/auth/register">{{ $t('nav.register') }}</RouterLink>
         </p>
       </form>
     </div>
@@ -60,7 +60,9 @@
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const router = useRouter()
 const authStore = useAuthStore()
 
@@ -82,12 +84,13 @@ async function handleLogin() {
       const role = authStore.userRole
       if (role === 'owner') router.push('/owner')
       else if (role === 'employee') router.push('/employee')
+      else if (role === 'customer') router.push('/customer')
       else router.push('/')
     } else {
-      error.value = result.message || 'Login failed'
+      error.value = result.message || t('auth.loginFailed')
     }
   } catch (err) {
-    error.value = err.response?.data?.message || 'Login failed'
+    error.value = err.response?.data?.message || t('auth.loginFailed')
   } finally {
     isLoading.value = false
   }

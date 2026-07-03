@@ -1,23 +1,20 @@
 <template>
   <div class="fleet-slider-section">
     <div class="fleet-header">
-      <p class="fleet-label">Our Fleet</p>
-      <h2 class="fleet-title">Vehicles <span class="gradient-text">In Motion</span></h2>
-      <p class="fleet-sub">Watch our diverse fleet in action</p>
+      <p class="fleet-label">{{ $t('home.ourFleet') }}</p>
+      <h2 class="fleet-title">{{ $t('vehicle.title') }} <span class="gradient-text">{{ $t('vehicle.inMotion') }}</span></h2>
+      <p class="fleet-sub">{{ $t('vehicle.watchFleet') }}</p>
     </div>
 
     <div class="slider-container">
-      <!-- Moving Motorcycle Track -->
       <div class="car-track">
-        <!-- The moving motorcycle with icon -->
         <div class="moving-vehicle">
-          <div class="vehicle-name">Reliable &amp; Fast</div>
+          <div class="vehicle-name">{{ $t('vehicle.reliableFast') }}</div>
           <div class="vehicle-circle">
             <font-awesome-icon icon="fa-solid fa-motorcycle" class="bike-icon" />
           </div>
         </div>
         
-        <!-- Speed lines behind -->
         <div class="speed-lines-horizontal">
           <span></span>
           <span></span>
@@ -31,7 +28,6 @@
           <span></span>
         </div>
 
-        <!-- Extra motion lines for motorcycle -->
         <div class="motion-lines">
           <span></span>
           <span></span>
@@ -41,7 +37,6 @@
         </div>
       </div>
 
-      <!-- Bottom vehicle types - JUST 3 -->
       <div class="vehicle-types">
         <div v-for="(vehicle, i) in vehicles" :key="i" class="type-item">
           <div class="type-icon">
@@ -55,10 +50,14 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+
 const vehicles = [
-  { name: 'Motorcycle', icon: 'fa-solid fa-motorcycle' },
-  { name: 'Bajaji', icon: 'fa-solid fa-truck-front' },
-  { name: 'Car', icon: 'fa-solid fa-car' }
+  { name: t('status.motorcycle'), icon: 'fa-solid fa-motorcycle' },
+  { name: t('status.bajaji'), icon: 'fa-solid fa-truck-front' },
+  { name: t('status.car'), icon: 'fa-solid fa-car' }
 ]
 </script>
 
@@ -71,7 +70,6 @@ const vehicles = [
   background: radial-gradient(ellipse at center, rgba(0, 196, 212, 0.03) 0%, transparent 70%);
 }
 
-/* ── Header ── */
 .fleet-header {
   margin-bottom: 60px;
 }
@@ -98,14 +96,12 @@ const vehicles = [
   font-size: 0.95rem;
 }
 
-/* ── Slider Container ── */
 .slider-container {
   max-width: 600px;
   margin: 0 auto;
   position: relative;
 }
 
-/* ── Motorcycle Track ── */
 .car-track {
   position: relative;
   width: 100%;
@@ -118,7 +114,6 @@ const vehicles = [
   box-shadow: 0 0 60px rgba(0, 196, 212, 0.05);
 }
 
-/* ── Moving Motorcycle ── */
 .moving-vehicle {
   position: absolute;
   top: 50%;
@@ -161,10 +156,8 @@ const vehicles = [
   white-space: nowrap;
   text-shadow: 0 0 40px rgba(0, 196, 212, 0.2);
   opacity: 0.7;
-  /* No background, no border, no padding - just text */
 }
 
-/* ── Drive Animation ── */
 @keyframes driveAcross {
   0% {
     left: -300px;
@@ -192,7 +185,6 @@ const vehicles = [
   }
 }
 
-/* ── Speed Lines ── */
 .speed-lines-horizontal {
   position: absolute;
   top: 0;
@@ -241,7 +233,6 @@ const vehicles = [
   }
 }
 
-/* ── Extra Motion Lines for Motorcycle ── */
 .motion-lines {
   position: absolute;
   top: 50%;
@@ -308,7 +299,6 @@ const vehicles = [
   }
 }
 
-/* ── Vehicle Types Grid - JUST 3 ITEMS ── */
 .vehicle-types {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -357,7 +347,6 @@ const vehicles = [
   letter-spacing: 0.5px;
 }
 
-/* ── Glow Effect ── */
 .slider-container::after {
   content: '';
   position: absolute;
@@ -371,7 +360,6 @@ const vehicles = [
   pointer-events: none;
 }
 
-/* ── Responsive ── */
 @media (max-width: 768px) {
   .fleet-slider-section { padding: 60px 16px; }
   

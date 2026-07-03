@@ -6,8 +6,8 @@
           <span class="logo-mark">QW</span>
           <span class="logo-text">Quick-Wheels</span>
         </div>
-        <h1>Create Account</h1>
-        <p>Join Quick-Wheels today</p>
+        <h1>{{ $t('auth.createAccount') }}</h1>
+        <p>{{ $t('auth.joinToday') }}</p>
       </div>
 
       <form @submit.prevent="handleRegister" class="auth-form" novalidate>
@@ -17,14 +17,13 @@
         </div>
 
         <div class="form-grid">
-          <!-- Full Name -->
           <div class="form-group" :class="{ 'has-error': errors.name }">
-            <label for="name">Full Name <span class="required">*</span></label>
+            <label for="name">{{ $t('auth.name') }} <span class="required">*</span></label>
             <input
               id="name"
               v-model="form.name"
               type="text"
-              placeholder="John Doe"
+              :placeholder="$t('auth.name')"
               required
               class="form-input"
               :class="{ 'input-error': errors.name }"
@@ -37,9 +36,8 @@
             </span>
           </div>
 
-          <!-- Email -->
           <div class="form-group" :class="{ 'has-error': errors.email }">
-            <label for="email">Email Address <span class="required">*</span></label>
+            <label for="email">{{ $t('auth.email') }} <span class="required">*</span></label>
             <input
               id="email"
               v-model="form.email"
@@ -57,14 +55,13 @@
             </span>
           </div>
 
-          <!-- Phone -->
           <div class="form-group" :class="{ 'has-error': errors.phone_number }">
-            <label for="phone">Phone Number <span class="required">*</span></label>
+            <label for="phone">{{ $t('auth.phone') }} <span class="required">*</span></label>
             <input
               id="phone"
               v-model="form.phone_number"
               type="tel"
-              placeholder="+255 712 345 678"
+              :placeholder="$t('auth.phone')"
               required
               class="form-input"
               :class="{ 'input-error': errors.phone_number }"
@@ -77,14 +74,13 @@
             </span>
           </div>
 
-          <!-- NIDA Number -->
           <div class="form-group" :class="{ 'has-error': errors.nida_number }">
-            <label for="nida">NIDA Number <span class="required">*</span></label>
+            <label for="nida">{{ $t('common.nida') }} <span class="required">*</span></label>
             <input
               id="nida"
               v-model="form.nida_number"
               type="text"
-              placeholder="Enter your NIDA number"
+              :placeholder="$t('auth.nidaPlaceholder')"
               required
               class="form-input"
               :class="{ 'input-error': errors.nida_number }"
@@ -95,17 +91,16 @@
               <font-awesome-icon icon="fa-solid fa-circle-exclamation" size="xs" />
               {{ errors.nida_number }}
             </span>
-            <span class="form-hint">e.g., 123456789012345 (15 digits)</span>
+            <span class="form-hint">{{ $t('auth.nidaHint') }}</span>
           </div>
 
-          <!-- Password -->
           <div class="form-group" :class="{ 'has-error': errors.password }">
-            <label for="password">Password <span class="required">*</span></label>
+            <label for="password">{{ $t('auth.password') }} <span class="required">*</span></label>
             <input
               id="password"
               v-model="form.password"
               type="password"
-              placeholder="Min 8 characters"
+              :placeholder="$t('auth.passwordMinChars')"
               required
               class="form-input"
               :class="{ 'input-error': errors.password }"
@@ -119,31 +114,30 @@
             <div class="password-requirements">
               <span :class="{ met: form.password.length >= 8 }">
                 <font-awesome-icon :icon="form.password.length >= 8 ? 'fa-regular fa-circle-check' : 'fa-regular fa-circle'" size="xs" />
-                At least 8 characters
+                {{ $t('auth.pwLength') }}
               </span>
               <span :class="{ met: /[A-Z]/.test(form.password) && /[a-z]/.test(form.password) }">
                 <font-awesome-icon :icon="/[A-Z]/.test(form.password) && /[a-z]/.test(form.password) ? 'fa-regular fa-circle-check' : 'fa-regular fa-circle'" size="xs" />
-                Uppercase & lowercase
+                {{ $t('auth.pwCase') }}
               </span>
               <span :class="{ met: /[0-9]/.test(form.password) }">
                 <font-awesome-icon :icon="/[0-9]/.test(form.password) ? 'fa-regular fa-circle-check' : 'fa-regular fa-circle'" size="xs" />
-                At least 1 number
+                {{ $t('auth.pwNumber') }}
               </span>
               <span :class="{ met: /[^A-Za-z0-9]/.test(form.password) }">
                 <font-awesome-icon :icon="/[^A-Za-z0-9]/.test(form.password) ? 'fa-regular fa-circle-check' : 'fa-regular fa-circle'" size="xs" />
-                At least 1 special character
+                {{ $t('auth.pwSpecial') }}
               </span>
             </div>
           </div>
 
-          <!-- Confirm Password -->
           <div class="form-group" :class="{ 'has-error': errors.password_confirmation }">
-            <label for="password_confirmation">Confirm Password <span class="required">*</span></label>
+            <label for="password_confirmation">{{ $t('auth.confirmPassword') }} <span class="required">*</span></label>
             <input
               id="password_confirmation"
               v-model="form.password_confirmation"
               type="password"
-              placeholder="Confirm your password"
+              :placeholder="$t('auth.confirmPasswordPlaceholder')"
               required
               class="form-input"
               :class="{ 'input-error': errors.password_confirmation }"
@@ -158,15 +152,15 @@
         </div>
 
         <button type="submit" class="btn-primary" :disabled="isLoading || !isFormValid">
-          <span v-if="isLoading"><span class="spinner-sm"></span> Creating account...</span>
+          <span v-if="isLoading"><span class="spinner-sm"></span> {{ $t('auth.creatingAccount') }}</span>
           <span v-else>
             <font-awesome-icon icon="fa-solid fa-user-plus" />
-            Create Account
+            {{ $t('auth.createAccount') }}
           </span>
         </button>
 
         <p class="auth-switch">
-          Already have an account? <RouterLink to="/auth/login">Sign In</RouterLink>
+          {{ $t('auth.haveAccount') }} <RouterLink to="/auth/login">{{ $t('auth.signIn') }}</RouterLink>
         </p>
       </form>
     </div>
@@ -177,7 +171,9 @@
 import { ref, reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const router = useRouter()
 const authStore = useAuthStore()
 
@@ -195,49 +191,46 @@ const isLoading = ref(false)
 const error = ref(null)
 const touched = ref({})
 
-// ── Validation Rules ────────────────────────────────────────────────────
 const validationRules = {
   name: [
-    { required: true, message: 'Full name is required' },
-    { min: 3, message: 'Name must be at least 3 characters' },
-    { max: 100, message: 'Name cannot exceed 100 characters' },
-    { pattern: /^[a-zA-Z\s\-.'"]+$/, message: 'Name contains invalid characters' }
+    { required: true, messageKey: 'auth.validation.nameRequired' },
+    { min: 3, messageKey: 'auth.validation.nameMin' },
+    { max: 100, messageKey: 'auth.validation.nameMax' },
+    { pattern: /^[a-zA-Z\s\-.'"]+$/, messageKey: 'auth.validation.nameInvalid' }
   ],
   email: [
-    { required: true, message: 'Email is required' },
-    { pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Please enter a valid email address' }
+    { required: true, messageKey: 'auth.validation.emailRequired' },
+    { pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, messageKey: 'auth.validation.emailInvalid' }
   ],
   phone_number: [
-    { required: true, message: 'Phone number is required' },
-    { pattern: /^(\+?255|0)[0-9]{9}$/, message: 'Enter a valid Tanzanian phone number (e.g., +255712345678 or 0712345678)' }
+    { required: true, messageKey: 'auth.validation.phoneRequired' },
+    { pattern: /^(\+?255|0)[0-9]{9}$/, messageKey: 'auth.validation.phoneInvalid' }
   ],
   nida_number: [
-    { required: true, message: 'NIDA number is required' },
-    { pattern: /^[0-9]{15}$/, message: 'NIDA number must be exactly 15 digits' },
-    { pattern: /^(?!0+$)[0-9]+$/, message: 'NIDA number cannot be all zeros' }
+    { required: true, messageKey: 'auth.validation.nidaRequired' },
+    { pattern: /^[0-9]{20}$/, messageKey: 'auth.validation.nidaLength' },
+    { pattern: /^(?!0+$)[0-9]+$/, messageKey: 'auth.validation.nidaZeros' }
   ],
   password: [
-    { required: true, message: 'Password is required' },
-    { min: 8, message: 'Password must be at least 8 characters' },
-    { pattern: /[A-Z]/, message: 'Password must contain at least one uppercase letter' },
-    { pattern: /[a-z]/, message: 'Password must contain at least one lowercase letter' },
-    { pattern: /[0-9]/, message: 'Password must contain at least one number' },
-    { pattern: /[^A-Za-z0-9]/, message: 'Password must contain at least one special character' }
+    { required: true, messageKey: 'auth.validation.passwordRequired' },
+    { min: 8, messageKey: 'auth.validation.passwordMin' },
+    { pattern: /[A-Z]/, messageKey: 'auth.validation.passwordUppercase' },
+    { pattern: /[a-z]/, messageKey: 'auth.validation.passwordLowercase' },
+    { pattern: /[0-9]/, messageKey: 'auth.validation.passwordNumber' },
+    { pattern: /[^A-Za-z0-9]/, messageKey: 'auth.validation.passwordSpecial' }
   ],
   password_confirmation: [
-    { required: true, message: 'Please confirm your password' },
-    { match: 'password', message: 'Passwords do not match' }
+    { required: true, messageKey: 'auth.validation.confirmRequired' },
+    { match: 'password', messageKey: 'auth.validation.confirmMatch' }
   ]
 }
 
-// ── Computed ─────────────────────────────────────────────────────────────
 const isFormValid = computed(() => {
   return Object.keys(errors.value).length === 0 && 
     form.name && form.email && form.phone_number && 
     form.nida_number && form.password && form.password_confirmation
 })
 
-// ── Validation Functions ────────────────────────────────────────────────
 function validateField(field) {
   touched.value[field] = true
   const rules = validationRules[field]
@@ -247,23 +240,23 @@ function validateField(field) {
   
   for (const rule of rules) {
     if (rule.required && (!value || value.trim() === '')) {
-      errors.value[field] = rule.message
+      errors.value[field] = t(rule.messageKey)
       return
     }
     if (rule.min && value.length < rule.min) {
-      errors.value[field] = rule.message
+      errors.value[field] = t(rule.messageKey)
       return
     }
     if (rule.max && value.length > rule.max) {
-      errors.value[field] = rule.message
+      errors.value[field] = t(rule.messageKey)
       return
     }
     if (rule.pattern && !rule.pattern.test(value)) {
-      errors.value[field] = rule.message
+      errors.value[field] = t(rule.messageKey)
       return
     }
     if (rule.match && form[rule.match] !== value) {
-      errors.value[field] = rule.message
+      errors.value[field] = t(rule.messageKey)
       return
     }
   }
@@ -281,15 +274,11 @@ function validateAll() {
   return Object.keys(errors.value).length === 0
 }
 
-// ── Submit Handler ──────────────────────────────────────────────────────
 async function handleRegister() {
-  // Clear previous errors
   error.value = null
   
-  // Validate all fields
   const isValid = validateAll()
   if (!isValid) {
-    // Focus first error field
     const firstError = Object.keys(errors.value)[0]
     if (firstError) {
       const el = document.getElementById(firstError)
@@ -306,12 +295,13 @@ async function handleRegister() {
       const role = authStore.userRole
       if (role === 'owner') router.push('/owner')
       else if (role === 'employee') router.push('/employee')
+      else if (role === 'customer') router.push('/customer')
       else router.push('/')
     } else {
-      error.value = result.message || 'Registration failed'
+      error.value = result.message || t('auth.registrationFailed')
     }
   } catch (err) {
-    error.value = err.response?.data?.message || 'Registration failed'
+    error.value = err.response?.data?.message || t('auth.registrationFailed')
   } finally {
     isLoading.value = false
   }
@@ -561,7 +551,6 @@ async function handleRegister() {
   text-decoration: underline;
 }
 
-/* ── Responsive ── */
 @media (max-width: 768px) {
   .auth-container {
     max-width: 100%;

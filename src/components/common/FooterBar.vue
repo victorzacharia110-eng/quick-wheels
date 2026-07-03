@@ -2,53 +2,49 @@
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-grid">
-        <!-- Brand -->
         <div class="footer-brand">
           <div class="footer-logo">
             <span class="logo-mark">QW</span>
             <span class="logo-text">Quick-Wheels</span>
           </div>
-          <p class="footer-desc">Your journey, our wheels. Affordable motorcycle, bajaji, and car rentals.</p>
+          <p class="footer-desc">{{ scStore.contents?.footer?.description || $t('footer.tagline') }}</p>
           <div class="footer-social">
-            <a href="#" aria-label="Facebook">
+            <a :href="scStore.contents?.footer?.facebook_url || '#'" :aria-label="$t('common.facebook')">
               <font-awesome-icon :icon="['fab', 'facebook']" />
             </a>
-            <a href="#" aria-label="Instagram">
+            <a :href="scStore.contents?.footer?.instagram_url || '#'" :aria-label="$t('common.instagram')">
               <font-awesome-icon :icon="['fab', 'instagram']" />
             </a>
-            <a href="#" aria-label="Twitter">
+            <a :href="scStore.contents?.footer?.twitter_url || '#'" :aria-label="$t('common.twitter')">
               <font-awesome-icon :icon="['fab', 'twitter']" />
             </a>
-            <a href="#" aria-label="YouTube">
+            <a :href="scStore.contents?.footer?.youtube_url || '#'" :aria-label="$t('common.youtube')">
               <font-awesome-icon :icon="['fab', 'youtube']" />
             </a>
-            <a href="#" aria-label="WhatsApp">
+            <a href="#" :aria-label="$t('common.whatsapp')">
               <font-awesome-icon :icon="['fab', 'whatsapp']" />
             </a>
           </div>
         </div>
 
-        <!-- Quick Links -->
         <div class="footer-links">
-          <h4>Quick Links</h4>
-          <RouterLink to="/">Home</RouterLink>
-          <RouterLink to="/vehicles">Vehicles</RouterLink>
-          <RouterLink to="/about">About</RouterLink>
-          <RouterLink to="/contact">Contact</RouterLink>
+          <h4>{{ $t('footer.quickLinks') }}</h4>
+          <RouterLink to="/">{{ $t('nav.home') }}</RouterLink>
+          <RouterLink to="/vehicles">{{ $t('nav.vehicles') }}</RouterLink>
+          <RouterLink to="/about">{{ $t('nav.about') }}</RouterLink>
+          <RouterLink to="/contact">{{ $t('nav.contact') }}</RouterLink>
         </div>
 
-        <!-- Services -->
         <div class="footer-links">
-          <h4>Services</h4>
-          <RouterLink to="/vehicles?type=motorcycle">Motorcycle Hire</RouterLink>
-          <RouterLink to="/vehicles?type=bajaji">Bajaji Hire</RouterLink>
-          <RouterLink to="/vehicles?type=car">Car Rentals</RouterLink>
-          <RouterLink to="/vehicles?type=hire-purchase">Hire Purchase</RouterLink>
+          <h4>{{ $t('footer.services') }}</h4>
+          <RouterLink to="/vehicles?type=motorcycle">{{ $t('contact.motorcycleHire') }}</RouterLink>
+          <RouterLink to="/vehicles?type=bajaji">{{ $t('contact.bajajiHire') }}</RouterLink>
+          <RouterLink to="/vehicles?type=car">{{ $t('footer.carRentals') }}</RouterLink>
+          <RouterLink to="/vehicles?type=hire-purchase">{{ $t('contact.hirePurchase') }}</RouterLink>
         </div>
 
-        <!-- Contact -->
         <div class="footer-contact">
-          <h4>Contact</h4>
+          <h4>{{ $t('footer.contact') }}</h4>
           <p>
             <font-awesome-icon icon="fa-solid fa-phone" />
             +255 712 345 678
@@ -63,17 +59,16 @@
           </p>
           <p>
             <font-awesome-icon icon="fa-regular fa-clock" />
-            Mon - Sat: 8:00 AM - 6:00 PM
+            {{ $t('contact.hours') }}
           </p>
         </div>
       </div>
 
-      <!-- Bottom -->
       <div class="footer-bottom">
-        <p>&copy; {{ new Date().getFullYear() }} Quick-Wheels. All rights reserved.</p>
+        <p v-html="copyrightText"></p>
         <div class="footer-bottom-links">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
+          <a href="#">{{ $t('footer.privacyPolicy') }}</a>
+          <a href="#">{{ $t('footer.termsOfService') }}</a>
         </div>
       </div>
     </div>
@@ -81,7 +76,21 @@
 </template>
 
 <script setup>
+import { computed, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { useSiteContentStore } from '@/stores/siteContent'
+
+const { t } = useI18n()
+const scStore = useSiteContentStore()
+
+const copyrightText = computed(() => {
+  return scStore.contents?.footer?.copyright || `&copy; ${new Date().getFullYear()} Quick-Wheels. ${t('footer.allRights')}`
+})
+
+onMounted(() => {
+  scStore.fetchContents()
+})
 </script>
 
 <style scoped>
@@ -252,7 +261,6 @@ import { RouterLink } from 'vue-router'
   color: #00E5FF;
 }
 
-/* ── Responsive ── */
 @media (max-width: 992px) {
   .footer-grid {
     grid-template-columns: 1fr 1fr;
@@ -309,7 +317,6 @@ import { RouterLink } from 'vue-router'
     transform: translateY(-2px);
   }
   
-  /* ── CONTACT CENTERED ON MOBILE ── */
   .footer-contact {
     text-align: center;
   }

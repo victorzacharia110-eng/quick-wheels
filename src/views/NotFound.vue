@@ -2,14 +2,19 @@
   <div class="not-found">
     <div class="not-found-content">
       <h1>404</h1>
-      <h2>Page Not Found</h2>
-      <p>The page you're looking for doesn't exist or has been moved.</p>
+      <h2>{{ $t('notFound.title') }}</h2>
+      <p>{{ $t('notFound.description') }}</p>
       <RouterLink to="/" class="btn-primary">
-        <font-awesome-icon icon="fa-solid fa-arrow-left" /> Go Home
+        <font-awesome-icon icon="fa-solid fa-arrow-left" /> {{ $t('notFound.goHome') }}
       </RouterLink>
     </div>
   </div>
 </template>
+
+<script setup>
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
+</script>
 
 <style scoped>
 .not-found {

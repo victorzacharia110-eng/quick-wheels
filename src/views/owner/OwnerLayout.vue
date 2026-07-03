@@ -16,20 +16,20 @@
       </div>
 
       <nav class="sidebar-nav">
-        <div class="nav-section-label">Main</div>
+        <div class="nav-section-label">{{ $t('nav.main') }}</div>
         <RouterLink v-for="item in mainNav" :key="item.to" :to="item.to" class="nav-item" active-class="active" @click="closeMobile">
           <span class="nav-icon"><font-awesome-icon :icon="item.icon" /></span>
-          <span class="nav-label">{{ item.label }}</span>
+          <span class="nav-label">{{ $t(item.label) }}</span>
         </RouterLink>
 
-        <div class="nav-section-label">Management</div>
+        <div class="nav-section-label">{{ $t('nav.management') }}</div>
         <RouterLink v-for="item in managementNav" :key="item.to" :to="item.to" class="nav-item" active-class="active" @click="closeMobile">
           <span class="nav-icon"><font-awesome-icon :icon="item.icon" /></span>
-          <span class="nav-label">{{ item.label }}</span>
+          <span class="nav-label">{{ $t(item.label) }}</span>
           <span v-if="item.badge" class="nav-badge">{{ item.badge }}</span>
         </RouterLink>
 
-        <div class="nav-section-label">System</div>
+        <div class="nav-section-label">{{ $t('nav.system') }}</div>
         <RouterLink v-for="item in systemNav" :key="item.to" :to="item.to" class="nav-item" active-class="active" @click="closeMobile">
           <span class="nav-icon"><font-awesome-icon :icon="item.icon" /></span>
           <span class="nav-label">{{ item.label }}</span>
@@ -40,15 +40,15 @@
         <div class="admin-user">
           <div class="admin-avatar">O</div>
           <div class="admin-user-info">
-            <div class="admin-name">{{ authStore.userName || 'Owner' }}</div>
-            <div class="admin-role">Business Owner</div>
+            <div class="admin-name">{{ authStore.userName || $t('nav.owner') }}</div>
+            <div class="admin-role">{{ $t('nav.businessOwner') }}</div>
           </div>
         </div>
         <button @click="handleLogout" class="logout-btn-sidebar">
-          <font-awesome-icon icon="fa-solid fa-sign-out-alt" /><span>Logout</span>
+          <font-awesome-icon icon="fa-solid fa-sign-out-alt" /><span>{{ $t('nav.logout') }}</span>
         </button>
         <a href="/" target="_blank" class="view-site-btn">
-          <font-awesome-icon icon="fa-solid fa-external-link-alt" size="xs" /><span>View site</span>
+          <font-awesome-icon icon="fa-solid fa-external-link-alt" size="xs" /><span>{{ $t('nav.viewSite') }}</span>
         </a>
       </div>
     </aside>
@@ -61,18 +61,23 @@
         <div class="topbar-left">
           <button class="hamburger-btn" @click="toggleMobile"><font-awesome-icon icon="fa-solid fa-bars" /></button>
           <div class="breadcrumb">
-            <span class="breadcrumb-root">Owner</span>
+            <span class="breadcrumb-root">{{ $t('nav.owner') }}</span>
             <font-awesome-icon icon="fa-solid fa-chevron-right" size="xs" />
             <span class="breadcrumb-current">{{ currentPageTitle }}</span>
           </div>
         </div>
         <div class="topbar-right">
           <div class="topbar-time">{{ currentTime }}</div>
-          <button class="topbar-icon-btn" title="Notifications">
+          <div class="lang-switcher">
+            <select v-model="currentLocale" @change="switchLang" class="lang-select">
+              <option v-for="loc in locales" :key="loc.value" :value="loc.value">{{ $t(loc.label) }}</option>
+            </select>
+          </div>
+          <button class="topbar-icon-btn" :title="$t('nav.notifications')">
             <font-awesome-icon icon="fa-regular fa-bell" />
             <span class="notif-dot"></span>
           </button>
-          <button @click="handleLogout" class="topbar-logout-btn" title="Logout">
+          <button @click="handleLogout" class="topbar-logout-btn" :title="$t('nav.logout')">
             <font-awesome-icon icon="fa-solid fa-sign-out-alt" />
           </button>
         </div>
@@ -88,28 +93,37 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/stores/auth';
 
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
+const { locale, t } = useI18n();
+const currentLocale = ref(locale.value);
+
+function switchLang() {
+  locale.value = currentLocale.value;
+  localStorage.setItem('locale', currentLocale.value);
+}
 
 const sidebarCollapsed = ref(false);
 const mobileOpen = ref(false);
 const currentTime = ref("");
 const isMobile = ref(window.innerWidth < 768);
 
-const pageTitles = {
-  "/owner": "Dashboard",
-  "/owner/contracts": "Contracts",
-  "/owner/vehicles": "Vehicles",
-  "/owner/employees": "Employees",
-  "/owner/payments": "Payments",
-  "/owner/reports": "Reports",
-  "/owner/settings": "Settings",
+const pageTitleKeys = {
+  "/owner": "nav.dashboard",
+  "/owner/contracts": "nav.contracts",
+  "/owner/vehicles": "nav.vehicles",
+  "/owner/employees": "nav.employees",
+  "/owner/payments": "nav.payments",
+  "/owner/reports": "nav.reports",
+  "/owner/settings": "nav.settings",
+  "/owner/gps": "nav.gps",
 };
 
-const currentPageTitle = computed(() => pageTitles[route.path] || "Dashboard");
+const currentPageTitle = computed(() => t(pageTitleKeys[route.path] || "nav.dashboard"));
 
 function updateTime() {
   currentTime.value = new Date().toLocaleTimeString("en-US", {
@@ -159,15 +173,37 @@ watch(mobileOpen, (newVal) => {
   document.body.style.overflow = newVal ? "hidden" : "";
 });
 
-const mainNav = [{ to: "/owner", label: "Dashboard", icon: "fa-solid fa-th-large" }];
+const mainNav = [{ to: "/owner", label: "nav.dashboard", icon: "fa-solid fa-th-large" }];
 const managementNav = [
-  { to: "/owner/contracts", label: "Contracts", icon: "fa-solid fa-file-contract" },
-  { to: "/owner/vehicles", label: "Vehicles", icon: "fa-solid fa-car" },
-  { to: "/owner/employees", label: "Drivers", icon: "fa-solid fa-users" },
-  { to: "/owner/payments", label: "Payments", icon: "fa-solid fa-money-bill-wave" },
-  { to: "/owner/reports", label: "Reports", icon: "fa-solid fa-chart-bar" },
+  { to: "/owner/contracts", label: "nav.contracts", icon: "fa-solid fa-file-contract" },
+  { to: "/owner/vehicles", label: "nav.vehicles", icon: "fa-solid fa-car" },
+  { to: "/owner/employees", label: "nav.drivers", icon: "fa-solid fa-users" },
+  { to: "/owner/payments", label: "nav.payments", icon: "fa-solid fa-money-bill-wave" },
+  { to: "/owner/reports", label: "nav.reports", icon: "fa-solid fa-chart-bar" },
 ];
-const systemNav = [{ to: "/owner/settings", label: "Settings", icon: "fa-solid fa-cog" }];
+const systemNav = [
+  { to: "/owner/settings", label: "nav.settings", icon: "fa-solid fa-cog" },
+  { to: "/owner/gps", label: "nav.gps", icon: "fa-solid fa-location-dot" },
+  { to: "/owner/site-content", label: "Site Content", icon: "fa-solid fa-palette" },
+];
+
+const locales = [
+  { value: 'en', label: 'locale.en' },
+  { value: 'sw', label: 'locale.sw' },
+  { value: 'fr', label: 'locale.fr' },
+  { value: 'es', label: 'locale.es' },
+  { value: 'pt', label: 'locale.pt' },
+  { value: 'ar', label: 'locale.ar' },
+  { value: 'zh', label: 'locale.zh' },
+  { value: 'hi', label: 'locale.hi' },
+  { value: 'ru', label: 'locale.ru' },
+  { value: 'ja', label: 'locale.ja' },
+  { value: 'de', label: 'locale.de' },
+  { value: 'it', label: 'locale.it' },
+  { value: 'ko', label: 'locale.ko' },
+  { value: 'tr', label: 'locale.tr' },
+  { value: 'vi', label: 'locale.vi' },
+];
 </script>
 
 <style scoped>
@@ -475,6 +511,22 @@ const systemNav = [{ to: "/owner/settings", label: "Settings", icon: "fa-solid f
   transition: color 0.2s;
 }
 .topbar-icon-btn:hover { color: #fff; }
+.lang-switcher { display: flex; align-items: center; }
+.lang-select {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  color: rgba(255,255,255,0.6);
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  outline: none;
+  font-family: 'Space Grotesk', sans-serif;
+  appearance: none;
+}
+.lang-select:hover { border-color: rgba(0,229,255,0.3); }
+.lang-select:focus { border-color: rgba(0,229,255,0.4); }
+.topbar-icon-btn { line-height: 1; }
 .notif-dot {
   position: absolute;
   top: 3px; right: 3px;

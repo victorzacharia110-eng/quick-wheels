@@ -1,11 +1,11 @@
 <template>
   <div class="my-contract">
-    <h1 class="page-title">My Contract</h1>
-    <p class="page-sub">View your current contract details</p>
+    <h1 class="page-title">{{ $t('employee.myContract') }}</h1>
+    <p class="page-sub">{{ $t('employee.contractSubtitle') }}</p>
 
     <div v-if="contractStore.isLoading" class="loading-state">
       <div class="spinner"></div>
-      <p>Loading contract details...</p>
+      <p>{{ $t('common.loading') }}</p>
     </div>
 
     <div v-else-if="myContract" class="contract-details">
@@ -15,81 +15,83 @@
           <span class="vehicle-name">{{ myContract.vehicle_name }}</span>
         </div>
         <span class="status-badge" :style="{ background: contractStore.getStatusColor(myContract.status) }">
-          {{ contractStore.getStatusLabel(myContract.status) }}
+          {{ $t('status.' + myContract.status) }}
         </span>
       </div>
 
       <div class="contract-info-grid">
         <div class="info-item">
-          <span class="label">Vehicle Type</span>
+          <span class="label">{{ $t('contract.vehicleType') }}</span>
           <span class="value">{{ myContract.vehicle_type }}</span>
         </div>
         <div class="info-item">
-          <span class="label">Registration</span>
+          <span class="label">{{ $t('vehicle.registration') }}</span>
           <span class="value">{{ myContract.vehicle_registration }}</span>
         </div>
         <div class="info-item">
-          <span class="label">Contract Type</span>
-          <span class="value">{{ myContract.contract_type === 'hire_purchase' ? 'Hire Purchase' : 'Rental' }}</span>
+          <span class="label">{{ $t('contract.contractType') }}</span>
+            <span class="value">{{ $t('contract.' + myContract.contract_type) }}</span>
         </div>
         <div class="info-item">
-          <span class="label">Payment Frequency</span>
-          <span class="value">{{ myContract.payment_frequency }}</span>
+          <span class="label">{{ $t('contract.paymentFreq') }}</span>
+            <span class="value">{{ $t('status.' + myContract.payment_frequency) }}</span>
         </div>
         <div class="info-item">
-          <span class="label">Start Date</span>
+          <span class="label">{{ $t('contract.startDate') }}</span>
           <span class="value">{{ formatDate(myContract.start_date) }}</span>
         </div>
         <div class="info-item">
-          <span class="label">End Date</span>
+          <span class="label">{{ $t('contract.endDate') }}</span>
           <span class="value">{{ formatDate(myContract.end_date) }}</span>
         </div>
         <div class="info-item">
-          <span class="label">Amount</span>
+          <span class="label">{{ $t('contract.amount') }}</span>
           <span class="value highlight">TZS {{ myContract.weekly_amount }}/wk</span>
         </div>
         <div class="info-item">
-          <span class="label">Deposit</span>
+          <span class="label">{{ $t('contract.deposit') }}</span>
           <span class="value">TZS {{ myContract.deposit.toLocaleString() }}</span>
         </div>
       </div>
 
       <div class="progress-section">
-        <h3>Payment Progress</h3>
+        <h3>{{ $t('employee.paymentProgress') }}</h3>
         <div class="progress-wrapper">
           <div class="progress-bar">
             <div class="progress-fill" :style="{ width: contractStore.getProgress(myContract) + '%' }"></div>
           </div>
           <div class="progress-stats">
-            <span>Paid: TZS {{ myContract.paid_amount.toLocaleString() }}</span>
-            <span>Remaining: TZS {{ myContract.remaining_amount.toLocaleString() }}</span>
-            <span>{{ contractStore.getProgress(myContract) }}% Complete</span>
+            <span>{{ $t('employee.paid') }}: TZS {{ myContract.paid_amount.toLocaleString() }}</span>
+            <span>{{ $t('employee.remaining') }}: TZS {{ myContract.remaining_amount.toLocaleString() }}</span>
+            <span>{{ contractStore.getProgress(myContract) }}% {{ $t('employee.complete') }}</span>
           </div>
         </div>
       </div>
 
       <div v-if="myContract.notes" class="notes-section">
-        <h3>Notes</h3>
+        <h3>{{ $t('contract.notes') }}</h3>
         <p>{{ myContract.notes }}</p>
       </div>
     </div>
 
     <div v-else class="no-contract">
       <font-awesome-icon icon="fa-solid fa-file-contract" size="3x" />
-      <h3>No Active Contract</h3>
-      <p>You don't have an active contract at the moment.</p>
-      <p class="hint">Contact your employer for more information.</p>
+      <h3>{{ $t('employee.noActiveContract') }}</h3>
+      <p>{{ $t('employee.noActiveContractDesc') }}</p>
+      <p class="hint">{{ $t('employee.contactEmployer') }}</p>
     </div>
   </div>
 </template>
 
 <script setup>
 import { computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/auth'
 import { useContractStore } from '@/stores/contracts'
 
 const authStore = useAuthStore()
 const contractStore = useContractStore()
+const { t } = useI18n()
 
 const myContract = computed(() => {
   return contractStore.contracts.find(c => 
@@ -109,7 +111,7 @@ onMounted(() => { contractStore.fetchContracts() })
 </script>
 
 <style scoped>
-.my-contract { animation: fadeIn 0.4s ease; padding: 0; }
+.my-contract { padding: 0; }
 .page-title {
   font-family: 'Syne', sans-serif;
   font-size: 1.8rem;

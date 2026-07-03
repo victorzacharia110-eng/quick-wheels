@@ -1,12 +1,20 @@
 <script setup>
 import { onMounted } from "vue";
+import { useI18n } from 'vue-i18n'
 import VehicleCard3D from "../components/common/VehicleCard3D.vue";
 import { useVehicleStore } from '@/stores/vehicles'
 import { storeToRefs } from 'pinia'
 
+const { t } = useI18n()
 const store = useVehicleStore()
 const { vehicles, categories, isLoading, error, activeCategory, filteredVehicles } = storeToRefs(store)
 const { getCategoryIcon, setCategory } = store
+
+function translateCategory(cat) {
+  const key = 'status.' + cat.toLowerCase().replace(/\s+/g, '_')
+  const translated = t(key)
+  return translated !== key ? translated : cat
+}
 
 onMounted(() => {
   store.fetchVehicles()
@@ -17,14 +25,12 @@ onMounted(() => {
   <div class="vehicles-page">
     <div class="page-header">
       <div class="page-header-inner">
-        <p class="section-label">Our Fleet</p>
-        <h1 class="page-title">Find Your <span class="gradient-text">Perfect Ride</span></h1>
-        <p class="page-sub">
-          Choose from our wide range of motorcycles, bajajis, and cars for every journey.
-        </p>
+        <p class="section-label">{{ $t('home.ourFleet') }}</p>
+        <h1 class="page-title">{{ $t('vehicle.findPerfectRide') }}</h1>
+        <p class="page-sub">{{ $t('vehicle.pageSub') }}</p>
 
         <div v-if="isLoading" class="loading-filters">
-          <span class="spinner-sm"></span> Loading vehicles...
+          <span class="spinner-sm"></span> {{ $t('vehicle.loadingVehicles') }}
         </div>
 
         <div v-else class="filters">
@@ -35,7 +41,7 @@ onMounted(() => {
             @click="setCategory(cat)"
           >
             <font-awesome-icon v-if="cat !== 'All'" :icon="getCategoryIcon(cat)" size="xs" />
-            {{ cat }}
+            {{ cat === 'All' ? $t('common.all') : translateCategory(cat) }}
           </button>
         </div>
       </div>
@@ -48,7 +54,7 @@ onMounted(() => {
 
     <div v-if="isLoading" class="loading-state">
       <div class="spinner"></div>
-      <p>Loading vehicles...</p>
+      <p>{{ $t('vehicle.loadingVehicles') }}</p>
     </div>
 
     <div v-else class="vehicles-grid-wrap">
@@ -58,8 +64,8 @@ onMounted(() => {
 
       <div v-else class="empty-state">
         <font-awesome-icon icon="fa-solid fa-car" size="3x" />
-        <h3>No Vehicles Found</h3>
-        <p>No vehicles available in the "{{ activeCategory }}" category.</p>
+        <h3>{{ $t('vehicle.noVehiclesFound') }}</h3>
+        <p>{{ $t('vehicle.noVehiclesInCategory', { category: activeCategory }) }}</p>
       </div>
     </div>
   </div>

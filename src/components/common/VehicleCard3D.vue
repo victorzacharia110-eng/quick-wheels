@@ -1,5 +1,8 @@
 <script setup>
 import { ref, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = defineProps({
   vehicle: {
@@ -17,7 +20,6 @@ const props = defineProps({
   }
 })
 
-// ── 3D Tilt State ──────────────────────────────────────────────────────
 const rotX = ref(0)
 const rotY = ref(0)
 const glareX = ref(50)
@@ -44,7 +46,6 @@ function onEnter() {
   isHovered.value = true
 }
 
-// ── Helper Functions ──────────────────────────────────────────────────
 function getIcon() {
   const categoryIcons = {
     'Motorcycle': 'fa-solid fa-motorcycle',
@@ -71,7 +72,6 @@ function hasValidLink(url) {
   return url && url !== '#' && url !== '' && url !== 'null'
 }
 
-// ── Computed Styles ────────────────────────────────────────────────────
 const wrapperStyle = computed(() => ({
   perspective: '1000px',
   display: 'block',
@@ -102,40 +102,32 @@ const glareStyle = computed(() => ({
     :style="wrapperStyle"
   >
     <div class="vehicle-card-3d glass-card" :style="cardStyle">
-      <!-- Glare overlay -->
       <div class="glare" :style="glareStyle"></div>
 
-      <!-- Icon -->
       <div class="vehicle-icon">
         <font-awesome-icon :icon="getIcon()" size="2x" />
       </div>
 
-      <!-- Category Badge -->
       <span v-if="vehicle.category" class="category-badge" :class="getCategoryBadgeClass()">
         {{ vehicle.category }}
       </span>
 
-      <!-- Title -->
-      <h3 class="vehicle-title">{{ vehicle.title || 'Untitled Vehicle' }}</h3>
+      <h3 class="vehicle-title">{{ vehicle.title || $t('vehicle.untitled') }}</h3>
 
-      <!-- Description -->
-      <p class="vehicle-desc">{{ vehicle.description || 'No description available' }}</p>
+      <p class="vehicle-desc">{{ vehicle.description || $t('vehicle.noDescription') }}</p>
 
-      <!-- Tags -->
       <div class="vehicle-tags">
         <span v-for="tag in (vehicle.tags || [])" :key="tag" class="tag">{{ tag }}</span>
       </div>
 
-      <!-- Footer -->
       <div class="vehicle-footer">
         <span class="price">
           <font-awesome-icon icon="fa-solid fa-tag" size="xs" />
-          {{ vehicle.price || 'Contact for Price' }}
+          {{ vehicle.price || $t('vehicle.contactPrice') }}
         </span>
         <span class="year">{{ vehicle.year || 'N/A' }}</span>
       </div>
 
-      <!-- ── LINKS ── -->
       <div class="vehicle-links">
         <a 
           v-if="hasValidLink(vehicle.booking_url)"
@@ -145,7 +137,7 @@ const glareStyle = computed(() => ({
           rel="noopener noreferrer"
         >
           <font-awesome-icon icon="fa-solid fa-calendar-check" size="xs" />
-          Book Now
+          {{ $t('vehicle.bookNow') }}
           <font-awesome-icon icon="fa-solid fa-arrow-right" size="xs" />
         </a>
 
@@ -157,16 +149,15 @@ const glareStyle = computed(() => ({
           rel="noopener noreferrer"
         >
           <font-awesome-icon icon="fa-solid fa-info-circle" size="xs" />
-          Details
+          {{ $t('vehicle.details') }}
         </a>
 
         <span v-if="!hasValidLink(vehicle.booking_url) && !hasValidLink(vehicle.details_url)" class="vehicle-link coming-soon">
           <font-awesome-icon icon="fa-solid fa-clock" size="xs" />
-          Coming Soon
+          {{ $t('vehicle.comingSoon') }}
         </span>
       </div>
 
-      <!-- Bottom accent line -->
       <div class="card-accent-line"></div>
     </div>
   </div>
@@ -203,7 +194,6 @@ const glareStyle = computed(() => ({
   background: rgba(255, 255, 255, 0.06);
 }
 
-/* Glare Effect */
 .glare {
   position: absolute;
   inset: 0;
@@ -212,7 +202,6 @@ const glareStyle = computed(() => ({
   z-index: 10;
 }
 
-/* Icon */
 .vehicle-icon {
   width: 48px;
   height: 48px;
@@ -231,7 +220,6 @@ const glareStyle = computed(() => ({
   height: 24px;
 }
 
-/* Category Badge */
 .category-badge {
   display: inline-block;
   padding: 2px 12px;
@@ -268,7 +256,6 @@ const glareStyle = computed(() => ({
   color: #ff6b6b;
 }
 
-/* Title */
 .vehicle-title {
   font-size: 1.1rem;
   font-weight: 700;
@@ -276,7 +263,6 @@ const glareStyle = computed(() => ({
   margin: 0;
 }
 
-/* Description */
 .vehicle-desc {
   font-size: 0.85rem;
   color: rgba(255, 255, 255, 0.55);
@@ -289,7 +275,6 @@ const glareStyle = computed(() => ({
   overflow: hidden;
 }
 
-/* Tags */
 .vehicle-tags {
   display: flex;
   gap: 6px;
@@ -307,7 +292,6 @@ const glareStyle = computed(() => ({
   letter-spacing: 0.05em;
 }
 
-/* Footer */
 .vehicle-footer {
   display: flex;
   justify-content: space-between;
@@ -324,7 +308,6 @@ const glareStyle = computed(() => ({
   color: #00E5FF;
 }
 
-/* ── LINKS ────────────────────────────────────────────────────────────── */
 .vehicle-links {
   display: flex;
   gap: 10px;
@@ -389,7 +372,6 @@ const glareStyle = computed(() => ({
   transform: translateX(2px);
 }
 
-/* Bottom accent line */
 .card-accent-line {
   position: absolute;
   bottom: 0;
@@ -400,7 +382,6 @@ const glareStyle = computed(() => ({
   opacity: 0.4;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .vehicle-card-3d {
     padding: 20px 16px;

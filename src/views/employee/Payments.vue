@@ -2,12 +2,12 @@
   <div class="employee-payments">
     <div class="page-header">
       <div>
-        <h1 class="page-title">My Payments</h1>
-        <p class="page-sub">View your payment history</p>
+        <h1 class="page-title">{{ $t('nav.myPayments') }}</h1>
+        <p class="page-sub">{{ $t('employee.viewPaymentHistory') }}</p>
       </div>
       <button class="btn-primary" @click="showPaymentModal = true">
         <font-awesome-icon icon="fa-solid fa-plus" />
-        Make Payment
+        {{ $t('employee.makePayment') }}
       </button>
     </div>
 
@@ -15,46 +15,47 @@
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-value">{{ myPayments.length }}</div>
-        <div class="stat-label">Total Payments</div>
+        <div class="stat-label">{{ $t('employee.totalPayments') }}</div>
       </div>
       <div class="stat-card paid">
         <div class="stat-value">TZS {{ totalPaid.toLocaleString() }}</div>
-        <div class="stat-label">Total Paid</div>
+        <div class="stat-label">{{ $t('employee.totalPaid') }}</div>
       </div>
       <div class="stat-card pending">
         <div class="stat-value">{{ pendingPayments.length }}</div>
-        <div class="stat-label">Pending</div>
+        <div class="stat-label">{{ $t('employee.pendingPayments') }}</div>
       </div>
     </div>
 
     <!-- Loading -->
     <div v-if="paymentStore.isLoading" class="loading-state">
       <div class="spinner"></div>
-      <p>Loading payments...</p>
+      <p>{{ $t('common.loading') }}</p>
     </div>
 
     <!-- Payments List -->
     <div v-else-if="myPayments.length > 0" class="payments-list">
-      <div v-for="payment in sortedPayments" :key="payment.id" class="payment-card">
+      <div v-for="payment in paginatedData" :key="payment.id" class="payment-card">
         <div class="payment-header">
           <span class="payment-amount">TZS {{ payment.amount.toLocaleString() }}</span>
           <span class="payment-status" :class="payment.status">
-            {{ payment.status }}
+            {{ $t('status.' + payment.status) }}
           </span>
         </div>
         <div class="payment-details">
           <span><font-awesome-icon icon="fa-regular fa-calendar" size="xs" /> {{ formatDate(payment.date) }}</span>
-          <span><font-awesome-icon icon="fa-solid fa-credit-card" size="xs" /> {{ payment.method || 'Cash' }}</span>
+          <span><font-awesome-icon icon="fa-solid fa-credit-card" size="xs" /> {{ payment.method || $t('status.cash') }}</span>
           <span v-if="payment.notes" class="payment-notes">{{ payment.notes }}</span>
         </div>
       </div>
+      <Pagination :current-page="page" :per-page="perPage" :total="sortedPayments.length" @page-change="page = $event" />
     </div>
 
     <!-- Empty -->
     <div v-else class="empty-state">
       <font-awesome-icon icon="fa-solid fa-money-bill-wave" size="3x" />
-      <h3>No Payments</h3>
-      <p>You haven't made any payments yet.</p>
+      <h3>{{ $t('common.noPayments') }}</h3>
+      <p>{{ $t('employee.noPaymentsDesc') }}</p>
     </div>
 
     <!-- Payment Modal -->
@@ -62,33 +63,33 @@
       <div v-if="showPaymentModal" class="modal-overlay" @click.self="showPaymentModal = false">
         <div class="modal-box">
           <div class="modal-header">
-            <h3>Make Payment</h3>
+            <h3>{{ $t('employee.makePayment') }}</h3>
             <button class="modal-close" @click="showPaymentModal = false">
               <font-awesome-icon icon="fa-solid fa-times" />
             </button>
           </div>
           <form @submit.prevent="submitPayment">
             <div class="form-group">
-              <label>Amount <span class="required">*</span></label>
+              <label>{{ $t('payment.amount') }} <span class="required">*</span></label>
               <input v-model="paymentForm.amount" type="number" class="form-input" placeholder="TZS" required />
             </div>
             <div class="form-group">
-              <label>Payment Method <span class="required">*</span></label>
+              <label>{{ $t('employee.paymentMethod') }} <span class="required">*</span></label>
               <select v-model="paymentForm.method" class="form-input" required>
-                <option value="Cash">Cash</option>
-                <option value="M-Pesa">M-Pesa</option>
-                <option value="Bank Transfer">Bank Transfer</option>
+                <option value="Cash">{{ $t('status.cash') }}</option>
+                <option value="M-Pesa">{{ $t('common.mpesa') }}</option>
+                <option value="Bank Transfer">{{ $t('status.bank_transfer') }}</option>
               </select>
             </div>
             <div class="form-group">
-              <label>Notes</label>
-              <textarea v-model="paymentForm.notes" class="form-input" rows="2" placeholder="Additional notes..."></textarea>
+              <label>{{ $t('payment.notes') }}</label>
+              <textarea v-model="paymentForm.notes" class="form-input" rows="2" :placeholder="$t('common.additionalNotes')"></textarea>
             </div>
             <div class="modal-actions">
-              <button type="button" @click="showPaymentModal = false" class="btn-outline">Cancel</button>
+              <button type="button" @click="showPaymentModal = false" class="btn-outline">{{ $t('common.cancel') }}</button>
               <button type="submit" class="btn-primary" :disabled="isSubmitting">
-                <span v-if="isSubmitting"><span class="spinner-sm"></span> Processing...</span>
-                <span v-else>Submit Payment</span>
+                <span v-if="isSubmitting"><span class="spinner-sm"></span> {{ $t('employee.processing') }}</span>
+                <span v-else>{{ $t('employee.submitPayment') }}</span>
               </button>
             </div>
           </form>
@@ -99,15 +100,22 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/auth'
 import { usePaymentStore } from '@/stores/payments'
+import Pagination from '@/components/common/Pagination.vue'
 
 const authStore = useAuthStore()
 const paymentStore = usePaymentStore()
+const { t } = useI18n()
 
 const showPaymentModal = ref(false)
 const isSubmitting = ref(false)
+
+const page = ref(1)
+const perPage = 15
+const searchQuery = ref('')
 
 const paymentForm = ref({
   amount: '',
@@ -124,6 +132,13 @@ const myPayments = computed(() => {
 const sortedPayments = computed(() => {
   return [...myPayments.value].sort((a, b) => new Date(b.date) - new Date(a.date))
 })
+
+const paginatedData = computed(() => {
+  const start = (page.value - 1) * perPage
+  return sortedPayments.value.slice(start, start + perPage)
+})
+
+watch(searchQuery, () => { page.value = 1 })
 
 const totalPaid = computed(() => {
   return myPayments.value.filter(p => p.status === 'paid')
@@ -165,7 +180,7 @@ onMounted(() => { paymentStore.fetchPayments() })
 </script>
 
 <style scoped>
-.employee-payments { animation: fadeIn 0.4s ease; padding: 0; }
+.employee-payments { padding: 0; }
 .page-header {
   display: flex;
   justify-content: space-between;

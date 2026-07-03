@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/auth'
 import { useContractStore } from '@/stores/contracts'
 import { usePaymentStore } from '@/stores/payments'
@@ -7,6 +8,7 @@ import { usePaymentStore } from '@/stores/payments'
 const authStore = useAuthStore()
 const contractStore = useContractStore()
 const paymentStore = usePaymentStore()
+const { t } = useI18n()
 
 const myContract = computed(() => {
   // Find contract for logged in employee (by name or email)
@@ -40,34 +42,34 @@ onMounted(async () => {
   <div class="employee-dashboard">
     <div class="dashboard-header">
       <div>
-        <h1 class="page-title">My Dashboard</h1>
-        <p class="page-sub">Welcome back, {{ authStore.userName }}!</p>
+        <h1 class="page-title">{{ $t('employee.dashboard') }}</h1>
+        <p class="page-sub">{{ $t('employee.welcomeBack') }}, {{ authStore.userName }}!</p>
       </div>
     </div>
 
     <!-- Contract Status -->
     <div class="contract-status" v-if="myContract">
       <div class="status-header">
-        <h3>My Contract</h3>
+        <h3>{{ $t('employee.myContract') }}</h3>
         <span class="status-badge" :style="{ background: contractStore.getStatusColor(myContract.status) }">
-          {{ contractStore.getStatusLabel(myContract.status) }}
+          {{ $t('status.' + myContract.status) }}
         </span>
       </div>
       <div class="status-body">
         <div class="status-row">
-          <span class="label">Vehicle:</span>
+          <span class="label">{{ $t('contract.vehicle') }}:</span>
           <span class="value">{{ myContract.vehicle_name }}</span>
         </div>
         <div class="status-row">
-          <span class="label">Type:</span>
+          <span class="label">{{ $t('contract.type') }}:</span>
           <span class="value">{{ myContract.vehicle_type }}</span>
         </div>
         <div class="status-row">
-          <span class="label">Payment:</span>
+          <span class="label">{{ $t('payment.amount') }}:</span>
           <span class="value">TZS {{ myContract.weekly_amount }}/wk</span>
         </div>
         <div class="status-row">
-          <span class="label">Progress:</span>
+          <span class="label">{{ $t('contract.progress') }}:</span>
           <div class="progress-wrapper">
             <div class="progress-bar">
               <div class="progress-fill" :style="{ width: contractStore.getProgress(myContract) + '%' }"></div>
@@ -80,15 +82,15 @@ onMounted(async () => {
 
     <div v-else class="no-contract">
       <font-awesome-icon icon="fa-solid fa-file-contract" size="3x" />
-      <h3>No Active Contract</h3>
-      <p>You don't have an active contract at the moment.</p>
+      <h3>{{ $t('employee.noActiveContract') }}</h3>
+      <p>{{ $t('employee.noActiveContractDesc') }}</p>
     </div>
 
     <!-- Recent Payments -->
     <div class="recent-payments">
-      <h3 class="section-title">Recent Payments</h3>
+      <h3 class="section-title">{{ $t('employee.recentPayments') }}</h3>
       <div v-if="myPayments.length === 0" class="empty-state-small">
-        <p>No payments recorded yet</p>
+        <p>{{ $t('employee.noPaymentsYet') }}</p>
       </div>
       <div v-for="payment in myPayments" :key="payment.id" class="payment-item">
         <div class="payment-info">
@@ -96,7 +98,7 @@ onMounted(async () => {
           <span class="payment-date">{{ formatDate(payment.date) }}</span>
         </div>
         <span class="payment-status" :class="payment.status">
-          {{ payment.status }}
+          {{ $t('status.' + payment.status) }}
         </span>
       </div>
     </div>
@@ -106,7 +108,7 @@ onMounted(async () => {
 
 
 <style scoped>
-.employee-dashboard { animation: fadeIn 0.4s ease; padding: 0; }
+.employee-dashboard { padding: 0; }
 .dashboard-header { margin-bottom: 24px; }
 .page-title {
   font-family: 'Syne', sans-serif;

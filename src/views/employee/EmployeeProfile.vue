@@ -1,13 +1,13 @@
 <template>
   <div class="employee-profile">
     <div class="page-header">
-      <h1 class="page-title">My Profile</h1>
-      <p class="page-sub">View and manage your personal information</p>
+      <h1 class="page-title">{{ $t('profile.title') }}</h1>
+      <p class="page-sub">{{ $t('profile.subtitle') }}</p>
     </div>
 
     <div v-if="isLoading" class="loading-state">
       <div class="spinner"></div>
-      <p>Loading profile...</p>
+      <p>{{ $t('profile.loading') }}</p>
     </div>
 
     <div v-else class="profile-card glass-card">
@@ -17,31 +17,31 @@
 
       <div class="profile-info">
         <div class="info-row">
-          <span class="label">Full Name</span>
+          <span class="label">{{ $t('profile.fullName') }}</span>
           <span class="value">{{ authStore.userName }}</span>
         </div>
         <div class="info-row">
-          <span class="label">Email</span>
+          <span class="label">{{ $t('profile.email') }}</span>
           <span class="value">{{ authStore.userEmail }}</span>
         </div>
         <div class="info-row">
-          <span class="label">Phone Number</span>
-          <span class="value">{{ userData?.phone_number || 'Not provided' }}</span>
+          <span class="label">{{ $t('profile.phoneNumber') }}</span>
+          <span class="value">{{ userData?.phone_number || $t('profile.notProvided') }}</span>
         </div>
         <div class="info-row">
-          <span class="label">NIDA Number</span>
-          <span class="value">{{ authStore.userNida || 'Not provided' }}</span>
+          <span class="label">{{ $t('profile.nidaNumber') }}</span>
+          <span class="value">{{ authStore.userNida || $t('profile.notProvided') }}</span>
         </div>
         <div class="info-row">
-          <span class="label">Role</span>
+          <span class="label">{{ $t('profile.role') }}</span>
           <span class="value role-badge">{{ authStore.userRole }}</span>
         </div>
         <div class="info-row">
-          <span class="label">Account Created</span>
+          <span class="label">{{ $t('profile.accountCreated') }}</span>
           <span class="value">{{ formatDate(authStore.user?.created_at) }}</span>
         </div>
         <div class="info-row" v-if="myContract">
-          <span class="label">Current Vehicle</span>
+          <span class="label">{{ $t('profile.currentVehicle') }}</span>
           <span class="value">{{ myContract.vehicle_name }}</span>
         </div>
       </div>
@@ -51,11 +51,13 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/auth'
 import { useContractStore } from '@/stores/contracts'
 
 const authStore = useAuthStore()
 const contractStore = useContractStore()
+const { t } = useI18n()
 
 const isLoading = ref(false)
 
@@ -93,7 +95,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.employee-profile { animation: fadeIn 0.4s ease; padding: 0; }
+.employee-profile { padding: 0; }
 .page-header { margin-bottom: 24px; }
 .page-title {
   font-family: 'Syne', sans-serif;

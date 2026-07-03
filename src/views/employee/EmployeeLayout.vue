@@ -15,16 +15,16 @@
       </div>
 
       <nav class="sidebar-nav">
-        <div class="nav-section-label">Main</div>
+        <div class="nav-section-label">{{ $t('nav.main') }}</div>
         <RouterLink v-for="item in mainNav" :key="item.to" :to="item.to" class="nav-item" active-class="active" @click="closeMobile">
           <span class="nav-icon"><font-awesome-icon :icon="item.icon" /></span>
-          <span class="nav-label">{{ item.label }}</span>
+          <span class="nav-label">{{ $t(item.label) }}</span>
         </RouterLink>
 
-        <div class="nav-section-label">My Account</div>
+        <div class="nav-section-label">{{ $t('nav.myAccount') }}</div>
         <RouterLink v-for="item in accountNav" :key="item.to" :to="item.to" class="nav-item" active-class="active" @click="closeMobile">
           <span class="nav-icon"><font-awesome-icon :icon="item.icon" /></span>
-          <span class="nav-label">{{ item.label }}</span>
+          <span class="nav-label">{{ $t(item.label) }}</span>
         </RouterLink>
       </nav>
 
@@ -32,15 +32,15 @@
         <div class="admin-user">
           <div class="admin-avatar">E</div>
           <div class="admin-user-info">
-            <div class="admin-name">{{ authStore.userName || 'Driver' }}</div>
-            <div class="admin-role">Driver</div>
+            <div class="admin-name">{{ authStore.userName || $t('nav.driver') }}</div>
+            <div class="admin-role">{{ $t('nav.driver') }}</div>
           </div>
         </div>
         <button @click="handleLogout" class="logout-btn-sidebar">
-          <font-awesome-icon icon="fa-solid fa-sign-out-alt" /><span>Logout</span>
+          <font-awesome-icon icon="fa-solid fa-sign-out-alt" /><span>{{ $t('nav.logout') }}</span>
         </button>
         <a href="/" target="_blank" class="view-site-btn">
-          <font-awesome-icon icon="fa-solid fa-external-link-alt" size="xs" /><span>View site</span>
+          <font-awesome-icon icon="fa-solid fa-external-link-alt" size="xs" /><span>{{ $t('nav.viewSite') }}</span>
         </a>
       </div>
     </aside>
@@ -52,18 +52,23 @@
         <div class="topbar-left">
           <button class="hamburger-btn" @click="toggleMobile"><font-awesome-icon icon="fa-solid fa-bars" /></button>
           <div class="breadcrumb">
-            <span class="breadcrumb-root">Driver</span>
+            <span class="breadcrumb-root">{{ $t('nav.driver') }}</span>
             <font-awesome-icon icon="fa-solid fa-chevron-right" size="xs" />
-            <span class="breadcrumb-current">{{ currentPageTitle }}</span>
+            <span class="breadcrumb-current">{{ $t(pageTitleKey) }}</span>
           </div>
         </div>
         <div class="topbar-right">
           <div class="topbar-time">{{ currentTime }}</div>
-          <button class="topbar-icon-btn" title="Notifications">
+          <div class="lang-switcher">
+            <select v-model="currentLocale" @change="switchLang" class="lang-select">
+              <option v-for="loc in locales" :key="loc.value" :value="loc.value">{{ $t('locale.' + loc.value) }}</option>
+            </select>
+          </div>
+          <button class="topbar-icon-btn" :title="$t('nav.notifications')">
             <font-awesome-icon icon="fa-regular fa-bell" />
             <span class="notif-dot"></span>
           </button>
-          <button @click="handleLogout" class="topbar-logout-btn" title="Logout">
+          <button @click="handleLogout" class="topbar-logout-btn" :title="$t('nav.logout')">
             <font-awesome-icon icon="fa-solid fa-sign-out-alt" />
           </button>
         </div>
@@ -79,25 +84,40 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/stores/auth';
 
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
+const { locale } = useI18n();
+const currentLocale = ref(locale.value);
+const locales = [
+  { value: 'en' }, { value: 'sw' }, { value: 'fr' }, { value: 'es' },
+  { value: 'pt' }, { value: 'ar' }, { value: 'zh' }, { value: 'hi' },
+  { value: 'ru' }, { value: 'ja' }, { value: 'de' }, { value: 'it' },
+  { value: 'ko' }, { value: 'tr' }, { value: 'vi' },
+];
+
+function switchLang() {
+  locale.value = currentLocale.value;
+  localStorage.setItem('locale', currentLocale.value);
+}
 
 const sidebarCollapsed = ref(false);
 const mobileOpen = ref(false);
 const currentTime = ref("");
 const isMobile = ref(window.innerWidth < 768);
 
-const pageTitles = {
-  "/employee": "Dashboard",
-  "/employee/my-contract": "My Contract",
-  "/employee/payments": "My Payments",
-  "/employee/profile": "My Profile",
-};
-
-const currentPageTitle = computed(() => pageTitles[route.path] || "Dashboard");
+const pageTitleKey = computed(() => {
+  const map = {
+    "/employee": "dashboard.title",
+    "/employee/my-contract": "nav.myContract",
+    "/employee/payments": "nav.myPayments",
+    "/employee/profile": "nav.myProfile",
+  };
+  return map[route.path] || "dashboard.title";
+});
 
 function updateTime() {
   currentTime.value = new Date().toLocaleTimeString("en-US", {
@@ -147,11 +167,11 @@ watch(mobileOpen, (newVal) => {
   document.body.style.overflow = newVal ? "hidden" : "";
 });
 
-const mainNav = [{ to: "/employee", label: "Dashboard", icon: "fa-solid fa-th-large" }];
+const mainNav = [{ to: "/employee", label: "nav.dashboard", icon: "fa-solid fa-th-large" }];
 const accountNav = [
-  { to: "/employee/my-contract", label: "My Contract", icon: "fa-solid fa-file-contract" },
-  { to: "/employee/payments", label: "My Payments", icon: "fa-solid fa-money-bill-wave" },
-  { to: "/employee/profile", label: "My Profile", icon: "fa-regular fa-user" },
+  { to: "/employee/my-contract", label: "nav.myContract", icon: "fa-solid fa-file-contract" },
+  { to: "/employee/payments", label: "nav.myPayments", icon: "fa-solid fa-money-bill-wave" },
+  { to: "/employee/profile", label: "nav.myProfile", icon: "fa-regular fa-user" },
 ];
 </script>
 

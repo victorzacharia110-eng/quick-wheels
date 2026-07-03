@@ -2,83 +2,83 @@
   <div class="settings-page">
     <div class="page-header">
       <div>
-        <h1 class="page-title">Settings</h1>
-        <p class="page-sub">Manage your business settings</p>
+        <h1 class="page-title">{{ $t('settings.title') }}</h1>
+        <p class="page-sub">{{ $t('settings.subtitle') }}</p>
       </div>
     </div>
 
     <div class="settings-grid">
       <!-- Profile Settings -->
       <div class="settings-card glass-card">
-        <h3>Profile Settings</h3>
+        <h3>{{ $t('settings.profileSettings') }}</h3>
         <div class="settings-item">
-          <label>Business Name</label>
+          <label>{{ $t('settings.businessName') }}</label>
           <input type="text" class="form-input" value="Quick-Wheels" />
         </div>
         <div class="settings-item">
-          <label>Email</label>
+          <label>{{ $t('settings.email') }}</label>
           <input type="email" class="form-input" value="info@quick-wheels.co.tz" />
         </div>
         <div class="settings-item">
-          <label>Phone</label>
+          <label>{{ $t('settings.phone') }}</label>
           <input type="tel" class="form-input" value="+255 712 345 678" />
         </div>
-        <button class="btn-primary">Save Changes</button>
+        <button class="btn-primary">{{ $t('settings.saveChanges') }}</button>
       </div>
 
       <!-- Payment Settings -->
       <div class="settings-card glass-card">
-        <h3>Payment Settings</h3>
+        <h3>{{ $t('settings.paymentSettings') }}</h3>
         <div class="settings-item">
-          <label>Default Payment Frequency</label>
+          <label>{{ $t('settings.defaultPaymentFrequency') }}</label>
           <select class="form-input">
-            <option value="weekly">Weekly</option>
-            <option value="daily">Daily</option>
+            <option value="weekly">{{ $t('settings.weekly') }}</option>
+            <option value="daily">{{ $t('settings.daily') }}</option>
           </select>
         </div>
         <div class="settings-item">
-          <label>Payment Methods</label>
+          <label>{{ $t('settings.paymentMethods') }}</label>
           <div class="checkbox-group">
-            <label><input type="checkbox" checked /> Cash</label>
-            <label><input type="checkbox" checked /> M-Pesa</label>
-            <label><input type="checkbox" /> Bank Transfer</label>
+            <label><input type="checkbox" checked /> {{ $t('settings.cash') }}</label>
+            <label><input type="checkbox" checked /> {{ $t('settings.mpesa') }}</label>
+            <label><input type="checkbox" /> {{ $t('settings.bankTransfer') }}</label>
           </div>
         </div>
-        <button class="btn-primary">Save Payment Settings</button>
+        <button class="btn-primary">{{ $t('settings.savePaymentSettings') }}</button>
       </div>
 
       <!-- Notification Settings -->
       <div class="settings-card glass-card">
-        <h3>Notifications</h3>
+        <h3>{{ $t('settings.notificationSettings') }}</h3>
         <div class="settings-item">
           <label class="toggle-item">
             <input type="checkbox" checked />
-            <span>Payment Received</span>
+            <span>{{ $t('settings.paymentReceived') }}</span>
           </label>
         </div>
         <div class="settings-item">
           <label class="toggle-item">
             <input type="checkbox" checked />
-            <span>New Contract</span>
+            <span>{{ $t('settings.newContract') }}</span>
           </label>
         </div>
         <div class="settings-item">
           <label class="toggle-item">
             <input type="checkbox" />
-            <span>Expiring Contracts</span>
+            <span>{{ $t('settings.expiringContracts') }}</span>
           </label>
         </div>
-        <button class="btn-primary">Save Notification Settings</button>
+        <button class="btn-primary">{{ $t('settings.saveNotificationSettings') }}</button>
       </div>
 
       <!-- Danger Zone -->
       <div class="settings-card danger-zone">
-        <h3>Danger Zone</h3>
-        <p>These actions cannot be undone</p>
+        <h3>{{ $t('settings.dangerZone') }}</h3>
+        <p>{{ $t('settings.dangerZoneDesc') }}</p>
         <div class="danger-actions">
           <button class="btn-danger" @click="confirmReset">
             <font-awesome-icon icon="fa-solid fa-trash" />
-            Reset All Data
+            {{ $t('settings.resetAllData') }}
           </button>
         </div>
       </div>
@@ -87,15 +87,18 @@
 </template>
 
 <script setup>
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
+
 function confirmReset() {
-  if (confirm('Are you sure you want to reset all data? This cannot be undone!')) {
-    alert('Reset functionality will be implemented here')
+  if (confirm(t('common.confirmResetData'))) {
+    alert(t('common.resetAllData'))
   }
 }
 </script>
 
 <style scoped>
-.settings-page { animation: fadeIn 0.4s ease; padding: 0; }
+.settings-page { padding: 0; }
 .page-header { margin-bottom: 24px; }
 .page-title {
   font-family: 'Syne', sans-serif;

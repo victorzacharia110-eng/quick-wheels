@@ -1,8 +1,10 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
+import { useI18n } from 'vue-i18n'
 import api from '@/composables/api'
 
 export const usePaymentStore = defineStore('payments', () => {
+  const { t } = useI18n()
   const payments = ref([])
   const isLoading = ref(false)
   const error = ref(null)
@@ -31,74 +33,16 @@ export const usePaymentStore = defineStore('payments', () => {
     return methods
   })
 
-  const samplePayments = [
-    {
-      id: 1,
-      contract_id: 1,
-      driver_name: 'John Mwangi',
-      driver_id: 1,
-      amount: 45000,
-      method: 'Cash',
-      status: 'paid',
-      date: '2024-06-01',
-      notes: 'Weekly payment'
-    },
-    {
-      id: 2,
-      contract_id: 1,
-      driver_name: 'John Mwangi',
-      driver_id: 1,
-      amount: 45000,
-      method: 'M-Pesa',
-      status: 'pending',
-      date: '2024-05-25',
-      notes: 'Weekly payment'
-    },
-    {
-      id: 3,
-      contract_id: 2,
-      driver_name: 'Sarah Hassan',
-      driver_id: 2,
-      amount: 5000,
-      method: 'Cash',
-      status: 'paid',
-      date: '2024-06-01',
-      notes: 'Daily payment'
-    },
-    {
-      id: 4,
-      contract_id: 2,
-      driver_name: 'Sarah Hassan',
-      driver_id: 2,
-      amount: 5000,
-      method: 'M-Pesa',
-      status: 'paid',
-      date: '2024-05-31',
-      notes: 'Daily payment'
-    },
-    {
-      id: 5,
-      contract_id: 3,
-      driver_name: 'Michael Peter',
-      driver_id: 3,
-      amount: 120000,
-      method: 'Bank Transfer',
-      status: 'pending',
-      date: '2024-06-02',
-      notes: 'Weekly payment'
-    }
-  ]
-
   async function fetchPayments() {
     isLoading.value = true
     error.value = null
     try {
-      await new Promise(resolve => setTimeout(resolve, 500))
-      payments.value = samplePayments
+      const { data } = await api.get('/owner/payments')
+      payments.value = data.data || []
       return { success: true, data: payments.value }
     } catch (err) {
-      error.value = err.message
-      return { success: false, message: err.message }
+      error.value = err.response?.data?.message || err.message
+      return { success: false, message: error.value }
     } finally {
       isLoading.value = false
     }
@@ -108,17 +52,13 @@ export const usePaymentStore = defineStore('payments', () => {
     isLoading.value = true
     error.value = null
     try {
-      const newPayment = {
-        id: Date.now(),
-        ...data,
-        status: 'paid',
-        date: new Date().toISOString().split('T')[0]
-      }
-      payments.value.unshift(newPayment)
-      return { success: true, data: newPayment }
+      const res = await api.post('/owner/payments', data)
+      const payment = res.data.data
+      payments.value.unshift(payment)
+      return { success: true, data: payment }
     } catch (err) {
-      error.value = err.message
-      return { success: false, message: err.message }
+      error.value = err.response?.data?.message || err.message
+      return { success: false, message: error.value }
     } finally {
       isLoading.value = false
     }
@@ -128,13 +68,14 @@ export const usePaymentStore = defineStore('payments', () => {
     isLoading.value = true
     error.value = null
     try {
+      const res = await api.put(`/payments/${id}`, data)
+      const updated = res.data.data
       const index = payments.value.findIndex(p => p.id === id)
-      if (index === -1) return { success: false, message: 'Payment not found' }
-      payments.value[index] = { ...payments.value[index], ...data }
-      return { success: true, data: payments.value[index] }
+      if (index !== -1) payments.value[index] = updated
+      return { success: true, data: updated }
     } catch (err) {
-      error.value = err.message
-      return { success: false, message: err.message }
+      error.value = err.response?.data?.message || err.message
+      return { success: false, message: error.value }
     } finally {
       isLoading.value = false
     }
@@ -144,11 +85,12 @@ export const usePaymentStore = defineStore('payments', () => {
     isLoading.value = true
     error.value = null
     try {
+      await api.delete(`/payments/${id}`)
       payments.value = payments.value.filter(p => p.id !== id)
       return { success: true }
     } catch (err) {
-      error.value = err.message
-      return { success: false, message: err.message }
+      error.value = err.response?.data?.message || err.message
+      return { success: false, message: error.value }
     } finally {
       isLoading.value = false
     }
@@ -158,13 +100,14 @@ export const usePaymentStore = defineStore('payments', () => {
     isLoading.value = true
     error.value = null
     try {
+      const res = await api.post(`/payments/${id}/approve`)
+      const updated = res.data.data
       const index = payments.value.findIndex(p => p.id === id)
-      if (index === -1) return { success: false, message: 'Payment not found' }
-      payments.value[index].status = 'paid'
-      return { success: true, data: payments.value[index] }
+      if (index !== -1) payments.value[index] = updated
+      return { success: true, data: updated }
     } catch (err) {
-      error.value = err.message
-      return { success: false, message: err.message }
+      error.value = err.response?.data?.message || err.message
+      return { success: false, message: error.value }
     } finally {
       isLoading.value = false
     }
@@ -174,13 +117,14 @@ export const usePaymentStore = defineStore('payments', () => {
     isLoading.value = true
     error.value = null
     try {
+      const res = await api.post(`/payments/${id}/reject`)
+      const updated = res.data.data
       const index = payments.value.findIndex(p => p.id === id)
-      if (index === -1) return { success: false, message: 'Payment not found' }
-      payments.value[index].status = 'failed'
-      return { success: true, data: payments.value[index] }
+      if (index !== -1) payments.value[index] = updated
+      return { success: true, data: updated }
     } catch (err) {
-      error.value = err.message
-      return { success: false, message: err.message }
+      error.value = err.response?.data?.message || err.message
+      return { success: false, message: error.value }
     } finally {
       isLoading.value = false
     }
@@ -212,12 +156,7 @@ export const usePaymentStore = defineStore('payments', () => {
   }
 
   function getPaymentStatusLabel(status) {
-    const labels = {
-      paid: 'Paid',
-      pending: 'Pending',
-      failed: 'Failed'
-    }
-    return labels[status] || status
+    return t('status.' + status)
   }
 
   function formatDate(date) {

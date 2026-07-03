@@ -51,6 +51,21 @@ const router = createRouter({
         { path: 'payments', component: () => import('../views/owner/Payments.vue'), meta: { title: 'Payments' } },
         { path: 'reports', component: () => import('../views/owner/Reports.vue'), meta: { title: 'Reports' } },
         { path: 'settings', component: () => import('../views/owner/Settings.vue'), meta: { title: 'Settings' } },
+        { path: 'gps', component: () => import('../views/owner/GpsTracking.vue'), meta: { title: 'GPS Tracking' } },
+        { path: 'site-content', component: () => import('../views/owner/SiteContent.vue'), meta: { title: 'Site Content', role: 'owner' } },
+      ]
+    },
+    
+    // ── Customer Routes ─────────────────────────────────────────────────
+    {
+      path: '/customer',
+      component: () => import('../views/customer/CustomerLayout.vue'),
+      meta: { requiresAuth: true, role: 'customer' },
+      children: [
+        { path: '', component: () => import('../views/customer/CustomerDashboard.vue'), meta: { title: 'Dashboard' } },
+        { path: 'book', component: () => import('../views/customer/RideBooking.vue'), meta: { title: 'Book a Ride' } },
+        { path: 'my-rides', component: () => import('../views/customer/MyRides.vue'), meta: { title: 'My Rides' } },
+        { path: 'nearby', component: () => import('../views/customer/NearbyDrivers.vue'), meta: { title: 'Nearby Drivers' } },
       ]
     },
     
@@ -88,9 +103,10 @@ router.beforeEach(async (to, from) => {
   const isAuthenticated = authStore.isAuthenticated
   const userRole = authStore.userRole
 
-  if (isAuthenticated && to.meta.guest) {
+  if (isAuthenticated && (to.meta.guest || to.meta.public)) {
     if (userRole === 'owner') return '/owner'
     if (userRole === 'employee') return '/employee'
+    if (userRole === 'customer') return '/customer'
     return '/'
   }
 
@@ -101,6 +117,7 @@ router.beforeEach(async (to, from) => {
   if (isAuthenticated && to.meta.role && to.meta.role !== userRole) {
     if (userRole === 'owner') return '/owner'
     if (userRole === 'employee') return '/employee'
+    if (userRole === 'customer') return '/customer'
     return '/'
   }
 
