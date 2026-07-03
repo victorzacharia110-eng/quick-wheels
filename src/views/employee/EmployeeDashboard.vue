@@ -1,3 +1,41 @@
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useAuthStore } from '@/stores/auth'
+import { useContractStore } from '@/stores/contracts'
+import { usePaymentStore } from '@/stores/payments'
+
+const authStore = useAuthStore()
+const contractStore = useContractStore()
+const paymentStore = usePaymentStore()
+
+const myContract = computed(() => {
+  // Find contract for logged in employee (by name or email)
+  return contractStore.contracts.find(c => 
+    c.driver_name === authStore.userName || 
+    c.driver_email === authStore.userEmail
+  )
+})
+
+const myPayments = computed(() => {
+  if (!myContract.value) return []
+  return paymentStore.getPaymentsByContract(myContract.value.id)
+})
+
+function formatDate(date) {
+  if (!date) return '—'
+  return new Date(date).toLocaleDateString('en-US', {
+    year: 'numeric', month: 'short', day: 'numeric'
+  })
+}
+
+onMounted(async () => {
+  await Promise.all([
+    contractStore.fetchContracts(),
+    paymentStore.fetchPayments()
+  ])
+})
+</script>
+
 <template>
   <div class="employee-dashboard">
     <div class="dashboard-header">
@@ -65,43 +103,7 @@
   </div>
 </template>
 
-<script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useAuthStore } from '@/stores/auth'
-import { useContractStore } from '@/stores/contracts'
-import { usePaymentStore } from '@/stores/payments'
 
-const authStore = useAuthStore()
-const contractStore = useContractStore()
-const paymentStore = usePaymentStore()
-
-const myContract = computed(() => {
-  // Find contract for logged in employee (by name or email)
-  return contractStore.contracts.find(c => 
-    c.driver_name === authStore.userName || 
-    c.driver_email === authStore.userEmail
-  )
-})
-
-const myPayments = computed(() => {
-  if (!myContract.value) return []
-  return paymentStore.getPaymentsByContract(myContract.value.id)
-})
-
-function formatDate(date) {
-  if (!date) return '—'
-  return new Date(date).toLocaleDateString('en-US', {
-    year: 'numeric', month: 'short', day: 'numeric'
-  })
-}
-
-onMounted(async () => {
-  await Promise.all([
-    contractStore.fetchContracts(),
-    paymentStore.fetchPayments()
-  ])
-})
-</script>
 
 <style scoped>
 .employee-dashboard { animation: fadeIn 0.4s ease; padding: 0; }
