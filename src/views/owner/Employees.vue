@@ -212,13 +212,15 @@ async function handleSave() {
       const res = await employeeStore.updateEmployee(editingId.value, form.value)
       if (!res.success) { errorMsg.value = res.message || t('common.error'); return }
       if (form.value.vehicle_id) {
-        await employeeStore.assignVehicle(editingId.value, form.value.vehicle_id)
+        const assignRes = await employeeStore.assignVehicle(editingId.value, form.value.vehicle_id)
+        if (!assignRes.success) { errorMsg.value = assignRes.message || t('common.error'); return }
       }
     } else {
       const res = await employeeStore.createEmployee(form.value)
       if (!res.success) { errorMsg.value = res.message || t('common.error'); return }
       if (form.value.vehicle_id) {
-        await employeeStore.assignVehicle(res.data.id, form.value.vehicle_id)
+        const assignRes = await employeeStore.assignVehicle(res.data.id, form.value.vehicle_id)
+        if (!assignRes.success) { errorMsg.value = assignRes.message || t('common.error'); return }
       }
     }
     showModal.value = false
