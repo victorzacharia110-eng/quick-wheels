@@ -212,6 +212,7 @@ import Pagination from '@/components/common/Pagination.vue'
 import { useVehicleStore } from '@/stores/vehicles'
 import { useEmployeeStore } from '@/stores/employees'
 import { useAuthStore } from '@/stores/auth'
+import api from '@/composables/api'
 
 const { t } = useI18n()
 const contractStore = useContractStore()
@@ -279,27 +280,24 @@ function openCreateModal() { showCreateModal.value = true }
 function viewContract(contract) { /* view logic */ }
 function editContract(contract) { /* edit logic */ }
 
-function downloadPdf(contract) {
-  const token = localStorage.getItem('auth_token')
-  const lang = localStorage.getItem('locale') || 'en'
-  fetch(`${import.meta.env.VITE_API_URL}/contracts/${contract.id}/pdf?lang=${lang}`, {
-    headers: { Authorization: `Bearer ${token}` }
-  })
-    .then(res => {
-      if (!res.ok) throw new Error('PDF download failed')
-      return res.blob()
+async function downloadPdf(contract) {
+  try {
+    const lang = localStorage.getItem('locale') || 'en'
+    const res = await api.get(`/contracts/${contract.id}/pdf`, {
+      params: { lang },
+      responseType: 'blob'
     })
-    .then(blob => {
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = `contract_${contract.contract_number}.pdf`
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-      URL.revokeObjectURL(url)
-    })
-    .catch(err => alert(t('contract.downloadPdf') + ': ' + err.message))
+    const url = URL.createObjectURL(res.data)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `contract_${contract.contract_number}.pdf`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  } catch (err) {
+    alert(t('contract.downloadPdf') + ': ' + (err.response?.data?.message || err.message))
+  }
 }
 
 async function saveContract() {
