@@ -106,6 +106,9 @@
               <button @click="editContract(contract)" class="btn-icon" :title="$t('common.edit')">
                 <font-awesome-icon icon="fa-solid fa-pen" />
               </button>
+              <button @click="deleteContract(contract)" class="btn-icon danger" :title="$t('common.delete')">
+                <font-awesome-icon icon="fa-solid fa-trash" />
+              </button>
             </td>
           </tr>
         </tbody>
@@ -136,7 +139,7 @@
             <div class="form-grid">
               <div class="form-group">
                 <label>{{ $t('contract.driver') }} <span class="required">*</span></label>
-                <select v-model="form.driver_id" class="form-input" required>
+                <select v-model="form.employee_id" class="form-input" required>
                   <option value="">{{ $t('contract.selectDriver') }}</option>
                   <option v-for="driver in employeeStore.activeEmployees" :key="driver.id" :value="driver.id">
                     {{ driver.name }} - {{ driver.phone }}
@@ -203,10 +206,12 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useContractStore } from '@/stores/contracts'
 import { useVehicleStore } from '@/stores/vehicles'
 import { useEmployeeStore } from '@/stores/employees'
 
+const { t } = useI18n()
 const contractStore = useContractStore()
 const vehicleStore = useVehicleStore()
 const employeeStore = useEmployeeStore()
@@ -218,7 +223,7 @@ const showCreateModal = ref(false)
 const isSaving = ref(false)
 
 const form = ref({
-  driver_id: '',
+  employee_id: '',
   vehicle_id: '',
   contract_type: 'hire_purchase',
   payment_frequency: 'weekly',
@@ -266,7 +271,7 @@ async function saveContract() {
   isSaving.value = true
   try {
     const payload = {
-      driver_id: form.value.driver_id,
+      employee_id: form.value.employee_id,
       vehicle_id: form.value.vehicle_id,
       contract_type: form.value.contract_type,
       payment_frequency: form.value.payment_frequency,
@@ -278,9 +283,15 @@ async function saveContract() {
     }
     await contractStore.createContract(payload)
     showCreateModal.value = false
+    form.value.employee_id = ''
   } catch (err) {
     alert(err.response?.data?.message || err.message || 'Failed to create contract')
   } finally { isSaving.value = false }
+}
+
+async function deleteContract(contract) {
+  if (!confirm(t('contract.deleteConfirm') || `Delete contract ${contract.contract_number}?`)) return
+  await contractStore.deleteContract(contract.id)
 }
 
 onMounted(async () => {
@@ -449,6 +460,7 @@ onMounted(async () => {
 }
 .progress-text { font-size: 0.7rem; color: rgba(255,255,255,0.3); }
 
+.btn-icon.danger:hover { background: rgba(255,107,107,0.15); color: #ff6b6b; }
 .btn-icon {
   padding: 4px 8px;
   border: none;

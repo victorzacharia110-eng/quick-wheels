@@ -139,7 +139,7 @@
             <div class="form-grid">
               <div class="form-group">
                 <label>{{ $t('contract.driver') }} <span class="required">*</span></label>
-                <select v-model="form.driver_id" class="form-input" required>
+                <select v-model="form.employee_id" class="form-input" required>
                   <option value="">{{ $t('contract.selectDriver') }}</option>
                   <option v-for="driver in employeeStore.activeEmployees" :key="driver.id" :value="driver.id">
                     {{ driver.name }} - {{ driver.phone }}
@@ -229,7 +229,7 @@ const page = ref(1)
 const perPage = 15
 
 const form = ref({
-  driver_id: '',
+  employee_id: '',
   vehicle_id: '',
   contract_type: 'hire_purchase',
   payment_frequency: 'weekly',
@@ -304,7 +304,7 @@ async function saveContract() {
   isSaving.value = true
   try {
     const payload = {
-      driver_id: form.value.driver_id,
+      employee_id: form.value.employee_id,
       vehicle_id: form.value.vehicle_id,
       contract_type: form.value.contract_type,
       payment_frequency: form.value.payment_frequency,
