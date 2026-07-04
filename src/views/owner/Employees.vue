@@ -148,10 +148,15 @@
             </div>
             <div class="modal-actions">
               <button type="button" @click="showModal = false" class="btn-outline">{{ $t('common.cancel') }}</button>
-              <button type="submit" class="btn-primary" :disabled="saving">
-                <span v-if="saving"><span class="spinner-sm"></span> {{ $t('employee.saving') }}</span>
-                <span v-else>{{ isEditing ? $t('employee.edit') : $t('employee.create') }}</span>
-              </button>
+              <template v-if="createdPassword">
+                <button type="button" @click="showModal = false" class="btn-primary">{{ $t('common.close') }}</button>
+              </template>
+              <template v-else>
+                <button type="submit" class="btn-primary" :disabled="saving">
+                  <span v-if="saving"><span class="spinner-sm"></span> {{ $t('employee.saving') }}</span>
+                  <span v-else>{{ isEditing ? $t('employee.edit') : $t('employee.create') }}</span>
+                </button>
+              </template>
             </div>
           </form>
         </div>
@@ -234,6 +239,8 @@ async function handleSave() {
       const res = await employeeStore.createEmployee(form.value)
       if (!res.success) { errorMsg.value = res.message || t('common.error'); return }
       createdPassword.value = res.data?.password || ''
+      form.value.password = createdPassword.value
+      return // keep modal open to show the password
     }
     showModal.value = false
     employeeStore.fetchEmployees()
