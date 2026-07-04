@@ -44,7 +44,7 @@
               <td>{{ employee.phone }}</td>
               <td>{{ employee.email }}</td>
               <td>{{ employee.license_number }}</td>
-              <td>{{ employee.name || '—' }}</td>
+              <td>{{ employee.vehicle_name || '—' }}</td>
               <td>
                 <span class="status-badge" :class="employee.status">{{ $t('status.' + employee.status) }}</span>
               </td>
@@ -218,10 +218,6 @@ async function handleSave() {
     } else {
       const res = await employeeStore.createEmployee(form.value)
       if (!res.success) { errorMsg.value = res.message || t('common.error'); return }
-      if (form.value.vehicle_id) {
-        const assignRes = await employeeStore.assignVehicle(res.data.id, form.value.vehicle_id)
-        if (!assignRes.success) { errorMsg.value = assignRes.message || t('common.error'); return }
-      }
     }
     showModal.value = false
     employeeStore.fetchEmployees()
