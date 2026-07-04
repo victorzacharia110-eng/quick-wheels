@@ -34,6 +34,16 @@ export const useEmployeeStore = defineStore('employees', () => {
     }
   }
 
+  function extractError(err) {
+    const resp = err.response?.data
+    if (!resp) return err.message || 'An error occurred'
+    if (resp.errors) {
+      const messages = Object.values(resp.errors).flat()
+      return messages.join(', ')
+    }
+    return resp.message || 'An error occurred'
+  }
+
   async function createEmployee(data) {
     isLoading.value = true
     error.value = null
@@ -43,7 +53,7 @@ export const useEmployeeStore = defineStore('employees', () => {
       employees.value.unshift(employee)
       return { success: true, data: employee }
     } catch (err) {
-      error.value = err.response?.data?.message || err.message
+      error.value = extractError(err)
       return { success: false, message: error.value }
     } finally {
       isLoading.value = false
@@ -60,7 +70,7 @@ export const useEmployeeStore = defineStore('employees', () => {
       if (index !== -1) employees.value[index] = updated
       return { success: true, data: updated }
     } catch (err) {
-      error.value = err.response?.data?.message || err.message
+      error.value = extractError(err)
       return { success: false, message: error.value }
     } finally {
       isLoading.value = false
