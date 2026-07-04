@@ -44,7 +44,7 @@
               <td>{{ employee.phone }}</td>
               <td>{{ employee.email }}</td>
               <td>{{ employee.license_number }}</td>
-              <td>{{ employee.vehicle_name || '—' }}</td>
+              <td>{{ employee.name || '—' }}</td>
               <td>
                 <span class="status-badge" :class="employee.status">{{ $t('status.' + employee.status) }}</span>
               </td>
