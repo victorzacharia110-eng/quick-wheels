@@ -78,6 +78,14 @@
               <font-awesome-icon icon="fa-solid fa-circle-exclamation" />
               {{ errorMsg }}
             </div>
+            <div v-if="createdPassword" class="form-success">
+              <font-awesome-icon icon="fa-solid fa-check-circle" />
+              <div>
+                <strong>{{ $t('employee.createdWithPassword') }}</strong>
+                <code class="password-display">{{ createdPassword }}</code>
+                <button class="btn-copy" @click="copyPassword"><font-awesome-icon icon="fa-solid fa-copy" /></button>
+              </div>
+            </div>
             <div class="form-grid emp-grid">
               <div class="form-group">
                 <label>{{ $t('employee.fullName') }} <span class="required">*</span></label>
@@ -90,6 +98,11 @@
               <div class="form-group">
                 <label>{{ $t('employee.email') }} <span class="required">*</span></label>
                 <input v-model="form.email" type="email" class="form-input" required :placeholder="$t('employee.email') + '...'" />
+              </div>
+              <div v-if="!isEditing" class="form-group">
+                <label>{{ $t('employee.password') }}</label>
+                <input v-model="form.password" type="text" class="form-input" :placeholder="$t('employee.passwordPlaceholder')" />
+                <small class="form-hint">{{ $t('employee.passwordHint') }}</small>
               </div>
               <div class="form-group">
                 <label>{{ $t('employee.address') }}</label>
@@ -163,11 +176,12 @@ const isEditing = ref(false)
 const editingId = ref(null)
 const saving = ref(false)
 const errorMsg = ref('')
+const createdPassword = ref('')
 const page = ref(1)
 const perPage = 15
 
 const defaultForm = () => ({
-  name: '', phone: '', email: '', address: '', nida_number: '',
+  name: '', phone: '', email: '', password: '', address: '', nida_number: '',
   license_number: '', department: '', position: '', salary: '', shift: 'day',
   vehicle_id: ''
 })
@@ -190,7 +204,7 @@ watch(searchQuery, () => { page.value = 1 })
 
 function openCreateModal() {
   isEditing.value = false; editingId.value = null
-  form.value = defaultForm(); errorMsg.value = ''; showModal.value = true
+  form.value = defaultForm(); errorMsg.value = ''; createdPassword.value = ''; showModal.value = true
 }
 
 function openEditModal(emp) {
@@ -219,10 +233,15 @@ async function handleSave() {
     } else {
       const res = await employeeStore.createEmployee(form.value)
       if (!res.success) { errorMsg.value = res.message || t('common.error'); return }
+      createdPassword.value = res.data?.password || ''
     }
     showModal.value = false
     employeeStore.fetchEmployees()
   } catch (_) { errorMsg.value = t('common.unexpectedError') } finally { saving.value = false }
+}
+
+function copyPassword() {
+  navigator.clipboard.writeText(createdPassword.value)
 }
 
 async function deleteEmployee(id) {
@@ -293,6 +312,11 @@ onMounted(() => {
 .form-group label { font-size: 0.85rem; font-weight: 500; color: rgba(255,255,255,0.65); }
 .required { color: #ff6b6b; }
 .form-error { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: rgba(255,0,0,0.08); border: 1px solid rgba(255,0,0,0.2); border-radius: 10px; font-size: 0.85rem; color: #ff6b6b; grid-column: 1 / -1; }
+.form-success { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.2); border-radius: 10px; font-size: 0.85rem; color: #00E5FF; grid-column: 1 / -1; margin-bottom: 16px; }
+.form-success code { display: inline-block; margin: 4px 0; padding: 4px 10px; background: rgba(0,0,0,0.3); border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 1rem; letter-spacing: 1px; color: #fff; }
+.btn-copy { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 1px solid rgba(0,229,255,0.3); background: rgba(0,229,255,0.1); border-radius: 6px; color: #00E5FF; cursor: pointer; transition: all 0.2s; vertical-align: middle; }
+.btn-copy:hover { background: rgba(0,229,255,0.2); }
+.form-hint { font-size: 0.75rem; color: rgba(255,255,255,0.35); }
 .form-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 14px; color: #fff; font-size: 0.9rem; outline: none; transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s; font-family: 'Space Grotesk', sans-serif; }
 .form-input:focus { border-color: rgba(0,229,255,0.4); box-shadow: 0 0 0 3px rgba(0,229,255,0.06); transform: translateY(-1px); }
 .form-input::placeholder { color: rgba(255,255,255,0.25); }
