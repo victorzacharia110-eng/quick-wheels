@@ -106,7 +106,7 @@
                     <font-awesome-icon icon="fa-solid fa-pen" />
                   </button>
                   <button @click="downloadPdf(contract)" class="btn-icon pdf" :title="$t('contract.downloadPdf')">
-                    <font-awesome-icon :icon="['far', 'file-pdf']" />
+                    <font-awesome-icon icon="fa-solid fa-file-pdf" />
                   </button>
                 </td>
               </tr>

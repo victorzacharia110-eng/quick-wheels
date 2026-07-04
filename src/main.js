@@ -131,6 +131,7 @@ import {
   faFileContract,
   faMoneyBillWave,
   faIdCard,
+  faFilePdf,
   faUserPlus as faUserPlusSolid,
 } from '@fortawesome/free-solid-svg-icons'
 
@@ -146,7 +147,6 @@ import {
   faCircle as faCircleRegular,
   faCircleCheck as faCircleCheckRegular,
   faBell as faBellRegular,
-  faFilePdf as faFilePdfRegular,
 } from '@fortawesome/free-regular-svg-icons'
 
 import {
@@ -294,7 +294,7 @@ library.add(
   faCircleRegular,
   faCircleCheckRegular,
   faBellRegular,
-  faFilePdfRegular,
+  faFilePdf,
   faGithub,
   faTwitter,
   faLinkedin,
