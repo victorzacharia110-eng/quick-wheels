@@ -25,7 +25,9 @@ export const useContractStore = defineStore('contracts', () => {
   })
 
   async function fetchContracts() {
-    isLoading.value = true
+    if (contracts.value.length === 0) {
+      isLoading.value = true
+    }
     error.value = null
     try {
       const { data } = await api.get('/owner/contracts')
