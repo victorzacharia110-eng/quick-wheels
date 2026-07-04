@@ -230,7 +230,9 @@
     "twitter": "Twitter",
     "youtube": "YouTube",
     "whatsapp": "WhatsApp",
-    "toggleMenu": "Toggle menu"
+    "toggleMenu": "Toggle menu",
+    "error": "An error occurred",
+    "unexpectedError": "An unexpected error occurred"
   },
   "auth": {
     "welcomeBack": "Welcome Back",
@@ -254,7 +256,7 @@
     "loginFailed": "Login failed",
     "joinToday": "Join Quick-Wheels today",
     "nidaPlaceholder": "Enter your NIDA number",
-    "nidaHint": "e.g., 123456789012345 (15 digits)",
+    "nidaHint": "Exactly 20 digits (e.g., 12345678901234567890)",
     "passwordMinChars": "Min 8 characters",
     "confirmPassword": "Confirm Password",
     "confirmPasswordPlaceholder": "Confirm your password",

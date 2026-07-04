@@ -82,6 +82,17 @@ const router = createRouter({
       ]
     },
     
+    // ── SuperAdmin Routes ──────────────────────────────────────────────
+    {
+      path: '/superadmin',
+      component: () => import('../views/superadmin/SuperAdminLayout.vue'),
+      meta: { requiresAuth: true, role: 'superadmin' },
+      children: [
+        { path: '', component: () => import('../views/superadmin/SuperAdminDashboard.vue'), meta: { title: 'Dashboard' } },
+        { path: 'owners', component: () => import('../views/superadmin/SuperAdminOwners.vue'), meta: { title: 'Manage Owners' } },
+      ]
+    },
+    
     // ── 404 ──────────────────────────────────────────────────────────────
     { path: '/:pathMatch(.*)*', component: () => import('../views/NotFound.vue'), meta: { title: 'Not Found' } },
   ],
@@ -107,6 +118,7 @@ router.beforeEach(async (to, from) => {
     if (userRole === 'owner') return '/owner'
     if (userRole === 'employee') return '/employee'
     if (userRole === 'customer') return '/customer'
+    if (userRole === 'superadmin') return '/superadmin'
     return '/'
   }
 
@@ -118,6 +130,7 @@ router.beforeEach(async (to, from) => {
     if (userRole === 'owner') return '/owner'
     if (userRole === 'employee') return '/employee'
     if (userRole === 'customer') return '/customer'
+    if (userRole === 'superadmin') return '/superadmin'
     return '/'
   }
 

@@ -56,9 +56,9 @@
           </div>
 
           <div class="form-group" :class="{ 'has-error': errors.phone_number }">
-            <label for="phone">{{ $t('auth.phone') }} <span class="required">*</span></label>
+            <label for="phone_number">{{ $t('auth.phone') }} <span class="required">*</span></label>
             <input
-              id="phone"
+              id="phone_number"
               v-model="form.phone_number"
               type="tel"
               :placeholder="$t('auth.phone')"
@@ -75,9 +75,9 @@
           </div>
 
           <div class="form-group" :class="{ 'has-error': errors.nida_number }">
-            <label for="nida">{{ $t('common.nida') }} <span class="required">*</span></label>
+            <label for="nida_number">{{ $t('common.nida') }} <span class="required">*</span></label>
             <input
-              id="nida"
+              id="nida_number"
               v-model="form.nida_number"
               type="text"
               :placeholder="$t('auth.nidaPlaceholder')"

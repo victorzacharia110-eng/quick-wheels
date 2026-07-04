@@ -1,10 +1,10 @@
 <template>
-  <div class="employee-root" :class="{ collapsed: sidebarCollapsed, 'mobile-open': mobileOpen }">
+  <div class="superadmin-root" :class="{ collapsed: sidebarCollapsed, 'mobile-open': mobileOpen }">
     <aside class="sidebar" :class="{ 'mobile-open': mobileOpen }">
       <div class="sidebar-header">
         <div class="sidebar-logo">
-          <div class="logo-mark"><span>QW</span></div>
-          <span class="logo-wordmark">Quick-Wheels</span>
+          <div class="logo-mark"><span>SA</span></div>
+          <span class="logo-wordmark">SuperAdmin</span>
         </div>
         <button class="collapse-btn" @click="toggleSidebar">
           <font-awesome-icon :icon="sidebarCollapsed ? 'fa-solid fa-chevron-right' : 'fa-solid fa-chevron-left'" size="xs" />
@@ -20,20 +20,14 @@
           <span class="nav-icon"><font-awesome-icon :icon="item.icon" /></span>
           <span class="nav-label">{{ $t(item.label) }}</span>
         </RouterLink>
-
-        <div class="nav-section-label">{{ $t('nav.myAccount') }}</div>
-        <RouterLink v-for="item in accountNav" :key="item.to" :to="item.to" class="nav-item" active-class="active" @click="closeMobile">
-          <span class="nav-icon"><font-awesome-icon :icon="item.icon" /></span>
-          <span class="nav-label">{{ $t(item.label) }}</span>
-        </RouterLink>
       </nav>
 
       <div class="sidebar-footer">
         <div class="admin-user">
-          <div class="admin-avatar">E</div>
+          <div class="admin-avatar">SA</div>
           <div class="admin-user-info">
-            <div class="admin-name">{{ authStore.userName || $t('nav.driver') }}</div>
-            <div class="admin-role">{{ $t('nav.driver') }}</div>
+            <div class="admin-name">{{ authStore.userName || 'SuperAdmin' }}</div>
+            <div class="admin-role">Super Admin</div>
           </div>
         </div>
         <button @click="handleLogout" class="logout-btn-sidebar">
@@ -47,21 +41,21 @@
 
     <div v-if="mobileOpen" class="mobile-overlay" @click="closeMobile"></div>
 
-    <div class="employee-main">
-      <header class="employee-topbar">
+    <div class="superadmin-main">
+      <header class="superadmin-topbar">
         <div class="topbar-left">
           <button class="hamburger-btn" @click="toggleMobile"><font-awesome-icon icon="fa-solid fa-bars" /></button>
           <div class="breadcrumb">
-            <span class="breadcrumb-root">{{ $t('nav.driver') }}</span>
+            <span class="breadcrumb-root">SuperAdmin</span>
             <font-awesome-icon icon="fa-solid fa-chevron-right" size="xs" />
-            <span class="breadcrumb-current">{{ $t(pageTitleKey) }}</span>
+            <span class="breadcrumb-current">{{ currentPageTitle }}</span>
           </div>
         </div>
         <div class="topbar-right">
           <div class="topbar-time">{{ currentTime }}</div>
           <div class="lang-switcher">
             <select v-model="currentLocale" @change="switchLang" class="lang-select">
-              <option v-for="loc in locales" :key="loc.value" :value="loc.value">{{ $t('locale.' + loc.value) }}</option>
+              <option v-for="loc in locales" :key="loc.value" :value="loc.value">{{ $t(loc.label) }}</option>
             </select>
           </div>
           <button class="topbar-icon-btn" :title="$t('nav.notifications')">
@@ -74,7 +68,7 @@
         </div>
       </header>
 
-      <main class="employee-content">
+      <main class="superadmin-content">
         <RouterView />
       </main>
     </div>
@@ -90,14 +84,8 @@ import { useAuthStore } from '@/stores/auth';
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
-const { locale } = useI18n();
+const { locale, t } = useI18n();
 const currentLocale = ref(locale.value);
-const locales = [
-  { value: 'en' }, { value: 'sw' }, { value: 'fr' }, { value: 'es' },
-  { value: 'pt' }, { value: 'ar' }, { value: 'zh' }, { value: 'hi' },
-  { value: 'ru' }, { value: 'ja' }, { value: 'de' }, { value: 'it' },
-  { value: 'ko' }, { value: 'tr' }, { value: 'vi' },
-];
 
 function switchLang() {
   locale.value = currentLocale.value;
@@ -109,16 +97,12 @@ const mobileOpen = ref(false);
 const currentTime = ref("");
 const isMobile = ref(window.innerWidth < 768);
 
-const pageTitleKey = computed(() => {
-  const map = {
-    "/employee": "dashboard.title",
-    "/employee/my-contract": "nav.myContract",
-    "/employee/payments": "nav.myPayments",
-    "/employee/clients": "nav.clients",
-    "/employee/profile": "nav.myProfile",
-  };
-  return map[route.path] || "dashboard.title";
-});
+const pageTitleKeys = {
+  "/superadmin": "Dashboard",
+  "/superadmin/owners": "Manage Owners",
+};
+
+const currentPageTitle = computed(() => pageTitleKeys[route.path] || "Dashboard");
 
 function updateTime() {
   currentTime.value = new Date().toLocaleTimeString("en-US", {
@@ -168,17 +152,32 @@ watch(mobileOpen, (newVal) => {
   document.body.style.overflow = newVal ? "hidden" : "";
 });
 
-const mainNav = [{ to: "/employee", label: "nav.dashboard", icon: "fa-solid fa-th-large" }];
-const accountNav = [
-  { to: "/employee/my-contract", label: "nav.myContract", icon: "fa-solid fa-file-contract" },
-  { to: "/employee/payments", label: "nav.myPayments", icon: "fa-solid fa-money-bill-wave" },
-  { to: "/employee/clients", label: "nav.clients", icon: "fa-solid fa-users" },
-  { to: "/employee/profile", label: "nav.myProfile", icon: "fa-regular fa-user" },
+const mainNav = [
+  { to: "/superadmin", label: "nav.dashboard", icon: "fa-solid fa-th-large" },
+  { to: "/superadmin/owners", label: "nav.employees", icon: "fa-solid fa-users" },
+];
+
+const locales = [
+  { value: 'en', label: 'locale.en' },
+  { value: 'sw', label: 'locale.sw' },
+  { value: 'fr', label: 'locale.fr' },
+  { value: 'es', label: 'locale.es' },
+  { value: 'pt', label: 'locale.pt' },
+  { value: 'ar', label: 'locale.ar' },
+  { value: 'zh', label: 'locale.zh' },
+  { value: 'hi', label: 'locale.hi' },
+  { value: 'ru', label: 'locale.ru' },
+  { value: 'ja', label: 'locale.ja' },
+  { value: 'de', label: 'locale.de' },
+  { value: 'it', label: 'locale.it' },
+  { value: 'ko', label: 'locale.ko' },
+  { value: 'tr', label: 'locale.tr' },
+  { value: 'vi', label: 'locale.vi' },
 ];
 </script>
 
 <style scoped>
-.employee-root {
+.superadmin-root {
   display: grid;
   grid-template-columns: 240px 1fr;
   min-height: 100vh;
@@ -187,7 +186,7 @@ const accountNav = [
   font-family: "Space Grotesk", sans-serif;
   color: #fff;
 }
-.employee-root.collapsed { grid-template-columns: 64px 1fr; }
+.superadmin-root.collapsed { grid-template-columns: 64px 1fr; }
 
 .sidebar {
   background: #0a0818;
@@ -413,13 +412,13 @@ const accountNav = [
 .view-site-btn:hover { background: rgba(0, 196, 212, 0.15); }
 .collapsed .view-site-btn span { display: none; }
 
-.employee-main {
+.superadmin-main {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   overflow: hidden;
 }
-.employee-topbar {
+.superadmin-topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -471,6 +470,22 @@ const accountNav = [
   transition: color 0.2s;
 }
 .topbar-icon-btn:hover { color: #fff; }
+.lang-switcher { display: flex; align-items: center; }
+.lang-select {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  color: rgba(255,255,255,0.6);
+  padding: 4px 8px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  outline: none;
+  font-family: 'Space Grotesk', sans-serif;
+  appearance: none;
+}
+.lang-select:hover { border-color: rgba(0,229,255,0.3); }
+.lang-select:focus { border-color: rgba(0,229,255,0.4); }
+.topbar-icon-btn { line-height: 1; }
 .notif-dot {
   position: absolute;
   top: 3px; right: 3px;
@@ -479,14 +494,14 @@ const accountNav = [
   background: #00e5ff;
   box-shadow: 0 0 6px rgba(0, 229, 255, 0.6);
 }
-.employee-content {
+.superadmin-content {
   flex: 1;
   overflow-y: auto;
   padding: 28px;
 }
 
 @media (max-width: 768px) {
-  .employee-root { grid-template-columns: 1fr; }
+  .superadmin-root { grid-template-columns: 1fr; }
   .hamburger-btn { display: flex !important; }
   .sidebar {
     position: fixed;
@@ -502,8 +517,8 @@ const accountNav = [
   .mobile-overlay { display: block; }
   .mobile-close-btn { display: block; }
   .collapse-btn { display: none; }
-  .employee-topbar { padding: 0 16px; }
-  .employee-content { padding: 16px; }
+  .superadmin-topbar { padding: 0 16px; }
+  .superadmin-content { padding: 16px; }
   .breadcrumb-root { display: none; }
   .topbar-time { display: none; }
   .sidebar .nav-label { opacity: 1 !important; width: auto !important; }
@@ -515,8 +530,8 @@ const accountNav = [
 }
 @media (max-width: 480px) {
   .sidebar { width: 100%; max-width: 320px; }
-  .employee-topbar { padding: 0 12px; height: 48px; }
-  .employee-content { padding: 12px; }
+  .superadmin-topbar { padding: 0 12px; height: 48px; }
+  .superadmin-content { padding: 12px; }
   .hamburger-btn { padding: 10px 12px; font-size: 1.4rem; }
 }
 @media (min-width: 769px) {

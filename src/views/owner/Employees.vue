@@ -73,6 +73,10 @@
             <button class="modal-close" @click="showModal = false"><font-awesome-icon icon="fa-solid fa-times" /></button>
           </div>
           <form @submit.prevent="handleSave">
+            <div v-if="errorMsg" class="form-error">
+              <font-awesome-icon icon="fa-solid fa-circle-exclamation" />
+              {{ errorMsg }}
+            </div>
             <div class="form-grid emp-grid">
               <div class="form-group">
                 <label>{{ $t('employee.fullName') }} <span class="required">*</span></label>
@@ -157,6 +161,7 @@ const showModal = ref(false)
 const isEditing = ref(false)
 const editingId = ref(null)
 const saving = ref(false)
+const errorMsg = ref('')
 const page = ref(1)
 const perPage = 15
 
@@ -184,7 +189,7 @@ watch(searchQuery, () => { page.value = 1 })
 
 function openCreateModal() {
   isEditing.value = false; editingId.value = null
-  form.value = defaultForm(); showModal.value = true
+  form.value = defaultForm(); errorMsg.value = ''; showModal.value = true
 }
 
 function openEditModal(emp) {
@@ -196,25 +201,28 @@ function openEditModal(emp) {
     salary: emp.salary || '', shift: emp.shift || 'day',
     vehicle_id: emp.vehicle_id || ''
   }
-  showModal.value = true
+  errorMsg.value = ''; showModal.value = true
 }
 
 async function handleSave() {
   saving.value = true
+  errorMsg.value = ''
   try {
     if (isEditing.value) {
-      await employeeStore.updateEmployee(editingId.value, form.value)
+      const res = await employeeStore.updateEmployee(editingId.value, form.value)
+      if (!res.success) { errorMsg.value = res.message || t('common.error'); return }
       if (form.value.vehicle_id) {
         await employeeStore.assignVehicle(editingId.value, form.value.vehicle_id)
       }
     } else {
       const res = await employeeStore.createEmployee(form.value)
-      if (res.success && form.value.vehicle_id) {
+      if (!res.success) { errorMsg.value = res.message || t('common.error'); return }
+      if (form.value.vehicle_id) {
         await employeeStore.assignVehicle(res.data.id, form.value.vehicle_id)
       }
     }
     showModal.value = false
-  } catch (_) {} finally { saving.value = false }
+  } catch (_) { errorMsg.value = t('common.unexpectedError') } finally { saving.value = false }
 }
 
 async function deleteEmployee(id) {
@@ -284,6 +292,7 @@ onMounted(() => {
 .form-group { display: flex; flex-direction: column; gap: 6px; }
 .form-group label { font-size: 0.85rem; font-weight: 500; color: rgba(255,255,255,0.65); }
 .required { color: #ff6b6b; }
+.form-error { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: rgba(255,0,0,0.08); border: 1px solid rgba(255,0,0,0.2); border-radius: 10px; font-size: 0.85rem; color: #ff6b6b; grid-column: 1 / -1; }
 .form-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 14px; color: #fff; font-size: 0.9rem; outline: none; transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s; font-family: 'Space Grotesk', sans-serif; }
 .form-input:focus { border-color: rgba(0,229,255,0.4); box-shadow: 0 0 0 3px rgba(0,229,255,0.06); transform: translateY(-1px); }
 .form-input::placeholder { color: rgba(255,255,255,0.25); }

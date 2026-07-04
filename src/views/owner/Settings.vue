@@ -13,17 +13,30 @@
         <h3>{{ $t('settings.profileSettings') }}</h3>
         <div class="settings-item">
           <label>{{ $t('settings.businessName') }}</label>
-          <input type="text" class="form-input" value="Quick-Wheels" />
+          <input v-model="profileForm.business_name" type="text" class="form-input" />
         </div>
         <div class="settings-item">
           <label>{{ $t('settings.email') }}</label>
-          <input type="email" class="form-input" value="info@quick-wheels.co.tz" />
+          <input v-model="profileForm.email" type="email" class="form-input" />
         </div>
         <div class="settings-item">
           <label>{{ $t('settings.phone') }}</label>
-          <input type="tel" class="form-input" value="+255 712 345 678" />
+          <input v-model="profileForm.phone" type="tel" class="form-input" />
         </div>
-        <button class="btn-primary">{{ $t('settings.saveChanges') }}</button>
+        <div class="settings-item">
+          <label>Business Address</label>
+          <input v-model="profileForm.business_address" type="text" class="form-input" />
+        </div>
+        <div class="settings-item">
+          <label>Business Website</label>
+          <input v-model="profileForm.business_website" type="url" class="form-input" />
+        </div>
+        <button class="btn-primary" @click="saveProfile" :disabled="profileSaving">
+          <span v-if="profileSaving">Saving...</span>
+          <span v-else>{{ $t('settings.saveChanges') }}</span>
+        </button>
+        <p v-if="profileSuccess" class="success-text">Profile updated successfully!</p>
+        <p v-if="profileError" class="error-text">{{ profileError }}</p>
       </div>
 
       <!-- Payment Settings -->
@@ -87,14 +100,64 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useAuthStore } from '@/stores/auth'
+import api from '@/composables/api'
+
 const { t } = useI18n()
+const authStore = useAuthStore()
+
+const profileForm = ref({
+  business_name: '',
+  email: '',
+  phone: '',
+  business_address: '',
+  business_website: '',
+})
+const profileSaving = ref(false)
+const profileSuccess = ref(false)
+const profileError = ref('')
+
+function loadProfile() {
+  const user = authStore.user
+  if (user) {
+    profileForm.value = {
+      business_name: user.business?.business_name || '',
+      email: user.business?.business_email || user.email || '',
+      phone: user.business?.business_phone || user.phone || '',
+      business_address: user.business?.business_address || '',
+      business_website: user.business?.business_website || '',
+    }
+  }
+}
+
+async function saveProfile() {
+  profileSaving.value = true
+  profileSuccess.value = false
+  profileError.value = ''
+  try {
+    const res = await api.put('/auth/owner/profile', profileForm.value)
+    if (res.data.success) {
+      profileSuccess.value = true
+      await authStore.fetchUser()
+    } else {
+      profileError.value = res.data.message || 'Failed to save profile'
+    }
+  } catch (err) {
+    profileError.value = err.response?.data?.message || 'Failed to save profile'
+  } finally {
+    profileSaving.value = false
+  }
+}
 
 function confirmReset() {
   if (confirm(t('common.confirmResetData'))) {
     alert(t('common.resetAllData'))
   }
 }
+
+onMounted(loadProfile)
 </script>
 
 <style scoped>
@@ -225,6 +288,8 @@ select.form-input {
 }
 .danger-zone h3 { color: #ff6b6b; }
 .danger-zone p { color: rgba(255,255,255,0.4); font-size: 0.85rem; margin-bottom: 16px; }
+.success-text { color: #4ADE80; font-size: 0.85rem; margin-top: 8px; }
+.error-text { color: #ff6b6b; font-size: 0.85rem; margin-top: 8px; }
 
 @media (max-width: 768px) {
   .settings-grid { grid-template-columns: 1fr; }
