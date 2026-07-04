@@ -150,8 +150,8 @@
                 <label>{{ $t('contract.vehicle') }} <span class="required">*</span></label>
                 <select v-model="form.vehicle_id" class="form-input" required>
                   <option value="">{{ $t('contract.selectVehicle') }}</option>
-                  <option v-for="vehicle in vehicleStore.availableVehicles" :key="vehicle.id" :value="vehicle.id">
-                    {{ vehicle.name }} ({{ vehicle.type }})
+                  <option v-for="vehicle in vehicleStore.vehicles" :key="vehicle.id" :value="vehicle.id">
+                    {{ vehicle.name }} ({{ vehicle.registration_number || vehicle.plate_number || vehicle.type }})
                   </option>
                 </select>
               </div>
