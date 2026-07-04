@@ -40,70 +40,73 @@
       </select>
     </div>
 
-    <!-- Loading -->
-    <div v-if="paymentStore.isLoading" class="loading-state">
-      <div class="spinner"></div>
-      <p>{{ $t('payment.loading') }}</p>
-    </div>
+    <Transition name="fade-slide" mode="out-in">
+      <div v-if="paymentStore.isLoading" key="loading" class="loading-state">
+        <div class="spinner"></div>
+        <p>{{ $t('payment.loading') }}</p>
+      </div>
 
-    <!-- Table -->
-    <div v-else-if="filteredPayments.length > 0" class="table-container">
-      <table class="payments-table">
-        <thead>
-          <tr>
-            <th>{{ $t('payment.driver') }}</th>
-            <th>{{ $t('payment.amount') }}</th>
-            <th>{{ $t('payment.method') }}</th>
-            <th>{{ $t('payment.date') }}</th>
-            <th>{{ $t('payment.status') }}</th>
-            <th>{{ $t('common.actions') }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="payment in paginatedData" :key="payment.id">
-            <td><strong>{{ payment.driver_name }}</strong></td>
-            <td class="amount">TZS {{ payment.amount.toLocaleString() }}</td>
-            <td>{{ payment.method }}</td>
-            <td>{{ formatDate(payment.date) }}</td>
-            <td>
-              <span class="status-badge" :class="payment.status">
-                {{ $t('status.' + payment.status) }}
-              </span>
-            </td>
-            <td>
-              <button @click="deletePayment(payment.id)" class="btn-icon danger" :title="$t('common.delete')">
-                <font-awesome-icon icon="fa-solid fa-trash" />
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <Pagination :current-page="page" :per-page="perPage" :total="filteredPayments.length" @page-change="page = $event" />
-    </div>
+      <div v-else key="content">
+        <div v-if="filteredPayments.length > 0" class="table-container">
+          <table class="payments-table">
+            <thead>
+              <tr>
+                <th>{{ $t('payment.driver') }}</th>
+                <th>{{ $t('payment.amount') }}</th>
+                <th>{{ $t('payment.method') }}</th>
+                <th>{{ $t('payment.date') }}</th>
+                <th>{{ $t('payment.status') }}</th>
+                <th>{{ $t('common.actions') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="payment in paginatedData" :key="payment.id">
+                <td><strong>{{ payment.driver_name }}</strong></td>
+                <td class="amount">TZS {{ payment.amount.toLocaleString() }}</td>
+                <td>{{ payment.method }}</td>
+                <td>{{ formatDate(payment.date) }}</td>
+                <td>
+                  <span class="status-badge" :class="payment.status">
+                    {{ $t('status.' + payment.status) }}
+                  </span>
+                </td>
+                <td>
+                  <button @click="deletePayment(payment.id)" class="btn-icon danger" :title="$t('common.delete')">
+                    <font-awesome-icon icon="fa-solid fa-trash" />
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <Pagination :current-page="page" :per-page="perPage" :total="filteredPayments.length" @page-change="page = $event" />
+        </div>
 
-    <!-- Empty -->
-    <div v-else class="empty-state">
-      <font-awesome-icon icon="fa-solid fa-money-bill-wave" size="3x" />
-      <h3>{{ $t('common.noPayments') }}</h3>
-      <p>{{ $t('payment.noPaymentsDesc') }}</p>
-    </div>
+        <div v-else class="empty-state">
+          <font-awesome-icon icon="fa-solid fa-money-bill-wave" size="3x" />
+          <h3>{{ $t('common.noPayments') }}</h3>
+          <p>{{ $t('payment.noPaymentsDesc') }}</p>
+        </div>
+      </div>
+    </Transition>
 
     <!-- Create Modal -->
     <Transition name="modal">
       <div v-if="showCreateModal" class="modal-overlay" @click.self="showCreateModal = false">
         <div class="modal-box">
           <div class="modal-header">
-            <h2>{{ $t('payment.recordPayment') }}</h2>
-            <button class="modal-close" @click="showCreateModal = false">&times;</button>
+            <h3>{{ $t('payment.recordPayment') }}</h3>
+            <button class="modal-close" @click="showCreateModal = false">
+              <font-awesome-icon icon="fa-solid fa-times" />
+            </button>
           </div>
           <form @submit.prevent="handleCreate">
             <div class="form-grid">
               <div class="form-group">
-                <label>{{ $t('payment.driverName') }} *</label>
+                <label>{{ $t('payment.driverName') }} <span class="required">*</span></label>
                 <input v-model="form.driver_name" class="form-input" :placeholder="$t('payment.driverName')" required />
               </div>
               <div class="form-group">
-                <label>{{ $t('payment.amountWithCurrency') }} *</label>
+                <label>{{ $t('payment.amountWithCurrency') }} <span class="required">*</span></label>
                 <input v-model.number="form.amount" type="number" class="form-input" placeholder="0" min="0" required />
               </div>
               <div class="form-group">
@@ -134,9 +137,9 @@
               </div>
             </div>
             <div class="modal-actions">
-              <button type="button" class="btn-secondary" @click="showCreateModal = false">{{ $t('payment.cancel') }}</button>
+              <button type="button" class="btn-outline" @click="showCreateModal = false">{{ $t('payment.cancel') }}</button>
               <button type="submit" class="btn-primary" :disabled="saving">
-                <span v-if="saving" class="spinner-sm"></span>
+                <span v-if="saving"><span class="spinner-sm"></span> {{ $t('payment.creating') }}</span>
                 <span v-else><font-awesome-icon icon="fa-solid fa-check" /> {{ $t('payment.record') }}</span>
               </button>
             </div>
@@ -380,38 +383,74 @@ onMounted(() => { paymentStore.fetchPayments() })
 
 /* Modal */
 .modal-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(6px);
+  z-index: 200;
   display: flex; align-items: center; justify-content: center;
-  z-index: 1000; padding: 20px; backdrop-filter: blur(4px);
+  padding: 24px;
 }
 .modal-box {
-  background: #12102a; border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 16px; padding: 32px; width: 100%; max-width: 500px;
+  background: #13102a;
+  border: 1px solid rgba(0,229,255,0.15);
+  border-radius: 16px;
+  padding: 30px;
+  width: 100%; max-width: 500px;
   max-height: 90vh; overflow-y: auto;
 }
-.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-.modal-header h2 { font-family: 'Syne', sans-serif; font-size: 1.3rem; color: #fff; margin: 0; }
-.modal-close { background: none; border: none; color: rgba(255,255,255,0.4); font-size: 1.5rem; cursor: pointer; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.modal-header h3 { color: #fff; font-family: 'Syne', sans-serif; font-size: 1.2rem; margin: 0; }
+.modal-close {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  padding: 6px 10px;
+  transition: all 0.2s;
+}
+.modal-close:hover { background: rgba(255,255,255,0.1); color: #fff; }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .form-group { display: flex; flex-direction: column; gap: 6px; }
 .form-group.full-width { grid-column: 1 / -1; }
-.form-group label { font-size: 0.8rem; color: rgba(255,255,255,0.4); font-weight: 600; }
+.form-group label { font-size: 0.85rem; font-weight: 500; color: rgba(255,255,255,0.65); }
+.required { color: #ff6b6b; }
 .form-input {
-  padding: 10px 14px; background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;
-  color: #fff; font-size: 0.85rem; outline: none; font-family: 'Space Grotesk', sans-serif;
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #fff;
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.2s;
+  font-family: 'Space Grotesk', sans-serif;
 }
 .form-input:focus { border-color: rgba(0,229,255,0.4); box-shadow: 0 0 0 3px rgba(0,229,255,0.06); }
 .form-input::placeholder { color: rgba(255,255,255,0.25); }
-select.form-input { appearance: none; cursor: pointer; }
+select.form-input {
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.4)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
 textarea.form-input { resize: vertical; min-height: 60px; }
 .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 20px; }
-.btn-secondary {
-  padding: 10px 20px; background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;
-  color: rgba(255,255,255,0.6); cursor: pointer; font-size: 0.85rem;
+.btn-outline {
+  padding: 10px 20px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-family: 'Space Grotesk', sans-serif;
+  transition: all 0.2s;
 }
-.btn-secondary:hover { background: rgba(255,255,255,0.08); }
+.btn-outline:hover { background: rgba(255,255,255,0.1); color: #fff; }
 .spinner-sm { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(10,8,24,0.2); border-top-color: #0a0818; border-radius: 50%; animation: spin 0.7s linear infinite; }
 .modal-enter-active { transition: all 0.25s ease; }
 .modal-leave-active { transition: all 0.2s ease; }
@@ -419,6 +458,19 @@ textarea.form-input { resize: vertical; min-height: 60px; }
 .modal-enter-from .modal-box { transform: scale(0.92) translateY(20px); }
 .modal-leave-to { opacity: 0; }
 .modal-leave-to .modal-box { transform: scale(0.95); }
+
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.25s ease;
+}
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateY(12px);
+}
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-12px);
+}
 
 @media (max-width: 768px) {
   .stats-grid { grid-template-columns: 1fr; }
