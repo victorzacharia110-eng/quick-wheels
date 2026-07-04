@@ -66,6 +66,7 @@ const router = createRouter({
         { path: 'book', component: () => import('../views/customer/RideBooking.vue'), meta: { title: 'Book a Ride' } },
         { path: 'my-rides', component: () => import('../views/customer/MyRides.vue'), meta: { title: 'My Rides' } },
         { path: 'nearby', component: () => import('../views/customer/NearbyDrivers.vue'), meta: { title: 'Nearby Drivers' } },
+        { path: 'payments', component: () => import('../views/customer/Payments.vue'), meta: { title: 'Payments' } },
       ]
     },
     

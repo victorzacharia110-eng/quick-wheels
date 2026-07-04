@@ -6,7 +6,7 @@ import api from '@/composables/api'
 export const useContractStore = defineStore('contracts', () => {
   const { t } = useI18n()
   const contracts = ref([])
-  const isLoading = ref(false)
+  const isLoading = ref(true)
   const error = ref(null)
   const selectedContract = ref(null)
 
@@ -40,7 +40,6 @@ export const useContractStore = defineStore('contracts', () => {
   }
 
   async function createContract(data) {
-    isLoading.value = true
     error.value = null
     try {
       const res = await api.post('/owner/contracts', data)
@@ -49,14 +48,11 @@ export const useContractStore = defineStore('contracts', () => {
       return { success: true, data: contract }
     } catch (err) {
       error.value = err.response?.data?.message || err.message
-      return { success: false, message: error.value }
-    } finally {
-      isLoading.value = false
+      throw err
     }
   }
 
   async function updateContract(id, data) {
-    isLoading.value = true
     error.value = null
     try {
       const res = await api.put(`/owner/contracts/${id}`, data)
@@ -66,14 +62,11 @@ export const useContractStore = defineStore('contracts', () => {
       return { success: true, data: updated }
     } catch (err) {
       error.value = err.response?.data?.message || err.message
-      return { success: false, message: error.value }
-    } finally {
-      isLoading.value = false
+      throw err
     }
   }
 
   async function deleteContract(id) {
-    isLoading.value = true
     error.value = null
     try {
       await api.delete(`/owner/contracts/${id}`)
@@ -81,14 +74,11 @@ export const useContractStore = defineStore('contracts', () => {
       return { success: true }
     } catch (err) {
       error.value = err.response?.data?.message || err.message
-      return { success: false, message: error.value }
-    } finally {
-      isLoading.value = false
+      throw err
     }
   }
 
   async function recordPayment(contractId, amount) {
-    isLoading.value = true
     error.value = null
     try {
       const res = await api.post(`/owner/contracts/${contractId}/payments`, { amount })
@@ -105,9 +95,7 @@ export const useContractStore = defineStore('contracts', () => {
       return { success: true, data: payment }
     } catch (err) {
       error.value = err.response?.data?.message || err.message
-      return { success: false, message: error.value }
-    } finally {
-      isLoading.value = false
+      throw err
     }
   }
 

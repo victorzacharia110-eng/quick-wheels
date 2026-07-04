@@ -50,7 +50,8 @@
     "bookRide": "Kodi Gari",
     "homepage": "Ukurasa wa Nyumbani",
     "driver": "Dereva",
-    "discover": "Gundua"
+    "discover": "Gundua",
+    "finance": "Fedha"
   },
   "hero": {
     "quickWheels": "Quick-Wheels",
@@ -185,6 +186,9 @@
     "hirePurchaseOwnership": "Hire Purchase (Umiliki)",
     "additionalNotes": "Maelezo ya ziada...",
     "optionalNotes": "Maelezo ya hiari...",
+    "optional": "Hiari",
+    "submitting": "Inatuma...",
+    "processing": "Inachakatwa...",
     "vehicleDescription": "Maelezo ya gari...",
     "noContracts": "Hakuna Mikataba",
     "noContractsDesc": "Anza kwa kuunda mkataba wako wa kwanza.",
@@ -230,7 +234,9 @@
     "twitter": "Twitter",
     "youtube": "YouTube",
     "whatsapp": "WhatsApp",
-    "toggleMenu": "Badilisha menyu"
+    "toggleMenu": "Badilisha menyu",
+    "error": "Kosa limetokea",
+    "unexpectedError": "Kosa lisilotarajiwa limetokea"
   },
   "auth": {
     "welcomeBack": "Karibu Tena",
@@ -511,7 +517,31 @@
     "date": "Tarehe",
     "notes": "Maelezo",
     "record": "Rekodi Malipo",
-    "cancel": "Ghairi"
+    "cancel": "Ghairi",
+    "manual": "Pesa za Simu",
+    "clickPesa": "ClickPesa",
+    "manualDescription": "Tuma malipo kwa akaunti yoyote ya simu/benki iliyo hapa chini, kisha wasilisha maelezo ya malipo kwa uthibitisho.",
+    "clickPesaDescription": "Lipia kwa usalama kupitia ClickPesa kwa kutumia akaunti yako ya pesa za simu.",
+    "submitPayment": "Wasilisha Maelezo ya Malipo",
+    "booking": "Nafasi",
+    "selectBooking": "Chagua nafasi",
+    "amount": "Kiasi",
+    "amountPlaceholder": "0.00",
+    "provider": "Mtoa Huduma",
+    "selectProvider": "Chagua mtoa huduma",
+    "referenceNumber": "Namba ya Rejea",
+    "referencePlaceholder": "Namba ya rejea kutoka kwa mtoa huduma",
+    "transactionId": "Namba ya Muamala",
+    "transactionPlaceholder": "Namba ya muamala (kama ipo)",
+    "submitPaymentBtn": "Wasilisha Malipo",
+    "submittedSuccess": "Malipo yamewasilishwa kwa idhini!",
+    "submitError": "Imeshindwa kuwasilisha malipo",
+    "fillRequired": "Tafadhali jaza sehemu zote zinazohitajika",
+    "phone": "Namba ya Simu",
+    "phonePlaceholder": "mf. 0712 345 678",
+    "payWithClickPesa": "Lipa kwa ClickPesa",
+    "clickPesaSuccess": "Malipo yameanzishwa! Kamilisha malipo kwenye ClickPesa.",
+    "history": "Historia ya Malipo"
   },
   "gps": {
     "title": "Ufuatiliaji GPS",
@@ -567,7 +597,8 @@
     "mobile_money": "Pesa za Simu",
     "cheque": "Hundi",
     "all": "Zote",
-    "refunded": "Imerejeshwa"
+    "refunded": "Imerejeshwa",
+    "approved": "Imeidhinishwa"
   },
   "settings": {
     "title": "Mipangilio",
@@ -646,7 +677,9 @@
     "noVehiclesAvailable": "Hakuna magari yanayopatikana kwa sasa",
     "bookFirstRide": "Kodi safari yako ya kwanza",
     "bookOne": "Kodi Moja",
-    "welcomeBack": "Karibu tena"
+    "welcomeBack": "Karibu tena",
+    "payments": "Malipo",
+    "paymentsSubtitle": "Fanya malipo kwa nafasi zako"
   },
   "profile": {
     "title": "Wasifu Wangu",

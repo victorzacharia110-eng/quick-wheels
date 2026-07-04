@@ -50,7 +50,8 @@
     "bookRide": "Book a Ride",
     "homepage": "Homepage",
     "driver": "Driver",
-    "discover": "Discover"
+    "discover": "Discover",
+    "finance": "Finance"
   },
   "hero": {
     "quickWheels": "Quick-Wheels",
@@ -185,6 +186,9 @@
     "hirePurchaseOwnership": "Hire Purchase (Ownership)",
     "additionalNotes": "Additional notes...",
     "optionalNotes": "Optional notes...",
+    "optional": "Optional",
+    "submitting": "Submitting...",
+    "processing": "Processing...",
     "vehicleDescription": "Vehicle description...",
     "noContracts": "No Contracts",
     "noContractsDesc": "Start by creating your first contract.",
@@ -513,7 +517,31 @@
     "date": "Date",
     "notes": "Notes",
     "record": "Record Payment",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "manual": "Mobile Money",
+    "clickPesa": "ClickPesa",
+    "manualDescription": "Send payment to any of the mobile money / bank accounts below, then submit the payment details for verification.",
+    "clickPesaDescription": "Pay securely via ClickPesa using your mobile money account.",
+    "submitPayment": "Submit Payment Details",
+    "booking": "Booking",
+    "selectBooking": "Select a booking",
+    "amount": "Amount",
+    "amountPlaceholder": "0.00",
+    "provider": "Provider",
+    "selectProvider": "Select provider",
+    "referenceNumber": "Reference Number",
+    "referencePlaceholder": "Transaction reference from provider",
+    "transactionId": "Transaction ID",
+    "transactionPlaceholder": "Provider transaction ID (if any)",
+    "submitPaymentBtn": "Submit Payment",
+    "submittedSuccess": "Payment submitted for approval!",
+    "submitError": "Failed to submit payment",
+    "fillRequired": "Please fill in all required fields",
+    "phone": "Phone Number",
+    "phonePlaceholder": "e.g. 0712 345 678",
+    "payWithClickPesa": "Pay with ClickPesa",
+    "clickPesaSuccess": "Payment initiated! Complete payment on ClickPesa.",
+    "history": "Payment History"
   },
   "gps": {
     "title": "GPS Tracking",
@@ -569,7 +597,8 @@
     "mobile_money": "Mobile Money",
     "cheque": "Cheque",
     "all": "All",
-    "refunded": "Refunded"
+    "refunded": "Refunded",
+    "approved": "Approved"
   },
   "settings": {
     "title": "Settings",
@@ -648,7 +677,9 @@
     "noVehiclesAvailable": "No vehicles available right now",
     "bookFirstRide": "Book your first ride",
     "bookOne": "Book One",
-    "welcomeBack": "Welcome back"
+    "welcomeBack": "Welcome back",
+    "payments": "Payments",
+    "paymentsSubtitle": "Make payments for your bookings"
   },
   "siteContent": {
     "title": "Site Content",

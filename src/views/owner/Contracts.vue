@@ -306,10 +306,21 @@ function downloadPdf(contract) {
 async function saveContract() {
   isSaving.value = true
   try {
-    await contractStore.createContract(form.value)
+    const payload = {
+      driver_id: form.value.driver_id,
+      vehicle_id: form.value.vehicle_id,
+      contract_type: form.value.contract_type,
+      payment_frequency: form.value.payment_frequency,
+      start_date: form.value.start_date,
+      end_date: form.value.end_date,
+      total_amount: form.value.amount,
+      deposit: form.value.deposit || 0,
+      notes: form.value.notes,
+    }
+    await contractStore.createContract(payload)
     showCreateModal.value = false
   } catch (err) {
-    console.error(err)
+    alert(err.response?.data?.message || err.message || 'Failed to create contract')
   } finally { isSaving.value = false }
 }
 

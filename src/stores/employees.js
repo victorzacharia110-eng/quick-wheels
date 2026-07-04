@@ -25,6 +25,8 @@ export const useEmployeeStore = defineStore('employees', () => {
     try {
       const { data } = await api.get('/owner/employees')
       employees.value = data.data || []
+      console.log("Employees data : ",employees.value);
+      
       return { success: true, data: employees.value }
     } catch (err) {
       error.value = err.response?.data?.message || err.message

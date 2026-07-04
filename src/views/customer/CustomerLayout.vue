@@ -27,6 +27,12 @@
           <span class="nav-label">{{ $t(item.label) }}</span>
         </RouterLink>
 
+        <div class="nav-section-label">{{ $t('nav.finance') }}</div>
+        <RouterLink v-for="item in financeNav" :key="item.to" :to="item.to" class="nav-item" active-class="active" @click="closeMobile">
+          <span class="nav-icon"><font-awesome-icon :icon="item.icon" /></span>
+          <span class="nav-label">{{ $t(item.label) }}</span>
+        </RouterLink>
+
         <div class="nav-section-label">{{ $t('nav.discover') }}</div>
         <RouterLink v-for="item in discoverNav" :key="item.to" :to="item.to" class="nav-item" active-class="active" @click="closeMobile">
           <span class="nav-icon"><font-awesome-icon :icon="item.icon" /></span>
@@ -121,6 +127,7 @@ const pageTitleKey = computed(() => {
     "/customer/my-rides": "customer.myRides",
     "/customer/nearby": "customer.nearbyDrivers",
     "/customer/profile": "nav.profile",
+    "/customer/payments": "nav.payments",
   };
   return map[route.path] || "dashboard.title";
 });
@@ -143,6 +150,9 @@ const mainNav = [
 const bookingNav = [
   { to: "/customer/book", label: "nav.bookRide", icon: "fa-solid fa-car-side" },
   { to: "/customer/my-rides", label: "nav.myRides", icon: "fa-solid fa-list" },
+];
+const financeNav = [
+  { to: "/customer/payments", label: "nav.payments", icon: "fa-solid fa-credit-card" },
 ];
 const discoverNav = [
   { to: "/customer/nearby", label: "nav.nearbyDrivers", icon: "fa-solid fa-location-dot" },
