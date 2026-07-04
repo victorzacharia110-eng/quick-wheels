@@ -6,8 +6,10 @@ const api = axios.create({
     "Content-Type": "application/json",
     Accept: "application/json",
     "X-Requested-With": "XMLHttpRequest",
+    "Cache-Control": "no-cache",
   },
   withCredentials: false,
+  validateStatus: (status) => (status >= 200 && status < 300) || status === 304,
 });
 
 // Add token to every request
@@ -16,6 +18,10 @@ api.interceptors.request.use(
     const token = localStorage.getItem('auth_token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+    }
+    // Cache-bust GET requests
+    if (config.method === 'get') {
+      config.params = { ...config.params, _t: Date.now() };
     }
     return config;
   },
