@@ -3,83 +3,85 @@
     <h1 class="page-title">{{ $t('employee.myContract') }}</h1>
     <p class="page-sub">{{ $t('employee.contractSubtitle') }}</p>
 
-    <div v-if="contractStore.isLoading" class="loading-state">
-      <div class="spinner"></div>
-      <p>{{ $t('common.loading') }}</p>
-    </div>
-
-    <div v-else-if="myContract" class="contract-details">
-      <div class="contract-header">
-        <div>
-          <h2>{{ myContract.contract_number }}</h2>
-          <span class="vehicle-name">{{ myContract.vehicle_name }}</span>
-        </div>
-        <span class="status-badge" :style="{ background: contractStore.getStatusColor(myContract.status) }">
-          {{ $t('status.' + myContract.status) }}
-        </span>
+    <Transition name="fade-slide" mode="out-in">
+      <div v-if="contractStore.isLoading" key="loading" class="loading-state">
+        <div class="spinner"></div>
+        <p>{{ $t('common.loading') }}</p>
       </div>
 
-      <div class="contract-info-grid">
-        <div class="info-item">
-          <span class="label">{{ $t('contract.vehicleType') }}</span>
-          <span class="value">{{ myContract.vehicle_type }}</span>
-        </div>
-        <div class="info-item">
-          <span class="label">{{ $t('vehicle.registration') }}</span>
-          <span class="value">{{ myContract.vehicle_registration }}</span>
-        </div>
-        <div class="info-item">
-          <span class="label">{{ $t('contract.contractType') }}</span>
-            <span class="value">{{ $t('contract.' + myContract.contract_type) }}</span>
-        </div>
-        <div class="info-item">
-          <span class="label">{{ $t('contract.paymentFreq') }}</span>
-            <span class="value">{{ $t('status.' + myContract.payment_frequency) }}</span>
-        </div>
-        <div class="info-item">
-          <span class="label">{{ $t('contract.startDate') }}</span>
-          <span class="value">{{ formatDate(myContract.start_date) }}</span>
-        </div>
-        <div class="info-item">
-          <span class="label">{{ $t('contract.endDate') }}</span>
-          <span class="value">{{ formatDate(myContract.end_date) }}</span>
-        </div>
-        <div class="info-item">
-          <span class="label">{{ $t('contract.amount') }}</span>
-          <span class="value highlight">TZS {{ myContract.weekly_amount }}/wk</span>
-        </div>
-        <div class="info-item">
-          <span class="label">{{ $t('contract.deposit') }}</span>
-          <span class="value">TZS {{ myContract.deposit.toLocaleString() }}</span>
-        </div>
-      </div>
-
-      <div class="progress-section">
-        <h3>{{ $t('employee.paymentProgress') }}</h3>
-        <div class="progress-wrapper">
-          <div class="progress-bar">
-            <div class="progress-fill" :style="{ width: contractStore.getProgress(myContract) + '%' }"></div>
+      <div v-else-if="myContract" key="contract" class="contract-details">
+        <div class="contract-header">
+          <div>
+            <h2>{{ myContract.contract_number }}</h2>
+            <span class="vehicle-name">{{ myContract.vehicle_name }}</span>
           </div>
-          <div class="progress-stats">
-            <span>{{ $t('employee.paid') }}: TZS {{ myContract.paid_amount.toLocaleString() }}</span>
-            <span>{{ $t('employee.remaining') }}: TZS {{ myContract.remaining_amount.toLocaleString() }}</span>
-            <span>{{ contractStore.getProgress(myContract) }}% {{ $t('employee.complete') }}</span>
+          <span class="status-badge" :style="{ background: contractStore.getStatusColor(myContract.status) }">
+            {{ $t('status.' + myContract.status) }}
+          </span>
+        </div>
+
+        <div class="contract-info-grid">
+          <div class="info-item">
+            <span class="label">{{ $t('contract.vehicleType') }}</span>
+            <span class="value">{{ myContract.vehicle_type }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">{{ $t('vehicle.registration') }}</span>
+            <span class="value">{{ myContract.vehicle_registration }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">{{ $t('contract.contractType') }}</span>
+              <span class="value">{{ $t('contract.' + myContract.contract_type) }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">{{ $t('contract.paymentFreq') }}</span>
+              <span class="value">{{ $t('status.' + myContract.payment_frequency) }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">{{ $t('contract.startDate') }}</span>
+            <span class="value">{{ formatDate(myContract.start_date) }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">{{ $t('contract.endDate') }}</span>
+            <span class="value">{{ formatDate(myContract.end_date) }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">{{ $t('contract.amount') }}</span>
+            <span class="value highlight">TZS {{ myContract.weekly_amount }}/wk</span>
+          </div>
+          <div class="info-item">
+            <span class="label">{{ $t('contract.deposit') }}</span>
+            <span class="value">TZS {{ myContract.deposit.toLocaleString() }}</span>
           </div>
         </div>
+
+        <div class="progress-section">
+          <h3>{{ $t('employee.paymentProgress') }}</h3>
+          <div class="progress-wrapper">
+            <div class="progress-bar">
+              <div class="progress-fill" :style="{ width: contractStore.getProgress(myContract) + '%' }"></div>
+            </div>
+            <div class="progress-stats">
+              <span>{{ $t('employee.paid') }}: TZS {{ myContract.paid_amount.toLocaleString() }}</span>
+              <span>{{ $t('employee.remaining') }}: TZS {{ myContract.remaining_amount.toLocaleString() }}</span>
+              <span>{{ contractStore.getProgress(myContract) }}% {{ $t('employee.complete') }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="myContract.notes" class="notes-section">
+          <h3>{{ $t('contract.notes') }}</h3>
+          <p>{{ myContract.notes }}</p>
+        </div>
       </div>
 
-      <div v-if="myContract.notes" class="notes-section">
-        <h3>{{ $t('contract.notes') }}</h3>
-        <p>{{ myContract.notes }}</p>
+      <div v-else key="empty" class="no-contract">
+        <font-awesome-icon icon="fa-solid fa-file-contract" size="3x" />
+        <h3>{{ $t('employee.noActiveContract') }}</h3>
+        <p>{{ $t('employee.noActiveContractDesc') }}</p>
+        <p class="hint">{{ $t('employee.contactEmployer') }}</p>
       </div>
-    </div>
-
-    <div v-else class="no-contract">
-      <font-awesome-icon icon="fa-solid fa-file-contract" size="3x" />
-      <h3>{{ $t('employee.noActiveContract') }}</h3>
-      <p>{{ $t('employee.noActiveContractDesc') }}</p>
-      <p class="hint">{{ $t('employee.contactEmployer') }}</p>
-    </div>
+    </Transition>
   </div>
 </template>
 
@@ -238,6 +240,19 @@ onMounted(() => { contractStore.fetchContracts() })
 .no-contract svg { opacity: 0.3; margin-bottom: 16px; }
 .no-contract h3 { color: #fff; margin-bottom: 8px; }
 .no-contract .hint { font-size: 0.85rem; color: rgba(255,255,255,0.2); margin-top: 8px; }
+
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.25s ease;
+}
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateY(12px);
+}
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-12px);
+}
 
 @media (max-width: 768px) {
   .contract-info-grid { grid-template-columns: 1fr; }

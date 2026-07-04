@@ -53,77 +53,76 @@
       </div>
     </div>
 
-    <!-- Loading -->
-    <div v-if="contractStore.isLoading" class="loading-state">
-      <div class="spinner"></div>
-      <p>{{ $t('contract.loading') }}</p>
-    </div>
-
-    <!-- Table / Empty -->
-    <Transition v-if="!contractStore.isLoading" name="fade-slide">
-      <div v-if="filteredContracts.length > 0" key="table" class="table-container">
-        <table class="contracts-table">
-          <thead>
-            <tr>
-              <th>{{ $t('contract.number') }}</th>
-              <th>{{ $t('contract.driver') }}</th>
-              <th>{{ $t('contract.vehicle') }}</th>
-              <th>{{ $t('contract.type') }}</th>
-              <th>{{ $t('contract.progress') }}</th>
-              <th>{{ $t('contract.status') }}</th>
-              <th>{{ $t('common.actions') }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="contract in paginatedData" :key="contract.id" class="table-row-fade">
-              <td><strong>{{ contract.contract_number }}</strong></td>
-              <td>{{ contract.driver_name }}</td>
-              <td>
-                <font-awesome-icon :icon="getTypeIcon(contract.vehicle_type)" size="xs" />
-                {{ contract.vehicle_name }}
-              </td>
-              <td>
-                <span class="type-badge" :class="contract.contract_type">
-                  {{ $t('status.' + contract.contract_type) }}
-                </span>
-              </td>
-              <td>
-                <div class="progress-container">
-                  <div class="progress-bar">
-                    <div class="progress-fill" :style="{ width: contractStore.getProgress(contract) + '%' }"></div>
-                  </div>
-                  <span class="progress-text">{{ contractStore.getProgress(contract) }}%</span>
-                </div>
-              </td>
-              <td>
-                <span class="status-badge" :style="{ background: contractStore.getStatusColor(contract.status) }">
-                  {{ $t('status.' + contract.status) }}
-                </span>
-              </td>
-              <td>
-                <button @click="viewContract(contract)" class="btn-icon" :title="$t('common.view')">
-                  <font-awesome-icon icon="fa-regular fa-eye" />
-                </button>
-                <button @click="editContract(contract)" class="btn-icon" :title="$t('common.edit')">
-                  <font-awesome-icon icon="fa-solid fa-pen" />
-                </button>
-                <button @click="downloadPdf(contract)" class="btn-icon pdf" :title="$t('contract.downloadPdf')">
-                  <font-awesome-icon :icon="['far', 'file-pdf']" />
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <Pagination :current-page="page" :per-page="perPage" :total="filteredContracts.length" @page-change="page = $event" />
+    <Transition name="fade-slide" mode="out-in">
+      <div v-if="contractStore.isLoading" key="loading" class="loading-state">
+        <div class="spinner"></div>
+        <p>{{ $t('contract.loading') }}</p>
       </div>
-      <div v-else key="empty" class="empty-state">
-      <font-awesome-icon icon="fa-solid fa-file-contract" size="3x" />
-      <h3>{{ $t('common.noContracts') }}</h3>
-      <p>{{ $t('contract.noContractsDesc') }}</p>
-      <button class="btn-primary" @click="openCreateModal">
-        <font-awesome-icon icon="fa-solid fa-plus" /> {{ $t('contract.createContract') }}
-      </button>
-    </div>
+      <div v-else key="content">
+        <div v-if="filteredContracts.length > 0" class="table-container">
+          <table class="contracts-table">
+            <thead>
+              <tr>
+                <th>{{ $t('contract.number') }}</th>
+                <th>{{ $t('contract.driver') }}</th>
+                <th>{{ $t('contract.vehicle') }}</th>
+                <th>{{ $t('contract.type') }}</th>
+                <th>{{ $t('contract.progress') }}</th>
+                <th>{{ $t('contract.status') }}</th>
+                <th>{{ $t('common.actions') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="contract in paginatedData" :key="contract.id">
+                <td><strong>{{ contract.contract_number }}</strong></td>
+                <td>{{ contract.driver_name }}</td>
+                <td>
+                  <font-awesome-icon :icon="getTypeIcon(contract.vehicle_type)" size="xs" />
+                  {{ contract.vehicle_name }}
+                </td>
+                <td>
+                  <span class="type-badge" :class="contract.contract_type">
+                    {{ $t('status.' + contract.contract_type) }}
+                  </span>
+                </td>
+                <td>
+                  <div class="progress-container">
+                    <div class="progress-bar">
+                      <div class="progress-fill" :style="{ width: contractStore.getProgress(contract) + '%' }"></div>
+                    </div>
+                    <span class="progress-text">{{ contractStore.getProgress(contract) }}%</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="status-badge" :style="{ background: contractStore.getStatusColor(contract.status) }">
+                    {{ $t('status.' + contract.status) }}
+                  </span>
+                </td>
+                <td>
+                  <button @click="viewContract(contract)" class="btn-icon" :title="$t('common.view')">
+                    <font-awesome-icon icon="fa-regular fa-eye" />
+                  </button>
+                  <button @click="editContract(contract)" class="btn-icon" :title="$t('common.edit')">
+                    <font-awesome-icon icon="fa-solid fa-pen" />
+                  </button>
+                  <button @click="downloadPdf(contract)" class="btn-icon pdf" :title="$t('contract.downloadPdf')">
+                    <font-awesome-icon :icon="['far', 'file-pdf']" />
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <Pagination :current-page="page" :per-page="perPage" :total="filteredContracts.length" @page-change="page = $event" />
+        </div>
+        <div v-else class="empty-state">
+          <font-awesome-icon icon="fa-solid fa-file-contract" size="3x" />
+          <h3>{{ $t('common.noContracts') }}</h3>
+          <p>{{ $t('contract.noContractsDesc') }}</p>
+          <button class="btn-primary" @click="openCreateModal">
+            <font-awesome-icon icon="fa-solid fa-plus" /> {{ $t('contract.createContract') }}
+          </button>
+        </div>
+      </div>
     </Transition>
 
     <!-- Create Modal -->
@@ -490,11 +489,18 @@ onMounted(async () => {
 }
 .progress-text { font-size: 0.7rem; color: rgba(255,255,255,0.3); }
 
-.table-row-fade { animation: fadeIn 0.3s ease both; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-.fade-slide-enter-active { transition: all 0.25s ease; }
-.fade-slide-enter-from { opacity: 0; transform: translateY(12px); }
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.25s ease;
+}
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateY(12px);
+}
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-12px);
+}
 
 .btn-icon.pdf:hover { background: rgba(255,77,77,0.15); color: #ff4d4d; }
 
