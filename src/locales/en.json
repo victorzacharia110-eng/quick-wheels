@@ -487,7 +487,11 @@
     "new": "New",
     "vehicleType": "Vehicle Type",
     "contractType": "Contract Type",
-    "notes": "Notes"
+    "notes": "Notes",
+    "editContract": "Edit Contract",
+    "contractDetails": "Contract Details",
+    "paid": "Paid",
+    "remaining": "Remaining"
   },
   "payment": {
     "title": "Payments",

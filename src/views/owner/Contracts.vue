@@ -1,3 +1,163 @@
+
+<script setup>
+import { ref, computed, onMounted, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useContractStore } from '@/stores/contracts'
+import Pagination from '@/components/common/Pagination.vue'
+import { useVehicleStore } from '@/stores/vehicles'
+import { useEmployeeStore } from '@/stores/employees'
+import { useAuthStore } from '@/stores/auth'
+import api from '@/composables/api'
+
+const { t } = useI18n()
+const contractStore = useContractStore()
+const vehicleStore = useVehicleStore()
+const employeeStore = useEmployeeStore()
+const authStore = useAuthStore()
+
+const searchQuery = ref('')
+const filterType = ref('all')
+const filterStatus = ref('all')
+const showCreateModal = ref(false)
+const showViewModal = ref(false)
+const viewingContract = ref(null)
+const isEditing = ref(false)
+const editingContractId = ref(null)
+const isSaving = ref(false)
+const page = ref(1)
+const perPage = 15
+
+const form = ref({
+  employee_id: '',
+  vehicle_id: '',
+  contract_type: 'hire_purchase',
+  payment_frequency: 'weekly',
+  start_date: new Date().toISOString().split('T')[0],
+  end_date: '',
+  amount: '',
+  deposit: '',
+  notes: ''
+})
+
+const filteredContracts = computed(() => {
+  let filtered = contractStore.contracts
+  if (filterType.value !== 'all') {
+    filtered = filtered.filter(c => c.contract_type === filterType.value)
+  }
+  if (filterStatus.value !== 'all') {
+    filtered = filtered.filter(c => c.status === filterStatus.value)
+  }
+  if (searchQuery.value) {
+    const q = searchQuery.value.toLowerCase()
+    filtered = filtered.filter(c => 
+      c.driver_name?.toLowerCase().includes(q) ||
+      c.vehicle_name?.toLowerCase().includes(q) ||
+      c.contract_number?.toLowerCase().includes(q)
+    )
+  }
+  return filtered
+})
+
+const paginatedData = computed(() => {
+  const start = (page.value - 1) * perPage
+  return filteredContracts.value.slice(start, start + perPage)
+})
+
+watch(searchQuery, () => { page.value = 1 })
+
+function getTypeIcon(type) {
+  const icons = {
+    Motorcycle: 'fa-solid fa-motorcycle',
+    Bajaji: 'fa-solid fa-truck-front',
+    Car: 'fa-solid fa-car',
+    SUV: 'fa-solid fa-truck'
+  }
+  return icons[type] || 'fa-solid fa-car'
+}
+
+function openCreateModal() {
+  isEditing.value = false; editingContractId.value = null
+  form.value = {
+    employee_id: '', vehicle_id: '', contract_type: 'hire_purchase',
+    payment_frequency: 'weekly', start_date: new Date().toISOString().split('T')[0],
+    end_date: '', amount: '', deposit: '', notes: ''
+  }
+  showCreateModal.value = true
+}
+function viewContract(contract) {
+  viewingContract.value = contract
+  showViewModal.value = true
+}
+function editContract(contract) {
+  isEditing.value = true; editingContractId.value = contract.id
+  form.value = {
+    employee_id: contract.employee_id || contract.driver_id || '',
+    vehicle_id: contract.vehicle_id || '',
+    contract_type: contract.contract_type || 'hire_purchase',
+    payment_frequency: contract.payment_frequency || 'weekly',
+    start_date: contract.start_date || new Date().toISOString().split('T')[0],
+    end_date: contract.end_date || '',
+    amount: contract.total_amount || '',
+    deposit: contract.deposit || 0,
+    notes: contract.notes || ''
+  }
+  showCreateModal.value = true
+}
+
+async function downloadPdf(contract) {
+  try {
+    const lang = localStorage.getItem('locale') || 'en'
+    const res = await api.get(`/contracts/${contract.id}/pdf`, {
+      params: { lang },
+      responseType: 'blob'
+    })
+    const url = URL.createObjectURL(res.data)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `contract_${contract.contract_number}.pdf`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  } catch (err) {
+    alert(t('contract.downloadPdf') + ': ' + (err.response?.data?.message || err.message))
+  }
+}
+
+async function saveContract() {
+  isSaving.value = true
+  try {
+    const payload = {
+      employee_id: form.value.employee_id,
+      vehicle_id: form.value.vehicle_id,
+      contract_type: form.value.contract_type,
+      payment_frequency: form.value.payment_frequency,
+      start_date: form.value.start_date,
+      end_date: form.value.end_date,
+      total_amount: form.value.amount,
+      deposit: form.value.deposit || 0,
+      notes: form.value.notes,
+    }
+    if (isEditing.value) {
+      await contractStore.updateContract(editingContractId.value, payload)
+    } else {
+      await contractStore.createContract(payload)
+    }
+    showCreateModal.value = false
+  } catch (err) {
+    alert(err.response?.data?.message || err.message || 'Failed to save contract')
+  } finally { isSaving.value = false }
+}
+
+onMounted(async () => {
+  await Promise.all([
+    contractStore.fetchContracts(),
+    vehicleStore.fetchVehicles(),
+    employeeStore.fetchEmployees()
+  ])
+})
+</script>
+
 <template>
   <div class="contracts-page">
     <!-- Header -->
@@ -125,12 +285,12 @@
       </div>
     </Transition>
 
-    <!-- Create Modal -->
+    <!-- Create / Edit Modal -->
     <Transition name="modal">
       <div v-if="showCreateModal" class="modal-overlay" @click.self="showCreateModal = false">
         <div class="modal-box large">
           <div class="modal-header">
-            <h3>{{ $t('contract.newContract') }}</h3>
+            <h3>{{ isEditing ? $t('contract.editContract') : $t('contract.newContract') }}</h3>
             <button class="modal-close" @click="showCreateModal = false">
               <font-awesome-icon icon="fa-solid fa-times" />
             </button>
@@ -193,142 +353,98 @@
             <div class="modal-actions">
               <button type="button" @click="showCreateModal = false" class="btn-outline">{{ $t('common.cancel') }}</button>
               <button type="submit" class="btn-primary" :disabled="isSaving">
-                <span v-if="isSaving"><span class="spinner-sm"></span> {{ $t('contract.creating') }}</span>
-                <span v-else>{{ $t('contract.createContract') }}</span>
+                <span v-if="isSaving"><span class="spinner-sm"></span> {{ isEditing ? $t('common.saving') : $t('contract.creating') }}</span>
+                <span v-else>{{ isEditing ? $t('common.save') : $t('contract.createContract') }}</span>
               </button>
             </div>
           </form>
         </div>
       </div>
     </Transition>
+
+    <!-- View Modal -->
+    <Transition name="modal">
+      <div v-if="showViewModal && viewingContract" class="modal-overlay" @click.self="showViewModal = false">
+        <div class="modal-box">
+          <div class="modal-header">
+            <h3>{{ $t('contract.contractDetails') }} — {{ viewingContract.contract_number }}</h3>
+            <button class="modal-close" @click="showViewModal = false">
+              <font-awesome-icon icon="fa-solid fa-times" />
+            </button>
+          </div>
+          <div class="view-grid">
+            <div class="view-field">
+              <label>{{ $t('contract.driver') }}</label>
+              <span>{{ viewingContract.driver_name }}</span>
+            </div>
+            <div class="view-field">
+              <label>{{ $t('contract.vehicle') }}</label>
+              <span>{{ viewingContract.vehicle_name }}</span>
+            </div>
+            <div class="view-field">
+              <label>{{ $t('contract.type') }}</label>
+              <span>{{ $t('status.' + viewingContract.contract_type) }}</span>
+            </div>
+            <div class="view-field">
+              <label>{{ $t('contract.paymentFreq') }}</label>
+              <span>{{ $t('status.' + viewingContract.payment_frequency) }}</span>
+            </div>
+            <div class="view-field">
+              <label>{{ $t('contract.startDate') }}</label>
+              <span>{{ viewingContract.start_date }}</span>
+            </div>
+            <div class="view-field">
+              <label>{{ $t('contract.endDate') }}</label>
+              <span>{{ viewingContract.end_date }}</span>
+            </div>
+            <div class="view-field">
+              <label>{{ $t('contract.amount') }}</label>
+              <span>{{ viewingContract.total_amount_formatted || viewingContract.total_amount }}</span>
+            </div>
+            <div class="view-field">
+              <label>{{ $t('contract.deposit') }}</label>
+              <span>{{ viewingContract.deposit_formatted || viewingContract.deposit }}</span>
+            </div>
+            <div class="view-field">
+              <label>{{ $t('contract.paid') }}</label>
+              <span class="text-success">{{ viewingContract.paid_amount_formatted || viewingContract.paid_amount }}</span>
+            </div>
+            <div class="view-field">
+              <label>{{ $t('contract.remaining') }}</label>
+              <span class="text-warning">{{ viewingContract.remaining_amount_formatted || viewingContract.remaining_amount }}</span>
+            </div>
+            <div class="view-field">
+              <label>{{ $t('common.status') }}</label>
+              <span class="status-badge" :style="{ background: viewingContract.status_color || contractStore.getStatusColor(viewingContract.status) }">
+                {{ $t('status.' + viewingContract.status) }}
+              </span>
+            </div>
+            <div class="view-field">
+              <label>{{ $t('contract.progress') }}</label>
+              <div class="progress-container">
+                <div class="progress-bar">
+                  <div class="progress-fill" :style="{ width: (viewingContract.progress || contractStore.getProgress(viewingContract)) + '%' }"></div>
+                </div>
+                <span class="progress-text">{{ viewingContract.progress || contractStore.getProgress(viewingContract) }}%</span>
+              </div>
+            </div>
+            <div v-if="viewingContract.notes" class="view-field full-width">
+              <label>{{ $t('contract.notes') }}</label>
+              <span>{{ viewingContract.notes }}</span>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button type="button" @click="downloadPdf(viewingContract)" class="btn-primary">
+              <font-awesome-icon icon="fa-solid fa-file-pdf" /> {{ $t('contract.downloadPdf') }}
+            </button>
+            <button type="button" @click="showViewModal = false" class="btn-outline">{{ $t('common.close') }}</button>
+          </div>
+        </div>
+      </div>
+    </Transition>
   </div>
 </template>
 
-<script setup>
-import { ref, computed, onMounted, watch } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useContractStore } from '@/stores/contracts'
-import Pagination from '@/components/common/Pagination.vue'
-import { useVehicleStore } from '@/stores/vehicles'
-import { useEmployeeStore } from '@/stores/employees'
-import { useAuthStore } from '@/stores/auth'
-import api from '@/composables/api'
-
-const { t } = useI18n()
-const contractStore = useContractStore()
-const vehicleStore = useVehicleStore()
-const employeeStore = useEmployeeStore()
-const authStore = useAuthStore()
-
-const searchQuery = ref('')
-const filterType = ref('all')
-const filterStatus = ref('all')
-const showCreateModal = ref(false)
-const isSaving = ref(false)
-const page = ref(1)
-const perPage = 15
-
-const form = ref({
-  employee_id: '',
-  vehicle_id: '',
-  contract_type: 'hire_purchase',
-  payment_frequency: 'weekly',
-  start_date: new Date().toISOString().split('T')[0],
-  end_date: '',
-  amount: '',
-  deposit: '',
-  notes: ''
-})
-
-const filteredContracts = computed(() => {
-  let filtered = contractStore.contracts
-  if (filterType.value !== 'all') {
-    filtered = filtered.filter(c => c.contract_type === filterType.value)
-  }
-  if (filterStatus.value !== 'all') {
-    filtered = filtered.filter(c => c.status === filterStatus.value)
-  }
-  if (searchQuery.value) {
-    const q = searchQuery.value.toLowerCase()
-    filtered = filtered.filter(c => 
-      c.driver_name?.toLowerCase().includes(q) ||
-      c.vehicle_name?.toLowerCase().includes(q) ||
-      c.contract_number?.toLowerCase().includes(q)
-    )
-  }
-  return filtered
-})
-
-const paginatedData = computed(() => {
-  const start = (page.value - 1) * perPage
-  return filteredContracts.value.slice(start, start + perPage)
-})
-
-watch(searchQuery, () => { page.value = 1 })
-
-function getTypeIcon(type) {
-  const icons = {
-    Motorcycle: 'fa-solid fa-motorcycle',
-    Bajaji: 'fa-solid fa-truck-front',
-    Car: 'fa-solid fa-car',
-    SUV: 'fa-solid fa-truck'
-  }
-  return icons[type] || 'fa-solid fa-car'
-}
-
-function openCreateModal() { showCreateModal.value = true }
-function viewContract(contract) { /* view logic */ }
-function editContract(contract) { /* edit logic */ }
-
-async function downloadPdf(contract) {
-  try {
-    const lang = localStorage.getItem('locale') || 'en'
-    const res = await api.get(`/contracts/${contract.id}/pdf`, {
-      params: { lang },
-      responseType: 'blob'
-    })
-    const url = URL.createObjectURL(res.data)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `contract_${contract.contract_number}.pdf`
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    URL.revokeObjectURL(url)
-  } catch (err) {
-    alert(t('contract.downloadPdf') + ': ' + (err.response?.data?.message || err.message))
-  }
-}
-
-async function saveContract() {
-  isSaving.value = true
-  try {
-    const payload = {
-      employee_id: form.value.employee_id,
-      vehicle_id: form.value.vehicle_id,
-      contract_type: form.value.contract_type,
-      payment_frequency: form.value.payment_frequency,
-      start_date: form.value.start_date,
-      end_date: form.value.end_date,
-      total_amount: form.value.amount,
-      deposit: form.value.deposit || 0,
-      notes: form.value.notes,
-    }
-    await contractStore.createContract(payload)
-    showCreateModal.value = false
-  } catch (err) {
-    alert(err.response?.data?.message || err.message || 'Failed to create contract')
-  } finally { isSaving.value = false }
-}
-
-onMounted(async () => {
-  await Promise.all([
-    contractStore.fetchContracts(),
-    vehicleStore.fetchVehicles(),
-    employeeStore.fetchEmployees()
-  ])
-})
-</script>
 
 <style scoped>
 .contracts-page { padding: 0; }
@@ -649,4 +765,31 @@ textarea.form-input { resize: vertical; min-height: 60px; }
   .modal-actions .btn-primary,
   .modal-actions .btn-outline { width: 100%; justify-content: center; }
 }
+
+.view-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.view-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.view-field.full-width {
+  grid-column: 1 / -1;
+}
+.view-field label {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+.view-field span {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.85);
+}
+.text-success { color: #4ADE80; }
+.text-warning { color: #FFD93D; }
 </style>
