@@ -4,7 +4,7 @@
     <main>
       <router-view v-slot="{ Component }">
         <Transition name="page" mode="out-in">
-          <component :is="Component" :key="$route.fullPath" />
+          <component :is="Component" :key="$route.matched[0]?.path || $route.path" />
         </Transition>
       </router-view>
     </main>
