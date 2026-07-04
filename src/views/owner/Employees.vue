@@ -47,6 +47,7 @@
               <td>{{ employee.vehicle_name || '—' }}</td>
               <td>
                 <span class="status-badge" :class="employee.status">{{ $t('status.' + employee.status) }}</span>
+                
               </td>
               <td>
                 <button @click="openEditModal(employee)" class="btn-icon" :title="$t('common.edit')"><font-awesome-icon icon="fa-solid fa-pen" /></button>
