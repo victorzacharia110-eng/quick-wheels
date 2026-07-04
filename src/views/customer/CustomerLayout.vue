@@ -224,7 +224,7 @@ const discoverNav = [
 .lang-select:focus { border-color: rgba(0,229,255,0.4); }
 .topbar-icon-btn { position: relative; background: none; border: none; color: rgba(255, 255, 255, 0.5); cursor: pointer; padding: 4px; transition: color 0.2s; }
 .topbar-icon-btn:hover { color: #fff; }
-.customer-content { flex: 1; overflow-y: auto; padding: 28px; }
+.customer-content { flex: 1; overflow-y: auto; overflow-x: hidden; scrollbar-gutter: stable; padding: 28px; }
 @media (max-width: 768px) {
   .customer-root { grid-template-columns: 1fr; }
   .hamburger-btn { display: flex !important; }
