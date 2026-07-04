@@ -213,22 +213,16 @@ async function handleSave() {
       if (!res.success) { errorMsg.value = res.message || t('common.error'); return }
       if (form.value.vehicle_id) {
         await employeeStore.assignVehicle(editingId.value, form.value.vehicle_id)
-        const vehicle = vehicleStore.getVehicle(form.value.vehicle_id)
-        const emp = employeeStore.getEmployee(editingId.value)
-        if (vehicle && emp) emp.vehicle_name = vehicle.name
       }
     } else {
       const res = await employeeStore.createEmployee(form.value)
       if (!res.success) { errorMsg.value = res.message || t('common.error'); return }
-      const newId = res.data.id
       if (form.value.vehicle_id) {
-        await employeeStore.assignVehicle(newId, form.value.vehicle_id)
-        const vehicle = vehicleStore.getVehicle(form.value.vehicle_id)
-        const emp = employeeStore.getEmployee(newId)
-        if (vehicle && emp) emp.vehicle_name = vehicle.name
+        await employeeStore.assignVehicle(res.data.id, form.value.vehicle_id)
       }
     }
     showModal.value = false
+    employeeStore.fetchEmployees()
   } catch (_) { errorMsg.value = t('common.unexpectedError') } finally { saving.value = false }
 }
 
