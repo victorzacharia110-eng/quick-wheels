@@ -54,8 +54,8 @@ export const useVehicleStore = defineStore('vehicles', () => {
     isLoading.value = true
     error.value = null
     try {
-      const { data } = await api.get('/vehicles')
-      vehicles.value = data.data || []
+      const { data } = await api.get('/owner/vehicles')
+      vehicles.value = data.data?.data || data.data || []
       return { success: true, data: vehicles.value }
     } catch (err) {
       error.value = err.response?.data?.message || err.message
