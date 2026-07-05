@@ -22,10 +22,12 @@
       <input v-model="searchQuery" type="text" :placeholder="$t('employee.searchPlaceholder')" class="search-input" />
     </div>
 
-    <div v-if="employeeStore.isLoading" class="loading-state"><div class="spinner"></div><p>{{ $t('employee.loading') }}</p></div>
-
+    <div v-if="employeeStore.isLoading" class="loading-skeleton-group">
+      <SkeletonLoader variant="table" :rows="8" :cols="7" />
+    </div>
+    <template v-else>
     <Transition name="fade-slide" mode="out-in">
-      <div v-if="!employeeStore.isLoading && filteredEmployees.length > 0" key="table" class="table-container">
+      <div v-if="filteredEmployees.length > 0" key="table" class="table-container">
         <table class="employees-table">
           <thead>
             <tr>
@@ -65,6 +67,7 @@
         <button class="btn-primary" @click="openCreateModal"><font-awesome-icon icon="fa-solid fa-plus" /> {{ $t('employee.addDriver') }}</button>
       </div>
     </Transition>
+    </template>
 
     <Transition name="modal">
       <div v-if="showModal" class="modal-overlay" @click.self="showModal = false">
@@ -171,6 +174,7 @@ import { useI18n } from 'vue-i18n'
 import { useEmployeeStore } from '@/stores/employees'
 import { useVehicleStore } from '@/stores/vehicles'
 import Pagination from '@/components/common/Pagination.vue'
+import SkeletonLoader from '@/components/common/SkeletonLoader.vue'
 
 const { t } = useI18n()
 const employeeStore = useEmployeeStore()

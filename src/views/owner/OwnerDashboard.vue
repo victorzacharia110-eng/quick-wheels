@@ -54,10 +54,8 @@
     </div>
 
     <!-- Loading -->
-    <div v-if="contractStore.isLoading" class="loading-state">
-      <div class="spinner"></div>
-      <p>{{ $t('contract.loading') }}</p>
-    </div>
+    <SkeletonLoader v-if="contractStore.isLoading" variant="stats" :rows="4" />
+    <SkeletonLoader v-if="contractStore.isLoading" variant="table" :rows="5" :cols="7" />
 
     <!-- Table -->
     <div v-else-if="filteredContracts.length > 0" class="table-container">
@@ -288,6 +286,7 @@ import { useI18n } from 'vue-i18n'
 import { useContractStore } from '@/stores/contracts'
 import { useVehicleStore } from '@/stores/vehicles'
 import { useEmployeeStore } from '@/stores/employees'
+import SkeletonLoader from '@/components/common/SkeletonLoader.vue'
 
 const { t } = useI18n()
 const contractStore = useContractStore()

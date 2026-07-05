@@ -27,14 +27,11 @@
       </div>
     </div>
 
-    <!-- Loading -->
-    <div v-if="paymentStore.isLoading" class="loading-state">
-      <div class="spinner"></div>
-      <p>{{ $t('common.loading') }}</p>
+    <div v-if="paymentStore.isLoading" class="loading-skeleton-group">
+      <SkeletonLoader variant="table" :rows="6" :cols="4" />
     </div>
-
-    <!-- Payments List -->
-    <div v-else-if="myPayments.length > 0" class="payments-list">
+    <template v-else>
+    <div v-if="myPayments.length > 0" class="payments-list">
       <div v-for="payment in paginatedData" :key="payment.id" class="payment-card">
         <div class="payment-header">
           <span class="payment-amount">TZS {{ payment.amount.toLocaleString() }}</span>
@@ -57,6 +54,7 @@
       <h3>{{ $t('common.noPayments') }}</h3>
       <p>{{ $t('employee.noPaymentsDesc') }}</p>
     </div>
+    </template>
 
     <!-- Payment Modal -->
     <Transition name="modal">
@@ -105,6 +103,7 @@ import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/auth'
 import { usePaymentStore } from '@/stores/payments'
 import Pagination from '@/components/common/Pagination.vue'
+import SkeletonLoader from '@/components/common/SkeletonLoader.vue'
 
 const authStore = useAuthStore()
 const paymentStore = usePaymentStore()

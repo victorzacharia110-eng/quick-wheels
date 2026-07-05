@@ -11,10 +11,7 @@
       </button>
     </div>
 
-    <div v-if="loading" class="loading-state">
-      <div class="spinner"></div>
-      <p>{{ $t('gps.loading') }}</p>
-    </div>
+    <SkeletonLoader v-if="loading" variant="list" :rows="10" :cols="1" />
 
     <template v-else>
       <div class="map-container">
@@ -80,6 +77,7 @@
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/auth'
+import SkeletonLoader from '@/components/common/SkeletonLoader.vue'
 
 const { t } = useI18n()
 const authStore = useAuthStore()
@@ -140,9 +138,6 @@ onUnmounted(() => clearInterval(interval))
 .page-sub { color: rgba(255,255,255,0.4); font-size: 0.95rem; }
 .spinning { animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
-
-.loading-state { display: flex; flex-direction: column; align-items: center; min-height: 200px; gap: 16px; color: rgba(255,255,255,0.3); padding-top: 60px; }
-.spinner { width: 44px; height: 44px; border: 3px solid rgba(0,196,212,0.1); border-top-color: #00C4D4; border-radius: 50%; animation: spin 0.8s linear infinite; }
 
 .map-container { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; overflow: hidden; margin-bottom: 24px; }
 .map-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); }

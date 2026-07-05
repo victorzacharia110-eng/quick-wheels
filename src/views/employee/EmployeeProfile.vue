@@ -5,10 +5,7 @@
       <p class="page-sub">{{ $t('profile.subtitle') }}</p>
     </div>
 
-    <div v-if="isLoading" class="loading-state">
-      <div class="spinner"></div>
-      <p>{{ $t('profile.loading') }}</p>
-    </div>
+    <SkeletonLoader v-if="isLoading" variant="profile" :rows="1" :cols="1" />
 
     <div v-else class="profile-card glass-card">
       <div class="profile-avatar">
@@ -54,6 +51,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/auth'
 import { useContractStore } from '@/stores/contracts'
+import SkeletonLoader from '@/components/common/SkeletonLoader.vue'
 
 const authStore = useAuthStore()
 const contractStore = useContractStore()

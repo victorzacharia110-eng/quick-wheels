@@ -3,13 +3,12 @@
     <h1 class="page-title">{{ $t('employee.myContract') }}</h1>
     <p class="page-sub">{{ $t('employee.contractSubtitle') }}</p>
 
+    <div v-if="contractStore.isLoading" class="loading-skeleton-group">
+      <SkeletonLoader variant="profile" :rows="1" :cols="1" />
+    </div>
+    <template v-else>
     <Transition name="fade-slide" mode="out-in">
-      <div v-if="contractStore.isLoading" key="loading" class="loading-state">
-        <div class="spinner"></div>
-        <p>{{ $t('common.loading') }}</p>
-      </div>
-
-      <div v-else-if="myContract" key="contract" class="contract-details">
+      <div v-if="myContract" key="contract" class="contract-details">
         <div class="contract-header">
           <div>
             <h2>{{ myContract.contract_number }}</h2>
@@ -82,6 +81,7 @@
         <p class="hint">{{ $t('employee.contactEmployer') }}</p>
       </div>
     </Transition>
+    </template>
   </div>
 </template>
 
@@ -90,6 +90,7 @@ import { computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/auth'
 import { useContractStore } from '@/stores/contracts'
+import SkeletonLoader from '@/components/common/SkeletonLoader.vue'
 
 const authStore = useAuthStore()
 const contractStore = useContractStore()

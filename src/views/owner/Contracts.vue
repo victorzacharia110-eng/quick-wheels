@@ -7,6 +7,7 @@ import Pagination from '@/components/common/Pagination.vue'
 import { useVehicleStore } from '@/stores/vehicles'
 import { useEmployeeStore } from '@/stores/employees'
 import { useAuthStore } from '@/stores/auth'
+import SkeletonLoader from '@/components/common/SkeletonLoader.vue'
 import api from '@/composables/api'
 
 const { t } = useI18n()
@@ -213,12 +214,13 @@ onMounted(async () => {
       </div>
     </div>
 
+    <div v-if="contractStore.isLoading" class="loading-skeleton-group">
+      <SkeletonLoader variant="stats" :rows="4" />
+      <SkeletonLoader variant="table" :rows="8" :cols="7" />
+    </div>
+    <template v-else>
     <Transition name="fade-slide" mode="out-in">
-      <div v-if="contractStore.isLoading" key="loading" class="loading-state">
-        <div class="spinner"></div>
-        <p>{{ $t('contract.loading') }}</p>
-      </div>
-      <div v-else key="content">
+      <div key="content">
         <div v-if="filteredContracts.length > 0" class="table-container">
           <table class="contracts-table">
             <thead>
@@ -284,6 +286,7 @@ onMounted(async () => {
         </div>
       </div>
     </Transition>
+    </template>
 
     <!-- Create / Edit Modal -->
     <Transition name="modal">

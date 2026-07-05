@@ -23,10 +23,12 @@
       <input v-model="searchQuery" type="text" :placeholder="$t('vehicle.searchPlaceholder')" class="search-input" />
     </div>
 
-    <div v-if="isLoading" class="loading-state"><div class="spinner"></div><p>{{ $t('vehicle.loading') }}</p></div>
-
+    <div v-if="isLoading" class="loading-skeleton-group">
+      <SkeletonLoader variant="table" :rows="8" :cols="7" />
+    </div>
+    <template v-else>
     <Transition name="fade-slide">
-      <div v-if="!isLoading && filtered.length > 0" key="table" class="table-container">
+      <div v-if="filtered.length > 0" key="table" class="table-container">
         <table class="vehicles-table">
           <thead>
             <tr>
@@ -67,6 +69,7 @@
         <button class="btn-primary" @click="openCreateModal"><font-awesome-icon icon="fa-solid fa-plus" /> {{ $t('vehicle.addNew') }}</button>
       </div>
     </Transition>
+    </template>
 
     <Transition name="modal">
       <div v-if="showModal" class="modal-overlay" @click.self="showModal = false">
@@ -137,6 +140,7 @@ import { ref, computed, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useVehicleStore } from '@/stores/vehicles'
 import Pagination from '@/components/common/Pagination.vue'
+import SkeletonLoader from '@/components/common/SkeletonLoader.vue'
 
 const { t } = useI18n()
 const store = useVehicleStore()

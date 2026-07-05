@@ -40,14 +40,11 @@
       </select>
     </div>
 
-    <Transition name="fade-slide" mode="out-in">
-      <div v-if="paymentStore.isLoading" key="loading" class="loading-state">
-        <div class="spinner"></div>
-        <p>{{ $t('payment.loading') }}</p>
-      </div>
-
-      <div v-else key="content">
-        <div v-if="filteredPayments.length > 0" class="table-container">
+    <div v-if="paymentStore.isLoading" class="loading-skeleton-group">
+      <SkeletonLoader variant="table" :rows="8" :cols="6" />
+    </div>
+    <template v-else>
+      <div v-if="filteredPayments.length > 0" class="table-container">
           <table class="payments-table">
             <thead>
               <tr>
@@ -86,8 +83,7 @@
           <h3>{{ $t('common.noPayments') }}</h3>
           <p>{{ $t('payment.noPaymentsDesc') }}</p>
         </div>
-      </div>
-    </Transition>
+    </template>
 
     <!-- Create Modal -->
     <Transition name="modal">
@@ -155,6 +151,7 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { usePaymentStore } from '@/stores/payments'
 import Pagination from '@/components/common/Pagination.vue'
+import SkeletonLoader from '@/components/common/SkeletonLoader.vue'
 
 const { t } = useI18n()
 const paymentStore = usePaymentStore()
@@ -354,24 +351,6 @@ onMounted(() => { paymentStore.fetchPayments() })
 }
 .btn-icon:hover { background: rgba(255,255,255,0.1); color: #fff; }
 .btn-icon.danger:hover { background: rgba(255,107,107,0.15); color: #ff6b6b; }
-
-.loading-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 200px;
-  gap: 16px;
-  color: rgba(255,255,255,0.3);
-}
-.spinner {
-  width: 44px; height: 44px;
-  border: 3px solid rgba(0,196,212,0.1);
-  border-top-color: #00C4D4;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
 
 .empty-state {
   text-align: center;

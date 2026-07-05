@@ -21,10 +21,7 @@
       </div>
     </div>
 
-    <div v-if="loading" class="loading-state">
-      <div class="spinner"></div>
-      <p>Loading owners...</p>
-    </div>
+    <SkeletonLoader v-if="loading" variant="table" :rows="8" :cols="5" />
 
     <div v-else-if="owners.length === 0" class="empty-state">
       <font-awesome-icon icon="fa-solid fa-building" size="3x" />
@@ -203,6 +200,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import api from '@/composables/api'
+import SkeletonLoader from '@/components/common/SkeletonLoader.vue'
 
 const owners = ref([])
 const loading = ref(true)
@@ -385,24 +383,6 @@ onMounted(fetchOwners)
   cursor: pointer;
 }
 .filter-select:focus { border-color: rgba(0,229,255,0.4); }
-
-.loading-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 200px;
-  gap: 16px;
-  color: rgba(255,255,255,0.3);
-}
-.spinner {
-  width: 44px; height: 44px;
-  border: 3px solid rgba(0,196,212,0.1);
-  border-top-color: #00C4D4;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
 
 .table-container {
   background: rgba(255,255,255,0.02);

@@ -7,13 +7,12 @@
       </div>
     </div>
 
-    <div v-if="store.isLoading && !store.contents.hero" class="loading-state">
-      <div class="spinner"></div>
-      <p>{{ $t('common.loading') }}</p>
+    <div v-if="store.isLoading && !store.contents.hero" class="loading-skeleton-group">
+      <SkeletonLoader variant="form" :rows="6" :cols="1" />
     </div>
 
-    <Transition name="fade-slide" mode="out-in">
-      <div v-if="!store.isLoading || store.contents.hero" class="content-sections">
+    <Transition v-else name="fade-slide" mode="out-in">
+      <div class="content-sections">
         <!-- Hero Section -->
         <SectionCard :title="$t('siteContent.heroSection')" :editing="editing.hero" @toggle="toggleEdit('hero')">
           <div class="form-grid">
@@ -120,6 +119,7 @@ import { useI18n } from 'vue-i18n'
 import { useSiteContentStore } from '@/stores/siteContent'
 import SectionCard from './SiteContentSectionCard.vue'
 import FormField from './SiteContentFormField.vue'
+import SkeletonLoader from '@/components/common/SkeletonLoader.vue'
 
 const { t } = useI18n()
 const store = useSiteContentStore()
@@ -205,23 +205,6 @@ onMounted(() => {
 }
 .page-sub { color: rgba(255,255,255,0.4); font-size: 0.95rem; }
 
-.loading-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 80px 0;
-  gap: 16px;
-  color: rgba(255,255,255,0.4);
-}
-.spinner {
-  width: 36px; height: 36px;
-  border: 3px solid rgba(0,229,255,0.15);
-  border-top-color: #00E5FF;
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
 
 .content-sections {
   display: flex;

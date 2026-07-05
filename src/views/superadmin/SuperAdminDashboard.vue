@@ -7,10 +7,7 @@
       </div>
     </div>
 
-    <div v-if="loading" class="loading-state">
-      <div class="spinner"></div>
-      <p>Loading dashboard data...</p>
-    </div>
+    <SkeletonLoader v-if="loading" variant="stats" :rows="4" :cols="4" />
 
     <template v-else>
       <div class="stats-grid">
@@ -92,6 +89,7 @@
 import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import api from '@/composables/api'
+import SkeletonLoader from '@/components/common/SkeletonLoader.vue'
 
 const authStore = useAuthStore()
 const loading = ref(true)
@@ -131,24 +129,6 @@ onMounted(async () => {
   margin-bottom: 4px;
 }
 .page-sub { color: rgba(255,255,255,0.4); font-size: 0.95rem; }
-
-.loading-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 200px;
-  gap: 16px;
-  color: rgba(255,255,255,0.3);
-}
-.spinner {
-  width: 44px; height: 44px;
-  border: 3px solid rgba(0,196,212,0.1);
-  border-top-color: #00C4D4;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
 
 .stats-grid {
   display: grid;

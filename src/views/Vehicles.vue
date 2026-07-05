@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import VehicleCard3D from "../components/common/VehicleCard3D.vue";
 import { useVehicleStore } from '@/stores/vehicles'
 import { storeToRefs } from 'pinia'
+import SkeletonLoader from '@/components/common/SkeletonLoader.vue'
 
 const { t } = useI18n()
 const store = useVehicleStore()
@@ -52,10 +53,7 @@ onMounted(() => {
       {{ error }}
     </div>
 
-    <div v-if="isLoading" class="loading-state">
-      <div class="spinner"></div>
-      <p>{{ $t('vehicle.loadingVehicles') }}</p>
-    </div>
+    <SkeletonLoader v-if="isLoading" variant="card" :rows="2" :cols="3" />
 
     <div v-else class="vehicles-grid-wrap">
       <TransitionGroup v-if="filteredVehicles.length > 0" name="cards" tag="div" class="vehicles-grid">
@@ -172,22 +170,6 @@ onMounted(() => {
 .cards-enter-from { opacity: 0; transform: scale(0.9) translateY(20px); }
 .cards-leave-to { opacity: 0; transform: scale(0.9); }
 
-.loading-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 300px;
-  gap: 16px;
-  color: rgba(255,255,255,0.3);
-}
-.spinner {
-  width: 44px; height: 44px;
-  border: 3px solid rgba(0,196,212,0.1);
-  border-top-color: #00c4d4;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
 .empty-state {
   text-align: center;
   padding: 80px 20px;

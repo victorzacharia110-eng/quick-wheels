@@ -5,9 +5,7 @@
       <p class="page-subtitle">{{ $t('customer.paymentsSubtitle') }}</p>
     </div>
 
-    <div v-if="loading" class="loading-container">
-      <div class="loader"></div>
-    </div>
+    <SkeletonLoader v-if="loading" variant="text" :rows="4" :cols="1" />
 
     <template v-else>
       <div class="tabs">
@@ -134,6 +132,7 @@
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/auth'
+import SkeletonLoader from '@/components/common/SkeletonLoader.vue'
 
 const { t } = useI18n()
 const authStore = useAuthStore()

@@ -7,6 +7,7 @@ import VehicleCard3D from '@/components/common/VehicleCard3D.vue'
 import { useVehicleStore } from '@/stores/vehicles'
 import { useSiteContentStore } from '@/stores/siteContent'
 import { storeToRefs } from 'pinia'
+import SkeletonLoader from '@/components/common/SkeletonLoader.vue'
 
 const { t } = useI18n()
 const store = useVehicleStore()
@@ -166,10 +167,7 @@ onMounted(() => {
         </p>
       </div>
 
-      <div v-if="isLoading" class="loading-state">
-        <div class="spinner"></div>
-        <p>{{ $t('home.loadingVehicles') }}</p>
-      </div>
+      <SkeletonLoader v-if="isLoading" variant="card" :rows="3" :cols="3" />
 
       <div v-else-if="error" class="error-banner">
         <font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ error }}
@@ -433,24 +431,6 @@ onMounted(() => {
   max-width: 1200px;
   margin: 0 auto;
 }
-
-.loading-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 200px;
-  gap: 16px;
-  color: rgba(255,255,255,0.3);
-}
-.spinner {
-  width: 44px; height: 44px;
-  border: 3px solid rgba(0,196,212,0.1);
-  border-top-color: #00C4D4;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
 
 .error-banner {
   display: flex;

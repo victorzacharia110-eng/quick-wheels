@@ -5,9 +5,7 @@
       <p class="page-subtitle">{{ $t('customer.welcomeBack') }}, {{ authStore.userName || $t('auth.customer') }}</p>
     </div>
 
-    <div v-if="loading" class="loading-container">
-      <div class="loader"></div>
-    </div>
+    <SkeletonLoader v-if="loading" variant="stats" :rows="4" :cols="4" />
 
     <template v-else>
       <div class="stats-grid">
@@ -99,6 +97,7 @@
 import { ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/stores/auth';
+import SkeletonLoader from '@/components/common/SkeletonLoader.vue';
 
 const authStore = useAuthStore();
 const { t } = useI18n();

@@ -14,10 +14,7 @@
       </div>
     </div>
 
-    <div v-if="loading" class="loading-state">
-      <div class="spinner"></div>
-      <p>{{ $t('common.loading') }}</p>
-    </div>
+    <SkeletonLoader v-if="loading" variant="card" :rows="6" :cols="3" />
 
     <div v-else-if="filteredClients.length === 0" class="empty-state">
       <font-awesome-icon icon="fa-solid fa-users" size="3x" />
@@ -64,6 +61,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import api from '@/composables/api'
+import SkeletonLoader from '@/components/common/SkeletonLoader.vue'
 
 const clients = ref([])
 const loading = ref(true)
