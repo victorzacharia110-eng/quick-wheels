@@ -65,6 +65,21 @@ export const useVehicleStore = defineStore('vehicles', () => {
     }
   }
 
+  async function fetchPublicVehicles() {
+    isLoading.value = true
+    error.value = null
+    try {
+      const { data } = await api.get('/vehicles')
+      vehicles.value = data.data || []
+      return { success: true, data: vehicles.value }
+    } catch (err) {
+      error.value = err.response?.data?.message || err.message
+      return { success: false, message: error.value }
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   async function createVehicle(data) {
     isLoading.value = true
     error.value = null
@@ -180,6 +195,7 @@ export const useVehicleStore = defineStore('vehicles', () => {
     getCategoryIcon,
     setCategory,
     fetchVehicles,
+    fetchPublicVehicles,
     createVehicle,
     updateVehicle,
     deleteVehicle,

@@ -18,7 +18,7 @@ function translateCategory(cat) {
 }
 
 onMounted(() => {
-  store.fetchVehicles()
+  store.fetchPublicVehicles()
 })
 </script>
 

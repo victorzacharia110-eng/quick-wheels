@@ -80,7 +80,7 @@ const showingText = computed(() => {
 })
 
 async function loadVehicles() {
-  await store.fetchVehicles()
+  await store.fetchPublicVehicles()
 }
 
 onMounted(() => {
