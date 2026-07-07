@@ -69,7 +69,7 @@ const services = computed(() => [
 ])
 
 const featuredVehicles = computed(() => {
-  return availableVehicles.value.slice(0, 3)
+  return vehicles.value.slice(0, 3)
 })
 
 const showingText = computed(() => {
