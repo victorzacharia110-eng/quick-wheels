@@ -91,6 +91,7 @@ async function handleLogin() {
       if (role === 'owner') router.push('/owner')
       else if (role === 'employee') router.push('/employee')
       else if (role === 'customer') router.push('/customer')
+      else if (role === 'superadmin') router.push('/superadmin')
       else router.push('/')
     } else {
       error.value = result.message || t('auth.loginFailed')
