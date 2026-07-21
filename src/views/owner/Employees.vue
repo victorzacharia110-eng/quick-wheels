@@ -277,7 +277,7 @@
                   <button @click="toggleVerify(doc)" class="btn-icon" :class="doc.is_verified ? 'success' : ''" :title="$t('documents.verify')">
                     <font-awesome-icon icon="fa-solid fa-shield-halved" />
                   </button>
-                  <a :href="doc.url" target="_blank" class="btn-icon" :title="$t('documents.view')"><font-awesome-icon icon="fa-solid fa-eye" /></a>
+                  <a :href="`${api.defaults.baseURL}/owner/employees/${selectedEmployee.value.id}/documents/${doc.id}/download`" target="_blank" class="btn-icon" :title="$t('documents.view')"><font-awesome-icon icon="fa-solid fa-eye" /></a>
                   <button @click="deleteDocument(doc)" class="btn-icon danger" :title="$t('common.delete')"><font-awesome-icon icon="fa-solid fa-trash" /></button>
                 </div>
               </div>
