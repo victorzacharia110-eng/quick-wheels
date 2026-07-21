@@ -464,7 +464,7 @@ async function toggleActivation(employee) {
   const action = employee.status === 'active' ? 'deactivate' : 'reactivate'
   if (!confirm(t(`documents.confirm${action.charAt(0).toUpperCase() + action.slice(1)}`))) return
   try {
-    await employeeStore.toggleStatus(employee.id)
+    await employeeStore.toggleEmployeeStatus(employee.id)
     employeeStore.fetchEmployees()
   } catch (_) {}
 }

@@ -40,6 +40,7 @@
     "system": "System",
     "drivers": "Drivers",
     "technicians": "Technicians",
+    "technician": "Technician",
     "workshop": "Workshop",
     "viewSite": "View site",
     "businessOwner": "Business Owner",
