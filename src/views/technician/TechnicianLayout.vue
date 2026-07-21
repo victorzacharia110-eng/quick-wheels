@@ -479,6 +479,21 @@ const workshopNav = [
   color: rgba(255, 255, 255, 0.35);
   font-variant-numeric: tabular-nums;
 }
+.lang-switcher { display: flex; align-items: center; }
+.lang-select {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.lang-select option { background: #0a0818; color: #fff; }
+.lang-select:hover { border-color: rgba(0,229,255,0.3); }
+.lang-select:focus { border-color: rgba(0,229,255,0.4); }
 .topbar-icon-btn {
   position: relative;
   background: none; border: none;
