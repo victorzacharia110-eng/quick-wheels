@@ -233,7 +233,11 @@
     "twitter": "Twitter",
     "youtube": "YouTube",
     "whatsapp": "WhatsApp",
-    "toggleMenu": "Переключить меню"
+    "toggleMenu": "Переключить меню",
+    "email": "Эл. почта",
+    "phone": "Телефон",
+    "none": "Нет",
+    "uploading": "Загрузка..."
   },
   "auth": {
     "welcomeBack": "С возвращением",
@@ -868,6 +872,18 @@
       "required": "Required",
       "notRequired": "Not Required",
       "specialNotes": "Special Notes"
-    }
+    },
+    "dragOrClick": "Перетащите файл сюда или нажмите для загрузки",
+    "titleLabel": "Заголовок",
+    "descriptionLabel": "Описание",
+    "descriptionPlaceholder": "Необязательное описание...",
+    "signedContract": "Подписанный договор",
+    "idCopy": "Копия документа",
+    "analysisTitle": "AI-анализ договора",
+    "parties": "Стороны",
+    "vehicleInfo": "Информация о ТС",
+    "terms": "Условия договора",
+    "conditions": "Условия",
+    "restrictions": "Ограничения"
   }
 }

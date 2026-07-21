@@ -233,7 +233,11 @@
     "twitter": "Twitter",
     "youtube": "YouTube",
     "whatsapp": "WhatsApp",
-    "toggleMenu": "Alternar menú"
+    "toggleMenu": "Alternar menú",
+    "email": "Correo",
+    "phone": "Teléfono",
+    "none": "Ninguno",
+    "uploading": "Subiendo..."
   },
   "auth": {
     "welcomeBack": "Bienvenido de Nuevo",
@@ -868,6 +872,18 @@
       "required": "Required",
       "notRequired": "Not Required",
       "specialNotes": "Special Notes"
-    }
+    },
+    "dragOrClick": "Arrastra un archivo aquí o haz clic para subir",
+    "titleLabel": "Título",
+    "descriptionLabel": "Descripción",
+    "descriptionPlaceholder": "Descripción opcional...",
+    "signedContract": "Contrato firmado",
+    "idCopy": "Copia de identificación",
+    "analysisTitle": "Análisis de contrato con IA",
+    "parties": "Partes",
+    "vehicleInfo": "Información del vehículo",
+    "terms": "Términos del contrato",
+    "conditions": "Condiciones",
+    "restrictions": "Restricciones"
   }
 }

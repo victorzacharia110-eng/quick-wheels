@@ -233,7 +233,11 @@
     "twitter": "Twitter",
     "youtube": "YouTube",
     "whatsapp": "WhatsApp",
-    "toggleMenu": "मेनू टॉगल करें"
+    "toggleMenu": "मेनू टॉगल करें",
+    "email": "ईमेल",
+    "phone": "फ़ोन",
+    "none": "कोई नहीं",
+    "uploading": "अपलोड हो रहा है..."
   },
   "auth": {
     "welcomeBack": "वापसी पर स्वागत है",
@@ -868,6 +872,18 @@
       "required": "Required",
       "notRequired": "Not Required",
       "specialNotes": "Special Notes"
-    }
+    },
+    "dragOrClick": "यहाँ फ़ाइल खींचें या अपलोड के लिए क्लिक करें",
+    "titleLabel": "शीर्षक",
+    "descriptionLabel": "विवरण",
+    "descriptionPlaceholder": "वैकल्पिक विवरण...",
+    "signedContract": "हस्ताक्षरित अनुबंध",
+    "idCopy": "पहचान पत्र की प्रति",
+    "analysisTitle": "AI अनुबंध विश्लेषण",
+    "parties": "पक्ष",
+    "vehicleInfo": "वाहन जानकारी",
+    "terms": "अनुबंध की शर्तें",
+    "conditions": "शर्तें",
+    "restrictions": "प्रतिबंध"
   }
 }

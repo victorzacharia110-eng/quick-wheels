@@ -233,7 +233,11 @@
     "twitter": "Twitter",
     "youtube": "YouTube",
     "whatsapp": "WhatsApp",
-    "toggleMenu": "Chuyển đổi menu"
+    "toggleMenu": "Chuyển đổi menu",
+    "email": "Email",
+    "phone": "Điện thoại",
+    "none": "Không",
+    "uploading": "Đang tải lên..."
   },
   "auth": {
     "welcomeBack": "Chào mừng trở lại",
@@ -868,6 +872,18 @@
       "required": "Required",
       "notRequired": "Not Required",
       "specialNotes": "Special Notes"
-    }
+    },
+    "dragOrClick": "Kéo tệp vào đây hoặc nhấp để tải lên",
+    "titleLabel": "Tiêu đề",
+    "descriptionLabel": "Mô tả",
+    "descriptionPlaceholder": "Mô tả tùy chọn...",
+    "signedContract": "Hợp đồng đã ký",
+    "idCopy": "Bản sao CCCD",
+    "analysisTitle": "Phân tích hợp đồng AI",
+    "parties": "Các bên",
+    "vehicleInfo": "Thông tin xe",
+    "terms": "Điều khoản hợp đồng",
+    "conditions": "Điều kiện",
+    "restrictions": "Hạn chế"
   }
 }

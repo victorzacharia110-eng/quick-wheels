@@ -233,7 +233,11 @@
     "twitter": "تويتر",
     "youtube": "يوتيوب",
     "whatsapp": "واتساب",
-    "toggleMenu": "تبديل القائمة"
+    "toggleMenu": "تبديل القائمة",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "none": "لا أحد",
+    "uploading": "جارٍ التحميل..."
   },
   "auth": {
     "welcomeBack": "مرحباً بعودتك",
@@ -868,6 +872,18 @@
       "required": "Required",
       "notRequired": "Not Required",
       "specialNotes": "Special Notes"
-    }
+    },
+    "dragOrClick": "اسحب الملف هنا أو انقر للتحميل",
+    "titleLabel": "العنوان",
+    "descriptionLabel": "الوصف",
+    "descriptionPlaceholder": "وصف اختياري...",
+    "signedContract": "العقد الموقع",
+    "idCopy": "نسخة من الهوية",
+    "analysisTitle": "تحليل العقد بالذكاء الاصطناعي",
+    "parties": "الأطراف",
+    "vehicleInfo": "معلومات المركبة",
+    "terms": "شروط العقد",
+    "conditions": "الشروط",
+    "restrictions": "القيود"
   }
 }

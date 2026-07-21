@@ -233,7 +233,11 @@
     "twitter": "Twitter",
     "youtube": "YouTube",
     "whatsapp": "WhatsApp",
-    "toggleMenu": "Basculer le menu"
+    "toggleMenu": "Basculer le menu",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "none": "Aucun",
+    "uploading": "Téléchargement..."
   },
   "auth": {
     "welcomeBack": "Bon Retour",
@@ -868,6 +872,18 @@
       "required": "Required",
       "notRequired": "Not Required",
       "specialNotes": "Special Notes"
-    }
+    },
+    "dragOrClick": "Glissez un fichier ici ou cliquez pour télécharger",
+    "titleLabel": "Titre",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Description facultative...",
+    "signedContract": "Contrat signé",
+    "idCopy": "Copie de la pièce d'identité",
+    "analysisTitle": "Analyse de contrat par IA",
+    "parties": "Parties",
+    "vehicleInfo": "Informations sur le véhicule",
+    "terms": "Conditions du contrat",
+    "conditions": "Conditions",
+    "restrictions": "Restrictions"
   }
 }

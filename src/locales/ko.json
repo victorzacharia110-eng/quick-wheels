@@ -233,7 +233,11 @@
     "twitter": "Twitter",
     "youtube": "YouTube",
     "whatsapp": "WhatsApp",
-    "toggleMenu": "메뉴 토글"
+    "toggleMenu": "메뉴 토글",
+    "email": "이메일",
+    "phone": "전화",
+    "none": "없음",
+    "uploading": "업로드 중..."
   },
   "auth": {
     "welcomeBack": "돌아오신 것을 환영합니다",
@@ -868,6 +872,18 @@
       "required": "Required",
       "notRequired": "Not Required",
       "specialNotes": "Special Notes"
-    }
+    },
+    "dragOrClick": "파일을 여기에 끌어다 놓거나 클릭하여 업로드",
+    "titleLabel": "제목",
+    "descriptionLabel": "설명",
+    "descriptionPlaceholder": "선택적 설명...",
+    "signedContract": "서명된 계약서",
+    "idCopy": "신분증 사본",
+    "analysisTitle": "AI 계약 분석",
+    "parties": "당사자",
+    "vehicleInfo": "차량 정보",
+    "terms": "계약 조건",
+    "conditions": "조건",
+    "restrictions": "제한 사항"
   }
 }

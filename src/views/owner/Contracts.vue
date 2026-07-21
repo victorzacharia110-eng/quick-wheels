@@ -28,6 +28,16 @@ const isSaving = ref(false)
 const page = ref(1)
 const perPage = 15
 
+const showDocPanel = ref(false)
+const selectedContract = ref(null)
+const documents = ref([])
+const documentsLoading = ref(false)
+const uploading = ref(false)
+const uploadForm = ref({ file: null, document_type: 'signed_contract', title: '', description: '' })
+const analyzingId = ref(null)
+const showAnalysis = ref(false)
+const analysisResult = ref(null)
+
 const form = ref({
   employee_id: '',
   vehicle_id: '',
@@ -157,6 +167,93 @@ onMounted(async () => {
     employeeStore.fetchEmployees()
   ])
 })
+
+async function openDocuments(contract) {
+  selectedContract.value = contract
+  showDocPanel.value = true
+  await loadDocuments(contract.id)
+}
+
+async function loadDocuments(contractId) {
+  documentsLoading.value = true
+  try {
+    const { data } = await api.get(`/owner/contracts/${contractId}/documents`)
+    documents.value = data.data || []
+  } catch { documents.value = [] }
+  documentsLoading.value = false
+}
+
+function handleFileSelect(e) {
+  const file = e.target.files[0]
+  if (file) {
+    uploadForm.value.file = file
+    if (!uploadForm.value.title) uploadForm.value.title = file.name.replace(/\.[^.]+$/, '').replace(/[_-]/g, ' ')
+  }
+}
+
+function handleDrop(e) {
+  const file = e.dataTransfer.files[0]
+  if (file) {
+    uploadForm.value.file = file
+    if (!uploadForm.value.title) uploadForm.value.title = file.name.replace(/\.[^.]+$/, '').replace(/[_-]/g, ' ')
+  }
+}
+
+async function uploadDocument() {
+  if (!uploadForm.value.file || !uploadForm.value.title) return
+  uploading.value = true
+  try {
+    const fd = new FormData()
+    fd.append('file', uploadForm.value.file)
+    fd.append('document_type', uploadForm.value.document_type)
+    fd.append('title', uploadForm.value.title)
+    if (uploadForm.value.description) fd.append('description', uploadForm.value.description)
+    await api.post(`/owner/contracts/${selectedContract.value.id}/documents`, fd, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+    uploadForm.value = { file: null, document_type: 'signed_contract', title: '', description: '' }
+    await loadDocuments(selectedContract.value.id)
+  } catch (err) {
+    alert(err.response?.data?.message || t('documents.uploadFailed'))
+  }
+  uploading.value = false
+}
+
+async function deleteDocument(doc) {
+  if (!confirm(t('documents.deleteConfirm'))) return
+  try {
+    await api.delete(`/owner/contracts/${selectedContract.value.id}/documents/${doc.id}`)
+    await loadDocuments(selectedContract.value.id)
+  } catch (_) {}
+}
+
+async function toggleVerify(doc) {
+  try {
+    await api.patch(`/owner/contracts/${selectedContract.value.id}/documents/${doc.id}/verify`)
+    await loadDocuments(selectedContract.value.id)
+  } catch (_) {}
+}
+
+async function analyzeDocument(doc) {
+  analyzingId.value = doc.id
+  try {
+    const { data } = await api.post(`/owner/contracts/${selectedContract.value.id}/documents/${doc.id}/analyze`)
+    analysisResult.value = data.data?.analysis
+    showAnalysis.value = true
+    await loadDocuments(selectedContract.value.id)
+  } catch (err) {
+    alert(err.response?.data?.message || t('documents.analysisFailed'))
+  }
+  analyzingId.value = null
+}
+
+function getFileIcon(mimeType) {
+  if (!mimeType) return 'fa-solid fa-file'
+  if (mimeType.startsWith('image/')) return 'fa-solid fa-file-image'
+  if (mimeType.includes('pdf')) return 'fa-solid fa-file-pdf'
+  if (mimeType.includes('word') || mimeType.includes('doc')) return 'fa-solid fa-file-word'
+  return 'fa-solid fa-file'
+}
 </script>
 
 <template>
@@ -266,6 +363,9 @@ onMounted(async () => {
                   </button>
                   <button @click="editContract(contract)" class="btn-icon" :title="$t('common.edit')">
                     <font-awesome-icon icon="fa-solid fa-pen" />
+                  </button>
+                  <button @click="openDocuments(contract)" class="btn-icon" :title="$t('documents.title')">
+                    <font-awesome-icon icon="fa-solid fa-folder-open" />
                   </button>
                   <button @click="downloadPdf(contract)" class="btn-icon pdf" :title="$t('contract.downloadPdf')">
                     <font-awesome-icon icon="fa-solid fa-file-pdf" />
@@ -441,6 +541,165 @@ onMounted(async () => {
               <font-awesome-icon icon="fa-solid fa-file-pdf" /> {{ $t('contract.downloadPdf') }}
             </button>
             <button type="button" @click="showViewModal = false" class="btn-outline">{{ $t('common.close') }}</button>
+          </div>
+        </div>
+      </div>
+    </Transition>
+
+    <!-- Documents Slide Panel -->
+    <Transition name="slide-right">
+      <div v-if="showDocPanel" class="slide-panel-overlay" @click.self="showDocPanel = false">
+        <div class="doc-panel">
+          <div class="panel-header">
+            <h3>
+              <font-awesome-icon icon="fa-solid fa-folder-open" />
+              {{ $t('documents.title') }} — {{ selectedContract?.contract_number }}
+            </h3>
+            <button class="modal-close" @click="showDocPanel = false">
+              <font-awesome-icon icon="fa-solid fa-times" />
+            </button>
+          </div>
+
+          <div class="panel-body">
+            <div class="upload-zone" @dragover.prevent @drop.prevent="handleDrop">
+              <input type="file" ref="fileInput" @change="handleFileSelect" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" style="display:none" />
+              <div class="upload-content" @click="$refs.fileInput?.click()">
+                <font-awesome-icon icon="fa-solid fa-cloud-arrow-up" size="2x" />
+                <p v-if="!uploadForm.file">{{ $t('documents.dragOrClick') }}</p>
+                <p v-else class="file-selected">{{ uploadForm.file.name }}</p>
+              </div>
+            </div>
+
+            <div v-if="uploadForm.file" class="upload-form">
+              <div class="form-group">
+                <label>{{ $t('documents.type') }}</label>
+                <select v-model="uploadForm.document_type" class="form-input">
+                  <option value="signed_contract">{{ $t('documents.signedContract') }}</option>
+                  <option value="id_copy">{{ $t('documents.idCopy') }}</option>
+                  <option value="insurance">{{ $t('documents.insurance') }}</option>
+                  <option value="other">{{ $t('documents.other') }}</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>{{ $t('documents.titleLabel') }}</label>
+                <input v-model="uploadForm.title" class="form-input" :placeholder="$t('documents.titlePlaceholder')" />
+              </div>
+              <div class="form-group">
+                <label>{{ $t('documents.descriptionLabel') }}</label>
+                <input v-model="uploadForm.description" class="form-input" :placeholder="$t('documents.descriptionPlaceholder')" />
+              </div>
+              <button class="btn-primary full" @click="uploadDocument" :disabled="uploading">
+                <font-awesome-icon :icon="uploading ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-cloud-arrow-up'" />
+                {{ uploading ? $t('common.uploading') : $t('documents.upload') }}
+              </button>
+            </div>
+
+            <div v-if="documentsLoading" class="loading-text">
+              <font-awesome-icon icon="fa-solid fa-spinner fa-spin" /> {{ $t('common.loading') }}
+            </div>
+
+            <div v-else-if="documents.length === 0" class="empty-state small">
+              <font-awesome-icon icon="fa-regular fa-file" size="2x" />
+              <p>{{ $t('documents.noDocuments') }}</p>
+            </div>
+
+            <div v-else class="doc-list">
+              <div v-for="doc in documents" :key="doc.id" class="doc-card">
+                <div class="doc-info">
+                  <font-awesome-icon :icon="getFileIcon(doc.mime_type)" class="doc-icon" />
+                  <div>
+                    <div class="doc-title">{{ doc.title }}</div>
+                    <div class="doc-meta">
+                      {{ $t('documents.' + doc.document_type) }} · {{ doc.human_readable_size || doc.file_size }}
+                      <span v-if="doc.verified_at" class="verified-badge">
+                        <font-awesome-icon icon="fa-solid fa-circle-check" /> {{ $t('documents.verified') }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="doc-actions">
+                  <button v-if="!doc.verified_at" @click="toggleVerify(doc)" class="btn-icon" :title="$t('documents.verify')">
+                    <font-awesome-icon icon="fa-solid fa-circle-check" />
+                  </button>
+                  <button @click="analyzeDocument(doc)" class="btn-icon ai" :disabled="analyzingId === doc.id" :title="$t('documents.aiAnalyze')">
+                    <font-awesome-icon :icon="analyzingId === doc.id ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-wand-magic-sparkles'" />
+                  </button>
+                  <button @click="deleteDocument(doc)" class="btn-icon danger" :title="$t('common.delete')">
+                    <font-awesome-icon icon="fa-solid fa-trash" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Transition>
+
+    <!-- Analysis Result Modal -->
+    <Transition name="modal">
+      <div v-if="showAnalysis && analysisResult" class="modal-overlay" @click.self="showAnalysis = false">
+        <div class="modal-box large analysis-modal">
+          <div class="modal-header">
+            <h3>
+              <font-awesome-icon icon="fa-solid fa-wand-magic-sparkles" class="ai-icon" />
+              {{ $t('documents.analysisTitle') }}
+            </h3>
+            <button class="modal-close" @click="showAnalysis = false">
+              <font-awesome-icon icon="fa-solid fa-times" />
+            </button>
+          </div>
+          <div class="analysis-content">
+            <div v-if="analysisResult.parties" class="analysis-section">
+              <h4>{{ $t('documents.parties') }}</h4>
+              <div class="analysis-grid">
+                <div v-for="(value, key) in analysisResult.parties" :key="key" class="analysis-item">
+                  <span class="analysis-key">{{ key }}</span>
+                  <span class="analysis-value">{{ value }}</span>
+                </div>
+              </div>
+            </div>
+            <div v-if="analysisResult.vehicle" class="analysis-section">
+              <h4>{{ $t('documents.vehicleInfo') }}</h4>
+              <div class="analysis-grid">
+                <div v-for="(value, key) in analysisResult.vehicle" :key="key" class="analysis-item">
+                  <span class="analysis-key">{{ key }}</span>
+                  <span class="analysis-value">{{ value }}</span>
+                </div>
+              </div>
+            </div>
+            <div v-if="analysisResult.terms" class="analysis-section">
+              <h4>{{ $t('documents.terms') }}</h4>
+              <div class="analysis-grid">
+                <div v-for="(value, key) in analysisResult.terms" :key="key" class="analysis-item">
+                  <span class="analysis-key">{{ key }}</span>
+                  <span class="analysis-value">{{ value }}</span>
+                </div>
+              </div>
+            </div>
+            <div v-if="analysisResult.conditions" class="analysis-section">
+              <h4>{{ $t('documents.conditions') }}</h4>
+              <ul>
+                <li v-for="(item, i) in (Array.isArray(analysisResult.conditions) ? analysisResult.conditions : [analysisResult.conditions])" :key="i">{{ item }}</li>
+              </ul>
+            </div>
+            <div v-if="analysisResult.restrictions" class="analysis-section">
+              <h4>{{ $t('documents.restrictions') }}</h4>
+              <ul>
+                <li v-for="(item, i) in (Array.isArray(analysisResult.restrictions) ? analysisResult.restrictions : [analysisResult.restrictions])" :key="i">{{ item }}</li>
+              </ul>
+            </div>
+            <div v-if="analysisResult.insurance" class="analysis-section">
+              <h4>{{ $t('documents.insurance') }}</h4>
+              <div class="analysis-grid">
+                <div v-for="(value, key) in analysisResult.insurance" :key="key" class="analysis-item">
+                  <span class="analysis-key">{{ key }}</span>
+                  <span class="analysis-value">{{ value }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button type="button" @click="showAnalysis = false" class="btn-outline">{{ $t('common.close') }}</button>
           </div>
         </div>
       </div>
@@ -795,4 +1054,70 @@ textarea.form-input { resize: vertical; min-height: 60px; }
 }
 .text-success { color: #4ADE80; }
 .text-warning { color: #FFD93D; }
+
+/* Document Panel */
+.slide-panel-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000;
+  display: flex; justify-content: flex-end; backdrop-filter: blur(4px);
+}
+.doc-panel {
+  width: 480px; max-width: 95vw; height: 100vh;
+  background: rgba(20,20,35,0.98); border-left: 1px solid rgba(255,255,255,0.08);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.panel-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.panel-header h3 { font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
+.panel-body { flex: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+.upload-zone {
+  border: 2px dashed rgba(255,255,255,0.15); border-radius: 12px;
+  padding: 24px; text-align: center; cursor: pointer; transition: all 0.2s;
+}
+.upload-zone:hover { border-color: rgba(139,92,246,0.5); background: rgba(139,92,246,0.05); }
+.upload-content { display: flex; flex-direction: column; align-items: center; gap: 10px; color: rgba(255,255,255,0.5); }
+.file-selected { color: #4ADE80; font-weight: 500; }
+.upload-form { display: flex; flex-direction: column; gap: 12px; }
+.upload-form .btn-primary.full { width: 100%; }
+.loading-text { text-align: center; color: rgba(255,255,255,0.4); padding: 20px; }
+.doc-list { display: flex; flex-direction: column; gap: 10px; }
+.doc-card {
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px; padding: 14px 16px; transition: background 0.2s;
+}
+.doc-card:hover { background: rgba(255,255,255,0.06); }
+.doc-info { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+.doc-icon { font-size: 1.4rem; color: rgba(255,255,255,0.4); flex-shrink: 0; }
+.doc-title { font-weight: 600; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.doc-meta { font-size: 0.75rem; color: rgba(255,255,255,0.4); display: flex; align-items: center; gap: 6px; }
+.verified-badge { color: #4ADE80; }
+.doc-actions { display: flex; gap: 6px; flex-shrink: 0; margin-left: 10px; }
+.btn-icon.ai { color: #A78BFA; }
+.btn-icon.ai:hover { background: rgba(139,92,246,0.2); }
+.empty-state.small { padding: 24px; text-align: center; color: rgba(255,255,255,0.3); }
+.empty-state.small p { margin-top: 8px; }
+
+/* Analysis Modal */
+.analysis-modal { max-width: 680px; }
+.ai-icon { color: #A78BFA; margin-right: 8px; }
+.analysis-content { padding: 0; display: flex; flex-direction: column; gap: 20px; }
+.analysis-section h4 {
+  font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;
+  color: rgba(255,255,255,0.4); margin-bottom: 8px; font-weight: 600;
+}
+.analysis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.analysis-item {
+  background: rgba(255,255,255,0.03); border-radius: 8px; padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.analysis-key { display: block; font-size: 0.7rem; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 2px; }
+.analysis-value { font-size: 0.9rem; color: rgba(255,255,255,0.85); }
+.analysis-section ul { list-style: none; padding: 0; }
+.analysis-section li {
+  background: rgba(255,255,255,0.03); border-radius: 6px; padding: 8px 12px;
+  font-size: 0.85rem; color: rgba(255,255,255,0.7); margin-bottom: 4px;
+  border-left: 3px solid rgba(139,92,246,0.4);
+}
 </style>

@@ -233,7 +233,11 @@
     "twitter": "Twitter",
     "youtube": "YouTube",
     "whatsapp": "WhatsApp",
-    "toggleMenu": "メニューを切り替え"
+    "toggleMenu": "メニューを切り替え",
+    "email": "メール",
+    "phone": "電話",
+    "none": "なし",
+    "uploading": "アップロード中..."
   },
   "auth": {
     "welcomeBack": "おかえりなさい",
@@ -868,6 +872,18 @@
       "required": "Required",
       "notRequired": "Not Required",
       "specialNotes": "Special Notes"
-    }
+    },
+    "dragOrClick": "ファイルをここにドラッグするか、クリックしてアップロード",
+    "titleLabel": "タイトル",
+    "descriptionLabel": "説明",
+    "descriptionPlaceholder": "オプションの説明...",
+    "signedContract": "署名済み契約書",
+    "idCopy": "身分証明書のコピー",
+    "analysisTitle": "AI契約分析",
+    "parties": "当事者",
+    "vehicleInfo": "車両情報",
+    "terms": "契約条件",
+    "conditions": "条件",
+    "restrictions": "制限"
   }
 }

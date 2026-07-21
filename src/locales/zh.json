@@ -233,7 +233,11 @@
     "twitter": "Twitter",
     "youtube": "YouTube",
     "whatsapp": "WhatsApp",
-    "toggleMenu": "切换菜单"
+    "toggleMenu": "切换菜单",
+    "email": "电子邮件",
+    "phone": "电话",
+    "none": "无",
+    "uploading": "上传中..."
   },
   "auth": {
     "welcomeBack": "欢迎回来",
@@ -868,6 +872,18 @@
       "required": "Required",
       "notRequired": "Not Required",
       "specialNotes": "Special Notes"
-    }
+    },
+    "dragOrClick": "将文件拖到此处或点击上传",
+    "titleLabel": "标题",
+    "descriptionLabel": "描述",
+    "descriptionPlaceholder": "可选描述...",
+    "signedContract": "已签署合同",
+    "idCopy": "身份证复印件",
+    "analysisTitle": "AI合同分析",
+    "parties": "各方",
+    "vehicleInfo": "车辆信息",
+    "terms": "合同条款",
+    "conditions": "条件",
+    "restrictions": "限制"
   }
 }

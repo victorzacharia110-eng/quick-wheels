@@ -239,7 +239,11 @@
     "whatsapp": "WhatsApp",
     "toggleMenu": "Badilisha menyu",
     "error": "Kosa limetokea",
-    "unexpectedError": "Kosa lisilotarajiwa limetokea"
+    "unexpectedError": "Kosa lisilotarajiwa limetokea",
+    "email": "Barua pepe",
+    "phone": "Simu",
+    "none": "Hakuna",
+    "uploading": "Inapakia..."
   },
   "auth": {
     "welcomeBack": "Karibu Tena",
@@ -900,6 +904,18 @@
       "required": "Required",
       "notRequired": "Not Required",
       "specialNotes": "Special Notes"
-    }
+    },
+    "dragOrClick": "Buruta failu hapa au bofya kupakia",
+    "titleLabel": "Kichwa",
+    "descriptionLabel": "Maelezo",
+    "descriptionPlaceholder": "Maelezo ya hiari...",
+    "signedContract": "Kandarati iliyosainiwa",
+    "idCopy": "Nakala ya kitambulisho",
+    "analysisTitle": "Uchambuzi wa Mkataba wa AI",
+    "parties": "Vihusika",
+    "vehicleInfo": "Taarifa za Kihesabia",
+    "terms": "Masharti ya Mkataba",
+    "conditions": "Masharti",
+    "restrictions": "Vikwazo"
   }
 }

@@ -233,7 +233,11 @@
     "twitter": "Twitter",
     "youtube": "YouTube",
     "whatsapp": "WhatsApp",
-    "toggleMenu": "Menü umschalten"
+    "toggleMenu": "Menü umschalten",
+    "email": "E-Mail",
+    "phone": "Telefon",
+    "none": "Keine",
+    "uploading": "Hochladen..."
   },
   "auth": {
     "welcomeBack": "Willkommen zurück",
@@ -868,6 +872,18 @@
       "required": "Required",
       "notRequired": "Not Required",
       "specialNotes": "Special Notes"
-    }
+    },
+    "dragOrClick": "Datei hierher ziehen oder klicken zum Hochladen",
+    "titleLabel": "Titel",
+    "descriptionLabel": "Beschreibung",
+    "descriptionPlaceholder": "Optionale Beschreibung...",
+    "signedContract": "Unterzeichneter Vertrag",
+    "idCopy": "Ausweiskopie",
+    "analysisTitle": "KI-Vertragsanalyse",
+    "parties": "Parteien",
+    "vehicleInfo": "Fahrzeuginformationen",
+    "terms": "Vertragsbedingungen",
+    "conditions": "Bedingungen",
+    "restrictions": "Einschränkungen"
   }
 }
