@@ -1,6 +1,5 @@
 <template>
-  <div class="owner-root" :class="{ collapsed: sidebarCollapsed, 'mobile-open': mobileOpen }">
-    <!-- Sidebar -->
+  <div class="tech-root" :class="{ collapsed: sidebarCollapsed, 'mobile-open': mobileOpen }">
     <aside class="sidebar" :class="{ 'mobile-open': mobileOpen }">
       <div class="sidebar-header">
         <div class="sidebar-logo">
@@ -22,26 +21,19 @@
           <span class="nav-label">{{ $t(item.label) }}</span>
         </RouterLink>
 
-        <div class="nav-section-label">{{ $t('nav.management') }}</div>
-        <RouterLink v-for="item in managementNav" :key="item.to" :to="item.to" class="nav-item" active-class="active" @click="closeMobile">
+        <div class="nav-section-label">{{ $t('maintenance.workshop') }}</div>
+        <RouterLink v-for="item in workshopNav" :key="item.to" :to="item.to" class="nav-item" active-class="active" @click="closeMobile">
           <span class="nav-icon"><font-awesome-icon :icon="item.icon" /></span>
           <span class="nav-label">{{ $t(item.label) }}</span>
-          <span v-if="item.badge" class="nav-badge">{{ item.badge }}</span>
-        </RouterLink>
-
-        <div class="nav-section-label">{{ $t('nav.system') }}</div>
-        <RouterLink v-for="item in systemNav" :key="item.to" :to="item.to" class="nav-item" active-class="active" @click="closeMobile">
-          <span class="nav-icon"><font-awesome-icon :icon="item.icon" /></span>
-          <span class="nav-label">{{ item.label }}</span>
         </RouterLink>
       </nav>
 
       <div class="sidebar-footer">
         <div class="admin-user">
-          <div class="admin-avatar">O</div>
+          <div class="admin-avatar">T</div>
           <div class="admin-user-info">
-            <div class="admin-name">{{ authStore.userName || $t('nav.owner') }}</div>
-            <div class="admin-role">{{ $t('nav.businessOwner') }}</div>
+            <div class="admin-name">{{ authStore.userName || 'Technician' }}</div>
+            <div class="admin-role">{{ $t('nav.technician') }}</div>
           </div>
         </div>
         <button @click="handleLogout" class="logout-btn-sidebar">
@@ -55,22 +47,21 @@
 
     <div v-if="mobileOpen" class="mobile-overlay" @click="closeMobile"></div>
 
-    <!-- Main Area -->
-    <div class="owner-main">
-      <header class="owner-topbar">
+    <div class="tech-main">
+      <header class="tech-topbar">
         <div class="topbar-left">
           <button class="hamburger-btn" @click="toggleMobile"><font-awesome-icon icon="fa-solid fa-bars" /></button>
           <div class="breadcrumb">
-            <span class="breadcrumb-root">{{ $t('nav.owner') }}</span>
+            <span class="breadcrumb-root">{{ $t('nav.technician') }}</span>
             <font-awesome-icon icon="fa-solid fa-chevron-right" size="xs" />
-            <span class="breadcrumb-current">{{ currentPageTitle }}</span>
+            <span class="breadcrumb-current">{{ $t(pageTitleKey) }}</span>
           </div>
         </div>
         <div class="topbar-right">
           <div class="topbar-time">{{ currentTime }}</div>
           <div class="lang-switcher">
             <select v-model="currentLocale" @change="switchLang" class="lang-select">
-              <option v-for="loc in locales" :key="loc.value" :value="loc.value">{{ $t(loc.label) }}</option>
+              <option v-for="loc in locales" :key="loc.value" :value="loc.value">{{ $t('locale.' + loc.value) }}</option>
             </select>
           </div>
           <button class="topbar-icon-btn" :title="$t('nav.notifications')">
@@ -83,7 +74,7 @@
         </div>
       </header>
 
-      <main class="owner-content">
+      <main class="tech-content">
         <RouterView />
       </main>
     </div>
@@ -99,8 +90,14 @@ import { useAuthStore } from '@/stores/auth';
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
-const { locale, t } = useI18n();
+const { locale } = useI18n();
 const currentLocale = ref(locale.value);
+const locales = [
+  { value: 'en' }, { value: 'sw' }, { value: 'fr' }, { value: 'es' },
+  { value: 'pt' }, { value: 'ar' }, { value: 'zh' }, { value: 'hi' },
+  { value: 'ru' }, { value: 'ja' }, { value: 'de' }, { value: 'it' },
+  { value: 'ko' }, { value: 'tr' }, { value: 'vi' },
+];
 
 function switchLang() {
   locale.value = currentLocale.value;
@@ -112,23 +109,18 @@ const mobileOpen = ref(false);
 const currentTime = ref("");
 const isMobile = ref(window.innerWidth < 768);
 
-const pageTitleKeys = {
-  "/owner": "nav.dashboard",
-  "/owner/contracts": "nav.contracts",
-  "/owner/vehicles": "nav.vehicles",
-  "/owner/employees": "nav.employees",
-  "/owner/payments": "nav.payments",
-  "/owner/reports": "nav.reports",
-  "/owner/settings": "nav.settings",
-  "/owner/gps": "nav.gps",
-};
-
-const currentPageTitle = computed(() => t(pageTitleKeys[route.path] || "nav.dashboard"));
+const pageTitleKey = computed(() => {
+  const map = {
+    "/technician": "maintenance.dashboard",
+    "/technician/reports": "maintenance.reports",
+    "/technician/create-report": "maintenance.createReport",
+  };
+  return map[route.path] || "maintenance.dashboard";
+});
 
 function updateTime() {
   currentTime.value = new Date().toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
+    hour: "2-digit", minute: "2-digit",
   });
 }
 
@@ -173,42 +165,17 @@ watch(mobileOpen, (newVal) => {
   document.body.style.overflow = newVal ? "hidden" : "";
 });
 
-const mainNav = [{ to: "/owner", label: "nav.dashboard", icon: "fa-solid fa-th-large" }];
-const managementNav = [
-  { to: "/owner/contracts", label: "nav.contracts", icon: "fa-solid fa-file-contract" },
-  { to: "/owner/vehicles", label: "nav.vehicles", icon: "fa-solid fa-car" },
-  { to: "/owner/employees", label: "nav.drivers", icon: "fa-solid fa-users" },
-  { to: "/owner/technicians", label: "nav.technicians", icon: "fa-solid fa-user-gear" },
-  { to: "/owner/payments", label: "nav.payments", icon: "fa-solid fa-money-bill-wave" },
-  { to: "/owner/reports", label: "nav.reports", icon: "fa-solid fa-chart-bar" },
+const mainNav = [
+  { to: "/technician", label: "maintenance.dashboard", icon: "fa-solid fa-th-large" },
 ];
-const systemNav = [
-  { to: "/owner/settings", label: "nav.settings", icon: "fa-solid fa-cog" },
-  { to: "/owner/gps", label: "nav.gps", icon: "fa-solid fa-location-dot" },
-  { to: "/owner/site-content", label: "Site Content", icon: "fa-solid fa-palette" },
-];
-
-const locales = [
-  { value: 'en', label: 'locale.en' },
-  { value: 'sw', label: 'locale.sw' },
-  { value: 'fr', label: 'locale.fr' },
-  { value: 'es', label: 'locale.es' },
-  { value: 'pt', label: 'locale.pt' },
-  { value: 'ar', label: 'locale.ar' },
-  { value: 'zh', label: 'locale.zh' },
-  { value: 'hi', label: 'locale.hi' },
-  { value: 'ru', label: 'locale.ru' },
-  { value: 'ja', label: 'locale.ja' },
-  { value: 'de', label: 'locale.de' },
-  { value: 'it', label: 'locale.it' },
-  { value: 'ko', label: 'locale.ko' },
-  { value: 'tr', label: 'locale.tr' },
-  { value: 'vi', label: 'locale.vi' },
+const workshopNav = [
+  { to: "/technician/reports", label: "maintenance.reports", icon: "fa-solid fa-clipboard-list" },
+  { to: "/technician/create-report", label: "maintenance.createReport", icon: "fa-solid fa-plus-circle" },
 ];
 </script>
 
 <style scoped>
-.owner-root {
+.tech-root {
   display: grid;
   grid-template-columns: 240px 1fr;
   min-height: 100vh;
@@ -217,7 +184,7 @@ const locales = [
   font-family: "Space Grotesk", sans-serif;
   color: #fff;
 }
-.owner-root.collapsed { grid-template-columns: 64px 1fr; }
+.tech-root.collapsed { grid-template-columns: 64px 1fr; }
 
 .sidebar {
   background: #0a0818;
@@ -352,17 +319,6 @@ const locales = [
 .nav-item.active .nav-icon { color: #00e5ff; }
 .nav-label { transition: opacity 0.2s, width 0.3s; }
 .collapsed .nav-label { opacity: 0; width: 0; overflow: hidden; }
-.nav-badge {
-  margin-left: auto;
-  background: #00c4d4;
-  color: #0a0818;
-  font-size: 0.65rem;
-  font-weight: 700;
-  padding: 1px 6px;
-  border-radius: 10px;
-  transition: opacity 0.2s;
-}
-.collapsed .nav-badge { opacity: 0; }
 
 .sidebar-footer {
   padding: 12px 8px;
@@ -454,13 +410,13 @@ const locales = [
 .view-site-btn:hover { background: rgba(0, 196, 212, 0.15); }
 .collapsed .view-site-btn span { display: none; }
 
-.owner-main {
+.tech-main {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   overflow: hidden;
 }
-.owner-topbar {
+.tech-topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -512,22 +468,6 @@ const locales = [
   transition: color 0.2s;
 }
 .topbar-icon-btn:hover { color: #fff; }
-.lang-switcher { display: flex; align-items: center; }
-.lang-select {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 8px;
-  color: rgba(255,255,255,0.6);
-  padding: 4px 8px;
-  font-size: 0.75rem;
-  cursor: pointer;
-  outline: none;
-  font-family: 'Space Grotesk', sans-serif;
-  appearance: none;
-}
-.lang-select:hover { border-color: rgba(0,229,255,0.3); }
-.lang-select:focus { border-color: rgba(0,229,255,0.4); }
-.topbar-icon-btn { line-height: 1; }
 .notif-dot {
   position: absolute;
   top: 3px; right: 3px;
@@ -536,16 +476,14 @@ const locales = [
   background: #00e5ff;
   box-shadow: 0 0 6px rgba(0, 229, 255, 0.6);
 }
-.owner-content {
+.tech-content {
   flex: 1;
   overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-gutter: stable;
   padding: 28px;
 }
 
 @media (max-width: 768px) {
-  .owner-root { grid-template-columns: 1fr; }
+  .tech-root { grid-template-columns: 1fr; }
   .hamburger-btn { display: flex !important; }
   .sidebar {
     position: fixed;
@@ -561,21 +499,20 @@ const locales = [
   .mobile-overlay { display: block; }
   .mobile-close-btn { display: block; }
   .collapse-btn { display: none; }
-  .owner-topbar { padding: 0 16px; }
-  .owner-content { padding: 16px; }
+  .tech-topbar { padding: 0 16px; }
+  .tech-content { padding: 16px; }
   .breadcrumb-root { display: none; }
   .topbar-time { display: none; }
   .sidebar .nav-label { opacity: 1 !important; width: auto !important; }
   .sidebar .nav-section-label { opacity: 1 !important; }
-  .sidebar .nav-badge { opacity: 1 !important; }
   .sidebar .admin-user-info { display: block !important; }
   .sidebar .view-site-btn span { display: inline !important; }
   .sidebar .logout-btn-sidebar span { display: inline !important; }
 }
 @media (max-width: 480px) {
   .sidebar { width: 100%; max-width: 320px; }
-  .owner-topbar { padding: 0 12px; height: 48px; }
-  .owner-content { padding: 12px; }
+  .tech-topbar { padding: 0 12px; height: 48px; }
+  .tech-content { padding: 12px; }
   .hamburger-btn { padding: 10px 12px; font-size: 1.4rem; }
 }
 @media (min-width: 769px) {

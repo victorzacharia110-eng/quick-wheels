@@ -307,6 +307,7 @@ async function handleRegister() {
       const role = authStore.userRole
       if (role === 'owner') router.push('/owner')
       else if (role === 'employee') router.push('/employee')
+      else if (role === 'technician') router.push('/technician')
       else if (role === 'customer') router.push('/customer')
       else if (role === 'superadmin') router.push('/superadmin')
       else router.push('/')

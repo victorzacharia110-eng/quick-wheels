@@ -48,6 +48,7 @@ const router = createRouter({
         { path: 'contracts', component: () => import('../views/owner/Contracts.vue'), meta: { title: 'Contracts' } },
         { path: 'vehicles', component: () => import('../views/owner/Vehicles.vue'), meta: { title: 'Vehicles' } },
         { path: 'employees', component: () => import('../views/owner/Employees.vue'), meta: { title: 'Employees' } },
+        { path: 'technicians', component: () => import('../views/owner/Technicians.vue'), meta: { title: 'Technicians' } },
         { path: 'payments', component: () => import('../views/owner/Payments.vue'), meta: { title: 'Payments' } },
         { path: 'reports', component: () => import('../views/owner/Reports.vue'), meta: { title: 'Reports' } },
         { path: 'settings', component: () => import('../views/owner/Settings.vue'), meta: { title: 'Settings' } },
@@ -80,6 +81,19 @@ const router = createRouter({
         { path: 'my-contract', component: () => import('../views/employee/MyContract.vue'), meta: { title: 'My Contract' } },
         { path: 'payments', component: () => import('../views/employee/Payments.vue'), meta: { title: 'My Payments' } },
         { path: 'profile', component: () => import('../views/employee/EmployeeProfile.vue'), meta: { title: 'Profile' } },
+      ]
+    },
+    
+    // ── Technician Routes ─────────────────────────────────────────────
+    {
+      path: '/technician',
+      component: () => import('../views/technician/TechnicianLayout.vue'),
+      meta: { requiresAuth: true, role: 'technician' },
+      children: [
+        { path: '', component: () => import('../views/technician/TechnicianDashboard.vue'), meta: { title: 'Dashboard' } },
+        { path: 'reports', component: () => import('../views/technician/MaintenanceReports.vue'), meta: { title: 'Maintenance Reports' } },
+        { path: 'reports/create', component: () => import('../views/technician/CreateReport.vue'), meta: { title: 'Create Report' } },
+        { path: 'reports/:id', component: () => import('../views/technician/ReportDetail.vue'), meta: { title: 'Report Detail' } },
       ]
     },
     
@@ -118,6 +132,7 @@ router.beforeEach(async (to, from) => {
   if (isAuthenticated && to.meta.guest) {
     if (userRole === 'owner') return '/owner'
     if (userRole === 'employee') return '/employee'
+    if (userRole === 'technician') return '/technician'
     if (userRole === 'customer') return '/customer'
     if (userRole === 'superadmin') return '/superadmin'
     return '/'
@@ -130,6 +145,7 @@ router.beforeEach(async (to, from) => {
   if (isAuthenticated && to.meta.role && to.meta.role !== userRole) {
     if (userRole === 'owner') return '/owner'
     if (userRole === 'employee') return '/employee'
+    if (userRole === 'technician') return '/technician'
     if (userRole === 'customer') return '/customer'
     if (userRole === 'superadmin') return '/superadmin'
     return '/'
