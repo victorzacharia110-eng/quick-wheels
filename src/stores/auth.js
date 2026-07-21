@@ -24,6 +24,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   function clearUser() {
     user.value = null
+    isInitialized.value = false
     try {
       localStorage.removeItem('user')
       localStorage.removeItem('auth_token')
@@ -124,10 +125,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function init() {
     if (isInitialized.value) return
-    if (rehydrate()) {
-      isInitialized.value = true
-      return
-    }
+    rehydrate()
     await fetchUser()
     isInitialized.value = true
   }

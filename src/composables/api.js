@@ -37,8 +37,15 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       localStorage.removeItem('auth_token');
       localStorage.removeItem('user');
-      if (window.location.pathname !== '/auth/login' && window.location.pathname !== '/auth/register') {
-        window.location.href = '/auth/login';
+      import('@/stores/auth').then(({ useAuthStore }) => {
+        const authStore = useAuthStore();
+        authStore.clearUser();
+      });
+      const path = window.location.pathname;
+      if (path !== '/auth/login' && path !== '/auth/register') {
+        import('@/router').then(({ default: router }) => {
+          router.push('/auth/login');
+        });
       }
     }
     return Promise.reject(error);
