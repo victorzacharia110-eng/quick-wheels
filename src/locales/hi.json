@@ -53,7 +53,8 @@
     "discover": "खोजें",
     "technicians": "Technicians",
     "technician": "Technician",
-    "workshop": "Workshop"
+    "workshop": "Workshop",
+    "messages": "संदेश"
   },
   "hero": {
     "quickWheels": "क्विक-व्हील्स",
@@ -885,5 +886,24 @@
     "terms": "अनुबंध की शर्तें",
     "conditions": "शर्तें",
     "restrictions": "प्रतिबंध"
+  },
+  "chat": {
+    "title": "संदेश",
+    "noContacts": "कोई संपर्क उपलब्ध नहीं",
+    "selectContact": "चैट शुरू करने के लिए संपर्क चुनें",
+    "noMessages": "�भी तक कोई संदेश नहीं। नमस्ते कहें!",
+    "placeholder": "संदेश टाइप करें...",
+    "today": "आज",
+    "send": "भेजें",
+    "unread": "नए संदेश"
+  },
+  "technician": {
+    "workshop": "कार्यशाला स्थान",
+    "workshopAddress": "कार्यशाला का पता",
+    "latitude": "अक्षांश",
+    "longitude": "देशांतर",
+    "scheduleService": "सेवा शेड्यूल करें",
+    "serviceDate": "सेवा की तारीख",
+    "serviceNotes": "सेवा नोट्स"
   }
 }

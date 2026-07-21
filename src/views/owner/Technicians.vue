@@ -19,6 +19,7 @@ const isSubmitting = ref(false)
 const form = ref({
   name: '', email: '', phone: '', address: '', nida_number: '',
   license_number: '', salary: '', shift: '', vehicle_id: '',
+  workshop_address: '', workshop_latitude: '', workshop_longitude: '',
 })
 
 const filteredTechnicians = computed(() => {
@@ -46,7 +47,7 @@ async function loadVehicles() {
 }
 
 function openCreate() {
-  form.value = { name: '', email: '', phone: '', address: '', nida_number: '', license_number: '', salary: '', shift: '', vehicle_id: '' }
+  form.value = { name: '', email: '', phone: '', address: '', nida_number: '', license_number: '', salary: '', shift: '', vehicle_id: '', workshop_address: '', workshop_latitude: '', workshop_longitude: '' }
   showCreateModal.value = true
 }
 
@@ -56,6 +57,7 @@ function openEdit(tech) {
     name: tech.name, email: tech.email, phone: tech.phone || '', address: tech.address || '',
     nida_number: tech.nida_number || '', license_number: tech.license_number || '',
     salary: tech.salary || '', shift: tech.shift || '', vehicle_id: tech.vehicle_id || '',
+    workshop_address: tech.workshop_address || '', workshop_latitude: tech.workshop_latitude || '', workshop_longitude: tech.workshop_longitude || '',
   }
   showEditModal.value = true
 }
@@ -198,6 +200,12 @@ onMounted(() => {
               <option value="">{{ $t('common.none') }}</option>
               <option v-for="v in vehicles" :key="v.id" :value="v.id">{{ v.name }} ({{ v.type }})</option>
             </select>
+            <div class="form-section-label">{{ $t('technician.workshop') }}</div>
+            <input v-model="form.workshop_address" :placeholder="$t('technician.workshopAddress')" />
+            <div class="form-row-2">
+              <input v-model="form.workshop_latitude" type="number" step="any" :placeholder="$t('technician.latitude')" />
+              <input v-model="form.workshop_longitude" type="number" step="any" :placeholder="$t('technician.longitude')" />
+            </div>
           </div>
           <div class="modal-actions">
             <button @click="showCreateModal = false; showEditModal = false" class="btn-outline">{{ $t('common.cancel') }}</button>
@@ -453,6 +461,19 @@ onMounted(() => {
 }
 .modal-form input:focus, .modal-form select:focus { border-color: rgba(0, 229, 255, 0.3); }
 .modal-form select option { background: #0a0818; }
+.form-section-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: rgba(255,255,255,0.35);
+  font-weight: 600;
+  margin-top: 6px;
+}
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
 .modal-actions {
   display: flex;
   justify-content: flex-end;

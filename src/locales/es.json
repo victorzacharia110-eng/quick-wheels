@@ -53,7 +53,8 @@
     "discover": "Descubrir",
     "technicians": "Technicians",
     "technician": "Technician",
-    "workshop": "Workshop"
+    "workshop": "Workshop",
+    "messages": "Mensajes"
   },
   "hero": {
     "quickWheels": "Quick-Wheels",
@@ -885,5 +886,24 @@
     "terms": "Términos del contrato",
     "conditions": "Condiciones",
     "restrictions": "Restricciones"
+  },
+  "chat": {
+    "title": "Mensajes",
+    "noContacts": "No hay contactos disponibles",
+    "selectContact": "Seleccione un contacto para empezar a chatear",
+    "noMessages": "Aún no hay mensajes. ¡Di hola!",
+    "placeholder": "Escribe un mensaje...",
+    "today": "Hoy",
+    "send": "Enviar",
+    "unread": "Mensajes nuevos"
+  },
+  "technician": {
+    "workshop": "Ubicación del taller",
+    "workshopAddress": "Dirección del taller",
+    "latitude": "Latitud",
+    "longitude": "Longitud",
+    "scheduleService": "Programar servicio",
+    "serviceDate": "Fecha del servicio",
+    "serviceNotes": "Notas del servicio"
   }
 }

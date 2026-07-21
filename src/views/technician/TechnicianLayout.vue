@@ -25,6 +25,7 @@
         <RouterLink v-for="item in workshopNav" :key="item.to" :to="item.to" class="nav-item" active-class="active" @click="closeMobile">
           <span class="nav-icon"><font-awesome-icon :icon="item.icon" /></span>
           <span class="nav-label">{{ $t(item.label) }}</span>
+          <span v-if="item.badge" class="nav-badge">{{ item.badge }}</span>
         </RouterLink>
       </nav>
 
@@ -86,10 +87,12 @@ import { ref, computed, onMounted, onUnmounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/stores/auth';
+import { useMessageStore } from '@/stores/messages';
 
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
+const messageStore = useMessageStore();
 const { locale } = useI18n();
 const currentLocale = ref(locale.value);
 const locales = [
@@ -153,6 +156,7 @@ onMounted(() => {
   updateTime();
   timer = setInterval(updateTime, 1000);
   window.addEventListener("resize", handleResize);
+  messageStore.fetchUnreadCount();
 });
 
 onUnmounted(() => {
@@ -171,6 +175,7 @@ const mainNav = [
 const workshopNav = [
   { to: "/technician/reports", label: "maintenance.reports", icon: "fa-solid fa-clipboard-list" },
   { to: "/technician/create-report", label: "maintenance.createReport", icon: "fa-solid fa-plus-circle" },
+  { to: "/technician/chat", label: "nav.messages", icon: "fa-solid fa-comments", get badge() { return messageStore.unreadCount || null } },
 ];
 </script>
 
@@ -319,6 +324,20 @@ const workshopNav = [
 .nav-item.active .nav-icon { color: #00e5ff; }
 .nav-label { transition: opacity 0.2s, width 0.3s; }
 .collapsed .nav-label { opacity: 0; width: 0; overflow: hidden; }
+.nav-badge {
+  margin-left: auto;
+  background: #EF4444;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+}
 
 .sidebar-footer {
   padding: 12px 8px;

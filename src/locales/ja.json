@@ -53,7 +53,8 @@
     "discover": "発見",
     "technicians": "Technicians",
     "technician": "Technician",
-    "workshop": "Workshop"
+    "workshop": "Workshop",
+    "messages": "メッセージ"
   },
   "hero": {
     "quickWheels": "Quick-Wheels",
@@ -885,5 +886,24 @@
     "terms": "契約条件",
     "conditions": "条件",
     "restrictions": "制限"
+  },
+  "chat": {
+    "title": "メッセージ",
+    "noContacts": "連絡先がありません",
+    "selectContact": "チャットを開始する連絡先を選択",
+    "noMessages": "まだメッセージがありません。挨拶しましょう！",
+    "placeholder": "メッセージを入力...",
+    "today": "今日",
+    "send": "送信",
+    "unread": "新しいメッセージ"
+  },
+  "technician": {
+    "workshop": "工場所在地",
+    "workshopAddress": "工場の住所",
+    "latitude": "緯度",
+    "longitude": "経度",
+    "scheduleService": "サービスを予約",
+    "serviceDate": "サービス日",
+    "serviceNotes": "サービスメモ"
   }
 }

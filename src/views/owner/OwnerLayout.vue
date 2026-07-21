@@ -95,10 +95,12 @@ import { ref, computed, onMounted, onUnmounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/stores/auth';
+import { useMessageStore } from '@/stores/messages';
 
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
+const messageStore = useMessageStore();
 const { locale, t } = useI18n();
 const currentLocale = ref(locale.value);
 
@@ -161,6 +163,7 @@ onMounted(() => {
   updateTime();
   timer = setInterval(updateTime, 1000);
   window.addEventListener("resize", handleResize);
+  messageStore.fetchUnreadCount();
 });
 
 onUnmounted(() => {
@@ -181,6 +184,7 @@ const managementNav = [
   { to: "/owner/technicians", label: "nav.technicians", icon: "fa-solid fa-user-gear" },
   { to: "/owner/payments", label: "nav.payments", icon: "fa-solid fa-money-bill-wave" },
   { to: "/owner/reports", label: "nav.reports", icon: "fa-solid fa-chart-bar" },
+  { to: "/owner/chat", label: "nav.messages", icon: "fa-solid fa-comments", get badge() { return messageStore.unreadCount || null } },
 ];
 const systemNav = [
   { to: "/owner/settings", label: "nav.settings", icon: "fa-solid fa-cog" },

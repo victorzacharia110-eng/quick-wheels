@@ -54,6 +54,7 @@ const router = createRouter({
         { path: 'settings', component: () => import('../views/owner/Settings.vue'), meta: { title: 'Settings' } },
         { path: 'gps', component: () => import('../views/owner/GpsTracking.vue'), meta: { title: 'GPS Tracking' } },
         { path: 'site-content', component: () => import('../views/owner/SiteContent.vue'), meta: { title: 'Site Content', role: 'owner' } },
+        { path: 'chat', component: () => import('../views/ChatView.vue'), meta: { title: 'Messages' } },
       ]
     },
     
@@ -94,6 +95,7 @@ const router = createRouter({
         { path: 'reports', component: () => import('../views/technician/MaintenanceReports.vue'), meta: { title: 'Maintenance Reports' } },
         { path: 'reports/create', component: () => import('../views/technician/CreateReport.vue'), meta: { title: 'Create Report' } },
         { path: 'reports/:id', component: () => import('../views/technician/ReportDetail.vue'), meta: { title: 'Report Detail' } },
+        { path: 'chat', component: () => import('../views/ChatView.vue'), meta: { title: 'Messages' } },
       ]
     },
     

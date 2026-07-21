@@ -985,5 +985,27 @@
       "notRequired": "Not Required",
       "specialNotes": "Special Notes"
     }
+  },
+  "chat": {
+    "title": "Messages",
+    "noContacts": "No contacts available",
+    "selectContact": "Select a contact to start chatting",
+    "noMessages": "No messages yet. Say hello!",
+    "placeholder": "Type a message...",
+    "today": "Today",
+    "send": "Send",
+    "unread": "New messages"
+  },
+  "technician": {
+    "workshop": "Workshop Location",
+    "workshopAddress": "Workshop address",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "scheduleService": "Schedule Service",
+    "serviceDate": "Service Date",
+    "serviceNotes": "Service Notes"
+  },
+  "nav": {
+    "messages": "Messages"
   }
 }

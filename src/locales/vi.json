@@ -53,7 +53,8 @@
     "discover": "Khám phá",
     "technicians": "Technicians",
     "technician": "Technician",
-    "workshop": "Workshop"
+    "workshop": "Workshop",
+    "messages": "Tin nhắn"
   },
   "hero": {
     "quickWheels": "Quick-Wheels",
@@ -885,5 +886,24 @@
     "terms": "Điều khoản hợp đồng",
     "conditions": "Điều kiện",
     "restrictions": "Hạn chế"
+  },
+  "chat": {
+    "title": "Tin nhắn",
+    "noContacts": "Không có liên hệ",
+    "selectContact": "Chọn liên hệ để bắt đầu trò chuyện",
+    "noMessages": "Chưa có tin nhắn. Xin chào!",
+    "placeholder": "Nhập tin nhắn...",
+    "today": "Hôm nay",
+    "send": "Gửi",
+    "unread": "Tin nhắn mới"
+  },
+  "technician": {
+    "workshop": "Vị trí xưởng",
+    "workshopAddress": "Địa chỉ xưởng",
+    "latitude": "Vĩ độ",
+    "longitude": "Kinh độ",
+    "scheduleService": "Lịch phục vụ",
+    "serviceDate": "Ngày phục vụ",
+    "serviceNotes": "Ghi chú dịch vụ"
   }
 }
