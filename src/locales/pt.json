@@ -247,7 +247,18 @@
     "phone": "Telefone",
     "none": "Nenhum",
     "notes": "Notas",
-    "uploading": "Enviando..."
+    "uploading": "Enviando...",
+    "changePassword": "Alterar senha",
+    "currentPassword": "Senha atual",
+    "newPassword": "Nova senha",
+    "forcePasswordChangeDesc": "Sua senha precisa ser alterada antes de continuar. Por favor, insira sua senha atual e escolha uma nova.",
+    "passwordMinLength": "Deve ter pelo menos 8 caracteres",
+    "passwordChanged": "Senha alterada com sucesso",
+    "passwordMismatch": "As senhas não coincidem",
+    "resetPassword": "Redefinir senha",
+    "resetPasswordConfirm": "Redefinir a senha deste funcionário para o padrão (NOME EM MAIÚSCULAS)?",
+    "passwordReset": "Senha redefinida com sucesso",
+    "defaultPassword": "Senha padrão"
   },
   "auth": {
     "welcomeBack": "Bem-vindo de Volta",

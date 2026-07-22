@@ -253,7 +253,18 @@
     "phone": "Simu",
     "none": "Hakuna",
     "notes": "Maelezo",
-    "uploading": "Inapakia..."
+    "uploading": "Inapakia...",
+    "changePassword": "Badilisha Nenosiri",
+    "currentPassword": "Nenosiri la Sasa",
+    "newPassword": "Nenosiri Jipya",
+    "forcePasswordChangeDesc": "Nenosiri lako linabidi libadilishwe kabla ya kuendelea. Tafadhali ingiza nenosiri lako la sasa na uchague jipya.",
+    "passwordMinLength": "Lazima iwe na herufi angalau 8",
+    "passwordChanged": "Nenosiri limebadilishwa kwa mafanikio",
+    "passwordMismatch": "Nenosiri hazifanani",
+    "resetPassword": "Weka upya Nenosiri",
+    "resetPasswordConfirm": "Weka upya nenosiri la huyu mfanyakazi kuwa la msingi (JINA kwa herufi kubwa)?",
+    "passwordReset": "Nenosiri limewekwa upya kwa mafanikio",
+    "defaultPassword": "Nenosiri la msingi"
   },
   "auth": {
     "welcomeBack": "Karibu Tena",

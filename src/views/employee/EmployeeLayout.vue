@@ -78,6 +78,65 @@
         <RouterView />
       </main>
     </div>
+
+    <!-- Force Password Change Modal -->
+    <Transition name="modal">
+      <div v-if="authStore.mustChangePassword" class="modal-overlay force-pw-modal">
+        <div class="modal-box">
+          <div class="modal-header">
+            <div class="pw-modal-title">
+              <font-awesome-icon icon="fa-solid fa-key" class="pw-icon" />
+              <h3>{{ $t('common.changePassword') }}</h3>
+            </div>
+          </div>
+          <p class="pw-desc">{{ $t('common.forcePasswordChangeDesc') }}</p>
+          <div v-if="pwError" class="form-error">
+            <font-awesome-icon icon="fa-solid fa-circle-exclamation" />
+            {{ pwError }}
+          </div>
+          <div v-if="pwSuccess" class="form-success-msg">
+            <font-awesome-icon icon="fa-solid fa-check-circle" />
+            {{ pwSuccess }}
+          </div>
+          <form @submit.prevent="handlePasswordChange">
+            <div class="form-group">
+              <label>{{ $t('common.currentPassword') }}</label>
+              <div class="pw-input-wrap">
+                <input v-model="pwForm.current_password" :type="showCurrentPw ? 'text' : 'password'" class="form-input" required :placeholder="$t('common.currentPassword')" />
+                <button type="button" class="pw-toggle" @click="showCurrentPw = !showCurrentPw">
+                  <font-awesome-icon :icon="showCurrentPw ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'" />
+                </button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>{{ $t('common.newPassword') }}</label>
+              <div class="pw-input-wrap">
+                <input v-model="pwForm.new_password" :type="showNewPw ? 'text' : 'password'" class="form-input" required minlength="8" :placeholder="$t('common.newPassword')" />
+                <button type="button" class="pw-toggle" @click="showNewPw = !showNewPw">
+                  <font-awesome-icon :icon="showNewPw ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'" />
+                </button>
+              </div>
+              <small class="form-hint">{{ $t('common.passwordMinLength') }}</small>
+            </div>
+            <div class="form-group">
+              <label>{{ $t('common.confirmPassword') }}</label>
+              <div class="pw-input-wrap">
+                <input v-model="pwForm.new_password_confirmation" :type="showConfirmPw ? 'text' : 'password'" class="form-input" required minlength="8" :placeholder="$t('common.confirmPassword')" />
+                <button type="button" class="pw-toggle" @click="showConfirmPw = !showConfirmPw">
+                  <font-awesome-icon :icon="showConfirmPw ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'" />
+                </button>
+              </div>
+            </div>
+            <div class="modal-actions">
+              <button type="submit" class="btn-primary" :disabled="pwSaving || !pwForm.new_password || pwForm.new_password !== pwForm.new_password_confirmation">
+                <span v-if="pwSaving" class="spinner-sm"></span>
+                {{ pwSaving ? $t('common.saving') : $t('common.changePassword') }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -110,6 +169,36 @@ const sidebarCollapsed = ref(false);
 const mobileOpen = ref(false);
 const currentTime = ref("");
 const isMobile = ref(window.innerWidth < 768);
+
+const pwForm = ref({ current_password: '', new_password: '', new_password_confirmation: '' });
+const pwSaving = ref(false);
+const pwError = ref('');
+const pwSuccess = ref('');
+const showCurrentPw = ref(false);
+const showNewPw = ref(false);
+const showConfirmPw = ref(false);
+
+async function handlePasswordChange() {
+  pwSaving.value = true; pwError.value = ''; pwSuccess.value = ''
+  if (pwForm.value.new_password !== pwForm.value.new_password_confirmation) {
+    pwError.value = 'Passwords do not match'; pwSaving.value = false; return
+  }
+  if (pwForm.value.new_password.length < 8) {
+    pwError.value = 'Password must be at least 8 characters'; pwSaving.value = false; return
+  }
+  try {
+    const result = await authStore.changePassword(pwForm.value.current_password, pwForm.value.new_password)
+    if (result.success) {
+      pwSuccess.value = 'Password changed successfully'
+      pwForm.value = { current_password: '', new_password: '', new_password_confirmation: '' }
+    } else {
+      pwError.value = result.message || 'Failed to change password'
+    }
+  } catch (e) {
+    pwError.value = e.response?.data?.message || 'Failed to change password'
+  }
+  pwSaving.value = false
+}
 
 const pageTitleKey = computed(() => {
   const map = {
@@ -543,4 +632,30 @@ const accountNav = [
   .mobile-close-btn { display: none !important; }
   .mobile-overlay { display: none !important; }
 }
+
+/* Force Password Change Modal */
+.force-pw-modal { z-index: 9999 !important; }
+.force-pw-modal .modal-box { max-width: 440px; }
+.pw-modal-title { display: flex; align-items: center; gap: 10px; }
+.pw-icon { color: #FFD93D; font-size: 1.3rem; }
+.pw-desc { color: rgba(255,255,255,0.5); font-size: 0.85rem; margin-bottom: 20px; line-height: 1.5; }
+.pw-input-wrap { position: relative; }
+.pw-toggle {
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; color: rgba(255,255,255,0.35); cursor: pointer; padding: 4px;
+  transition: color 0.2s;
+}
+.pw-toggle:hover { color: rgba(255,255,255,0.7); }
+.force-pw-modal .form-group { margin-bottom: 16px; }
+.force-pw-modal .form-group label { font-size: 0.85rem; font-weight: 500; color: rgba(255,255,255,0.65); margin-bottom: 6px; display: block; }
+.force-pw-modal .form-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 40px 10px 14px; color: #fff; font-size: 0.9rem; outline: none; transition: border-color 0.2s; font-family: 'Space Grotesk', sans-serif; }
+.force-pw-modal .form-input:focus { border-color: rgba(0,229,255,0.4); box-shadow: 0 0 0 3px rgba(0,229,255,0.06); }
+.force-pw-modal .form-input::placeholder { color: rgba(255,255,255,0.25); }
+.form-error { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: rgba(255,0,0,0.08); border: 1px solid rgba(255,0,0,0.2); border-radius: 10px; font-size: 0.85rem; color: #ff6b6b; margin-bottom: 16px; }
+.form-success-msg { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.2); border-radius: 10px; font-size: 0.85rem; color: #00E5FF; margin-bottom: 16px; }
+.form-hint { font-size: 0.75rem; color: rgba(255,255,255,0.35); margin-top: 4px; display: block; }
+.force-pw-modal .modal-actions { margin-top: 24px; }
+.force-pw-modal .btn-primary { width: 100%; justify-content: center; padding: 12px; }
+.force-pw-modal .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.spinner-sm { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(10,8,24,0.2); border-top-color: #0a0818; border-radius: 50%; animation: spin 0.7s linear infinite; margin-right: 8px; }
 </style>

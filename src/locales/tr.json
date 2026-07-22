@@ -247,7 +247,18 @@
     "phone": "Telefon",
     "none": "Yok",
     "notes": "Notlar",
-    "uploading": "Yükleniyor..."
+    "uploading": "Yükleniyor...",
+    "changePassword": "Şifre Değiştir",
+    "currentPassword": "Mevcut Şifre",
+    "newPassword": "Yeni Şifre",
+    "forcePasswordChangeDesc": "Devam etmeden önce şifrenizin değiştirilmesi gerekiyor. Lütfen mevcut şifrenizi girin ve yeni bir şifre seçin.",
+    "passwordMinLength": "En az 8 karakter olmalıdır",
+    "passwordChanged": "Şifre başarıyla değiştirildi",
+    "passwordMismatch": "Şifreler eşleşmiyor",
+    "resetPassword": "Şifreyi Sıfırla",
+    "resetPasswordConfirm": "Bu çalışanın şifresini varsayılana (İSİM BÜYÜK HARF) sıfırlamak istiyor musunuz?",
+    "passwordReset": "Şifre başarıyla sıfırlandı",
+    "defaultPassword": "Varsayılan şifre"
   },
   "auth": {
     "welcomeBack": "Tekrar Hoş Geldiniz",

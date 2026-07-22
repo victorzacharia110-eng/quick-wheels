@@ -247,7 +247,18 @@
     "phone": "Telefono",
     "none": "Nessuno",
     "notes": "Note",
-    "uploading": "Caricamento..."
+    "uploading": "Caricamento...",
+    "changePassword": "Cambia password",
+    "currentPassword": "Password attuale",
+    "newPassword": "Nuova password",
+    "forcePasswordChangeDesc": "La tua password deve essere cambiata prima di continuare. Inserisci la password attuale e scegline una nuova.",
+    "passwordMinLength": "Deve contenere almeno 8 caratteri",
+    "passwordChanged": "Password cambiata con successo",
+    "passwordMismatch": "Le password non corrispondono",
+    "resetPassword": "Reimposta password",
+    "resetPasswordConfirm": "Reimpostare la password di questo dipendente a quella predefinita (NOME IN MAIUSCOLO)?",
+    "passwordReset": "Password reimpostata con successo",
+    "defaultPassword": "Password predefinita"
   },
   "auth": {
     "welcomeBack": "Bentornato",

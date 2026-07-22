@@ -58,6 +58,7 @@
               <td>
                 <div class="action-btns">
                   <button @click="openEditModal(employee)" class="btn-icon" :title="$t('common.edit')"><font-awesome-icon icon="fa-solid fa-pen" /></button>
+                  <button @click="resetEmployeePassword(employee)" class="btn-icon" :title="$t('common.resetPassword')"><font-awesome-icon icon="fa-solid fa-key" /></button>
                   <button @click="openDocuments(employee)" class="btn-icon" :title="$t('documents.title')"><font-awesome-icon icon="fa-solid fa-folder-open" /></button>
                   <button @click="toggleActivation(employee)" class="btn-icon" :class="employee.status === 'active' ? 'warning' : 'success'" :title="employee.status === 'active' ? $t('documents.deactivate') : $t('documents.reactivate')">
                     <font-awesome-icon :icon="employee.status === 'active' ? 'fa-solid fa-user-slash' : 'fa-solid fa-user-check'" />
@@ -173,6 +174,30 @@
               </template>
             </div>
           </form>
+        </div>
+      </div>
+    </Transition>
+
+    <!-- Password Reset Modal -->
+    <Transition name="modal">
+      <div v-if="showResetModal" class="modal-overlay" @click.self="showResetModal = false">
+        <div class="modal-box">
+          <div class="modal-header">
+            <h3>{{ $t('common.resetPassword') }}</h3>
+            <button class="modal-close" @click="showResetModal = false"><font-awesome-icon icon="fa-solid fa-times" /></button>
+          </div>
+          <div class="form-success" style="margin-bottom: 0;">
+            <font-awesome-icon icon="fa-solid fa-key" />
+            <div>
+              <strong>{{ $t('common.passwordReset') }}</strong>
+              <p style="margin: 4px 0 2px; font-size: 0.8rem; opacity: 0.7;">{{ $t('common.defaultPassword') }} ({{ resetEmployeeName }}):</p>
+              <code class="password-display">{{ resetDefaultPassword }}</code>
+              <button class="btn-copy" @click="copyResetPassword"><font-awesome-icon icon="fa-solid fa-copy" /></button>
+            </div>
+          </div>
+          <div class="modal-actions" style="margin-top: 16px;">
+            <button type="button" @click="showResetModal = false" class="btn-primary">{{ $t('common.close') }}</button>
+          </div>
         </div>
       </div>
     </Transition>
@@ -491,6 +516,29 @@ async function toggleActivation(employee) {
     await employeeStore.toggleEmployeeStatus(employee.id)
     employeeStore.fetchEmployees()
   } catch (_) {}
+}
+
+const showResetModal = ref(false)
+const resetDefaultPassword = ref('')
+const resetEmployeeName = ref('')
+
+async function resetEmployeePassword(employee) {
+  if (!confirm(t('common.resetPasswordConfirm'))) return
+  try {
+    const { data } = await api.post(`/owner/employees/${employee.id}/reset-password`)
+    if (data.success) {
+      resetDefaultPassword.value = data.data.default_password
+      resetEmployeeName.value = employee.name
+      showResetModal.value = true
+      employeeStore.fetchEmployees()
+    }
+  } catch (err) {
+    alert(err.response?.data?.message || t('common.error'))
+  }
+}
+
+function copyResetPassword() {
+  navigator.clipboard.writeText(resetDefaultPassword.value)
 }
 
 async function openDocuments(employee) {

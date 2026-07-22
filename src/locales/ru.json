@@ -247,7 +247,18 @@
     "phone": "Телефон",
     "none": "Нет",
     "notes": "Заметки",
-    "uploading": "Загрузка..."
+    "uploading": "Загрузка...",
+    "changePassword": "Изменить пароль",
+    "currentPassword": "Текущий пароль",
+    "newPassword": "Новый пароль",
+    "forcePasswordChangeDesc": "Ваш пароль должен быть изменён перед продолжением. Введите текущий пароль и выберите новый.",
+    "passwordMinLength": "Должен содержать минимум 8 символов",
+    "passwordChanged": "Пароль успешно изменён",
+    "passwordMismatch": "Пароли не совпадают",
+    "resetPassword": "Сбросить пароль",
+    "resetPasswordConfirm": "Сбросить пароль этого сотрудника на значение по умолчанию (ИМЯ ЗАГЛАВНЫМИ)?",
+    "passwordReset": "Пароль успешно сброшен",
+    "defaultPassword": "Пароль по умолчанию"
   },
   "auth": {
     "welcomeBack": "С возвращением",

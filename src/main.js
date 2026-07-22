@@ -160,6 +160,7 @@ import {
   faUserGear,
   faIdBadge,
   faUserPlus as faUserPlusSolid,
+  faEyeSlash,
 } from '@fortawesome/free-solid-svg-icons'
 
 import { 
@@ -349,6 +350,7 @@ library.add(
   faUserFriends,
   faUserGear,
   faIdBadge,
+  faEyeSlash,
   faGithub,
   faTwitter,
   faLinkedin,

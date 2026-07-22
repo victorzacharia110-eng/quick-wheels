@@ -247,7 +247,18 @@
     "phone": "Téléphone",
     "none": "Aucun",
     "notes": "Notes",
-    "uploading": "Téléchargement..."
+    "uploading": "Téléchargement...",
+    "changePassword": "Changer le mot de passe",
+    "currentPassword": "Mot de passe actuel",
+    "newPassword": "Nouveau mot de passe",
+    "forcePasswordChangeDesc": "Votre mot de passe doit être modifié avant de continuer. Veuillez entrer votre mot de passe actuel et en choisir un nouveau.",
+    "passwordMinLength": "Doit contenir au moins 8 caractères",
+    "passwordChanged": "Mot de passe modifié avec succès",
+    "passwordMismatch": "Les mots de passe ne correspondent pas",
+    "resetPassword": "Réinitialiser le mot de passe",
+    "resetPasswordConfirm": "Réinitialiser le mot de passe de cet employé à la valeur par défaut (NOM EN MAJUSCULES) ?",
+    "passwordReset": "Mot de passe réinitialisé avec succès",
+    "defaultPassword": "Mot de passe par défaut"
   },
   "auth": {
     "welcomeBack": "Bon Retour",

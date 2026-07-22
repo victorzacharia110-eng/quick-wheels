@@ -254,7 +254,18 @@
     "whatsapp": "WhatsApp",
     "toggleMenu": "Toggle menu",
     "error": "An error occurred",
-    "unexpectedError": "An unexpected error occurred"
+    "unexpectedError": "An unexpected error occurred",
+    "changePassword": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "forcePasswordChangeDesc": "Your password must be changed before continuing. Please enter your current password and choose a new one.",
+    "passwordMinLength": "Must be at least 8 characters",
+    "passwordChanged": "Password changed successfully",
+    "passwordMismatch": "Passwords do not match",
+    "resetPassword": "Reset Password",
+    "resetPasswordConfirm": "Reset this employee's password to their default (name in CAPS)?",
+    "passwordReset": "Password reset successfully",
+    "defaultPassword": "Default password"
   },
   "auth": {
     "welcomeBack": "Welcome Back",

@@ -247,7 +247,18 @@
     "phone": "Teléfono",
     "none": "Ninguno",
     "notes": "Notas",
-    "uploading": "Subiendo..."
+    "uploading": "Subiendo...",
+    "changePassword": "Cambiar contraseña",
+    "currentPassword": "Contraseña actual",
+    "newPassword": "Nueva contraseña",
+    "forcePasswordChangeDesc": "Su contraseña debe cambiarse antes de continuar. Ingrese su contraseña actual y elija una nueva.",
+    "passwordMinLength": "Debe tener al menos 8 caracteres",
+    "passwordChanged": "Contraseña cambiada exitosamente",
+    "passwordMismatch": "Las contraseñas no coinciden",
+    "resetPassword": "Restablecer contraseña",
+    "resetPasswordConfirm": "¿Restablecer la contraseña de este empleado a la predeterminada (NOMBRE EN MAYÚSCULAS)?",
+    "passwordReset": "Contraseña restablecida exitosamente",
+    "defaultPassword": "Contraseña predeterminada"
   },
   "auth": {
     "welcomeBack": "Bienvenido de Nuevo",

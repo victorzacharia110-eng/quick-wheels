@@ -247,7 +247,18 @@
     "phone": "الهاتف",
     "none": "لا أحد",
     "notes": "ملاحظات",
-    "uploading": "جارٍ التحميل..."
+    "uploading": "جارٍ التحميل...",
+    "changePassword": "تغيير كلمة المرور",
+    "currentPassword": "كلمة المرور الحالية",
+    "newPassword": "كلمة المرور الجديدة",
+    "forcePasswordChangeDesc": "يجب تغيير كلمة المرور قبل المتابعة. الرجاء إدخال كلمة المرور الحالية واختيار جديدة.",
+    "passwordMinLength": "يجب أن تكون 8 أحرف على الأقل",
+    "passwordChanged": "تم تغيير كلمة المرور بنجاح",
+    "passwordMismatch": "كلمتا المرور غير متطابقتين",
+    "resetPassword": "إعادة تعيين كلمة المرور",
+    "resetPasswordConfirm": "إعادة تعيين كلمة مرور هذا الموظف إلى الافتراضية (الاسم بأحرف كبيرة)؟",
+    "passwordReset": "تم إعادة تعيين كلمة المرور بنجاح",
+    "defaultPassword": "كلمة المرور الافتراضية"
   },
   "auth": {
     "welcomeBack": "مرحباً بعودتك",

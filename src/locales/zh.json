@@ -247,7 +247,18 @@
     "phone": "电话",
     "none": "无",
     "notes": "备注",
-    "uploading": "上传中..."
+    "uploading": "上传中...",
+    "changePassword": "修改密码",
+    "currentPassword": "当前密码",
+    "newPassword": "新密码",
+    "forcePasswordChangeDesc": "在继续之前必须更改密码。请输入当前密码并选择新密码。",
+    "passwordMinLength": "至少需要8个字符",
+    "passwordChanged": "密码已成功更改",
+    "passwordMismatch": "密码不匹配",
+    "resetPassword": "重置密码",
+    "resetPasswordConfirm": "将此员工的密码重置为默认值（姓名大写）？",
+    "passwordReset": "密码已成功重置",
+    "defaultPassword": "默认密码"
   },
   "auth": {
     "welcomeBack": "欢迎回来",

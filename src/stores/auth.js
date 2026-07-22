@@ -17,6 +17,7 @@ export const useAuthStore = defineStore('auth', () => {
   const isOwner = computed(() => user.value?.role === 'owner')
   const isEmployee = computed(() => user.value?.role === 'employee')
   const aiEnabled = computed(() => !!user.value?.ai_enabled)
+  const mustChangePassword = computed(() => !!user.value?.must_change_password)
 
   function setUser(userData) {
     user.value = userData
@@ -131,6 +132,28 @@ export const useAuthStore = defineStore('auth', () => {
     isInitialized.value = true
   }
 
+  async function changePassword(currentPassword, newPassword) {
+    isLoading.value = true
+    error.value = null
+    try {
+      const response = await api.post('/auth/change-password', {
+        current_password: currentPassword,
+        new_password: newPassword,
+        new_password_confirmation: newPassword,
+      })
+      if (response.data.success) {
+        if (user.value) {
+          user.value = { ...user.value, must_change_password: false }
+          try { localStorage.setItem('user', JSON.stringify(user.value)) } catch (e) {}
+        }
+        return { success: true }
+      }
+    } catch (err) {
+      error.value = err.response?.data?.message || 'Password change failed'
+      return { success: false, message: error.value }
+    } finally { isLoading.value = false }
+  }
+
   function setAiEnabled(enabled) {
     if (user.value) {
       user.value = { ...user.value, ai_enabled: enabled }
@@ -152,10 +175,12 @@ export const useAuthStore = defineStore('auth', () => {
     isOwner,
     isEmployee,
     aiEnabled,
+    mustChangePassword,
     setUser,
     clearUser,
     setToken,
     setAiEnabled,
+    changePassword,
     register,
     login,
     logout,

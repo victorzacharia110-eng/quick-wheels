@@ -247,7 +247,18 @@
     "phone": "전화",
     "none": "없음",
     "notes": "메모",
-    "uploading": "업로드 중..."
+    "uploading": "업로드 중...",
+    "changePassword": "비밀번호 변경",
+    "currentPassword": "현재 비밀번호",
+    "newPassword": "새 비밀번호",
+    "forcePasswordChangeDesc": "계속하기 전에 비밀번호를 변경해야 합니다. 현재 비밀번호를 입력하고 새 비밀번호를 선택하세요.",
+    "passwordMinLength": "최소 8자 이상이어야 합니다",
+    "passwordChanged": "비밀번호가 성공적으로 변경되었습니다",
+    "passwordMismatch": "비밀번호가 일치하지 않습니다",
+    "resetPassword": "비밀번호 재설정",
+    "resetPasswordConfirm": "이 직원의 비밀번호를 기본값(이름 대문자)으로 재설정하시겠습니까?",
+    "passwordReset": "비밀번호가 성공적으로 재설정되었습니다",
+    "defaultPassword": "기본 비밀번호"
   },
   "auth": {
     "welcomeBack": "돌아오신 것을 환영합니다",

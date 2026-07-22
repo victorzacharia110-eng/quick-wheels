@@ -247,7 +247,18 @@
     "phone": "電話",
     "none": "なし",
     "notes": "メモ",
-    "uploading": "アップロード中..."
+    "uploading": "アップロード中...",
+    "changePassword": "パスワードを変更",
+    "currentPassword": "現在のパスワード",
+    "newPassword": "新しいパスワード",
+    "forcePasswordChangeDesc": "続行する前にパスワードを変更する必要があります。現在のパスワードを入力し、新しいパスワードを選択してください。",
+    "passwordMinLength": "8文字以上である必要があります",
+    "passwordChanged": "パスワードが正常に変更されました",
+    "passwordMismatch": "パスワードが一致しません",
+    "resetPassword": "パスワードをリセット",
+    "resetPasswordConfirm": "この従業員のパスワードをデフォルト（名前の大文字）にリセットしますか？",
+    "passwordReset": "パスワードが正常にリセットされました",
+    "defaultPassword": "デフォルトパスワード"
   },
   "auth": {
     "welcomeBack": "おかえりなさい",

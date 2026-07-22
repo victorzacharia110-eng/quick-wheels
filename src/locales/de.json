@@ -247,7 +247,18 @@
     "phone": "Telefon",
     "none": "Keine",
     "notes": "Notizen",
-    "uploading": "Hochladen..."
+    "uploading": "Hochladen...",
+    "changePassword": "Passwort ändern",
+    "currentPassword": "Aktuelles Passwort",
+    "newPassword": "Neues Passwort",
+    "forcePasswordChangeDesc": "Ihr Passwort muss geändert werden, bevor Sie fortfahren. Bitte geben Sie Ihr aktuelles Passwort ein und wählen Sie ein neues.",
+    "passwordMinLength": "Muss mindestens 8 Zeichen lang sein",
+    "passwordChanged": "Passwort erfolgreich geändert",
+    "passwordMismatch": "Passwörter stimmen nicht überein",
+    "resetPassword": "Passwort zurücksetzen",
+    "resetPasswordConfirm": "Passwort dieses Mitarbeiters auf Standard (Name in GROSSSCHRIFT) zurücksetzen?",
+    "passwordReset": "Passwort erfolgreich zurückgesetzt",
+    "defaultPassword": "Standardpasswort"
   },
   "auth": {
     "welcomeBack": "Willkommen zurück",

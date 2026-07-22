@@ -247,7 +247,18 @@
     "phone": "Điện thoại",
     "none": "Không",
     "notes": "Ghi chú",
-    "uploading": "Đang tải lên..."
+    "uploading": "Đang tải lên...",
+    "changePassword": "Đổi mật khẩu",
+    "currentPassword": "Mật khẩu hiện tại",
+    "newPassword": "Mật khẩu mới",
+    "forcePasswordChangeDesc": "Bạn phải đổi mật khẩu trước khi tiếp tục. Vui lòng nhập mật khẩu hiện tại và chọn mật khẩu mới.",
+    "passwordMinLength": "Phải có ít nhất 8 ký tự",
+    "passwordChanged": "Đổi mật khẩu thành công",
+    "passwordMismatch": "Mật khẩu không khớp",
+    "resetPassword": "Đặt lại mật khẩu",
+    "resetPasswordConfirm": "Đặt lại mật khẩu của nhân viên này về mặc định (TÊN IN HOA)?",
+    "passwordReset": "Đặt lại mật khẩu thành công",
+    "defaultPassword": "Mật khẩu mặc định"
   },
   "auth": {
     "welcomeBack": "Chào mừng trở lại",
