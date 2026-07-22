@@ -543,11 +543,22 @@ async function viewDocument(doc) {
     const res = await api.get(`/owner/employees/${selectedEmployee.value.id}/documents/${doc.id}/download`, {
       responseType: 'blob'
     })
+    if (res.data.type && res.data.type.includes('application/json')) {
+      const text = await res.data.text()
+      const json = JSON.parse(text)
+      alert(json.message || t('documents.viewFailed'))
+      return
+    }
     const url = URL.createObjectURL(res.data)
     window.open(url, '_blank')
     URL.revokeObjectURL(url)
   } catch (err) {
-    alert(err.response?.data?.message || t('documents.viewFailed'))
+    if (err.response?.data instanceof Blob) {
+      const text = await err.response.data.text()
+      try { alert(JSON.parse(text).message) } catch { alert(t('documents.viewFailed')) }
+    } else {
+      alert(err.response?.data?.message || t('documents.viewFailed'))
+    }
   }
 }
 
