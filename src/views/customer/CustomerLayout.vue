@@ -38,6 +38,13 @@
           <span class="nav-icon"><font-awesome-icon :icon="item.icon" /></span>
           <span class="nav-label">{{ $t(item.label) }}</span>
         </RouterLink>
+
+        <div class="nav-section-label">{{ $t('nav.communication') }}</div>
+        <RouterLink v-for="item in communicationNav" :key="item.to" :to="item.to" class="nav-item" active-class="active" @click="closeMobile">
+          <span class="nav-icon"><font-awesome-icon :icon="item.icon" /></span>
+          <span class="nav-label">{{ $t(item.label) }}</span>
+          <span v-if="item.badge" class="nav-badge">{{ item.badge }}</span>
+        </RouterLink>
       </nav>
 
       <div class="sidebar-footer">
@@ -97,10 +104,12 @@ import { ref, computed, onMounted, onUnmounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/stores/auth';
+import { useMessageStore } from '@/stores/messages';
 
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
+const messageStore = useMessageStore();
 const { locale } = useI18n();
 const currentLocale = ref(locale.value);
 const locales = [
@@ -128,6 +137,7 @@ const pageTitleKey = computed(() => {
     "/customer/nearby": "customer.nearbyDrivers",
     "/customer/profile": "nav.profile",
     "/customer/payments": "nav.payments",
+    "/customer/chat": "nav.messages",
   };
   return map[route.path] || "dashboard.title";
 });
@@ -140,7 +150,7 @@ function handleResize() { isMobile.value = window.innerWidth < 768; if (!isMobil
 async function handleLogout() { const r = await authStore.logout(); if (r.success) router.push('/'); }
 
 let timer;
-onMounted(() => { updateTime(); timer = setInterval(updateTime, 1000); window.addEventListener("resize", handleResize); });
+onMounted(() => { updateTime(); timer = setInterval(updateTime, 1000); window.addEventListener("resize", handleResize); messageStore.fetchUnreadCount(); });
 onUnmounted(() => { clearInterval(timer); window.removeEventListener("resize", handleResize); document.body.style.overflow = ""; });
 watch(mobileOpen, (v) => { document.body.style.overflow = v ? "hidden" : ""; });
 
@@ -156,6 +166,9 @@ const financeNav = [
 ];
 const discoverNav = [
   { to: "/customer/nearby", label: "nav.nearbyDrivers", icon: "fa-solid fa-location-dot" },
+];
+const communicationNav = [
+  { to: "/customer/chat", label: "nav.messages", icon: "fa-solid fa-comments", get badge() { return messageStore.unreadCount || null } },
 ];
 </script>
 
@@ -183,6 +196,7 @@ const discoverNav = [
 .nav-icon { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: rgba(255, 255, 255, 0.4); }
 .nav-label { transition: opacity 0.2s, width 0.3s; }
 .collapsed .nav-label { opacity: 0; width: 0; overflow: hidden; }
+.nav-badge { margin-left: auto; background: #EF4444; color: #fff; font-size: 0.65rem; font-weight: 700; min-width: 18px; height: 18px; border-radius: 9px; display: flex; align-items: center; justify-content: center; padding: 0 5px; }
 .sidebar-footer { padding: 12px 8px; border-top: 1px solid rgba(255, 255, 255, 0.05); display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
 .admin-user { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 8px; overflow: hidden; }
 .admin-avatar { width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, #2d2b7f, #00c4d4); display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; color: #fff; }

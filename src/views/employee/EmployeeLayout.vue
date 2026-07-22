@@ -86,10 +86,12 @@ import { ref, computed, onMounted, onUnmounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/stores/auth';
+import { useMessageStore } from '@/stores/messages';
 
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
+const messageStore = useMessageStore();
 const { locale } = useI18n();
 const currentLocale = ref(locale.value);
 const locales = [
@@ -115,6 +117,7 @@ const pageTitleKey = computed(() => {
     "/employee/my-contract": "nav.myContract",
     "/employee/payments": "nav.myPayments",
     "/employee/clients": "nav.clients",
+    "/employee/chat": "nav.messages",
     "/employee/profile": "nav.myProfile",
   };
   return map[route.path] || "dashboard.title";
@@ -156,6 +159,7 @@ onMounted(() => {
   updateTime();
   timer = setInterval(updateTime, 1000);
   window.addEventListener("resize", handleResize);
+  messageStore.fetchUnreadCount();
 });
 
 onUnmounted(() => {
@@ -173,6 +177,7 @@ const accountNav = [
   { to: "/employee/my-contract", label: "nav.myContract", icon: "fa-solid fa-file-contract" },
   { to: "/employee/payments", label: "nav.myPayments", icon: "fa-solid fa-money-bill-wave" },
   { to: "/employee/clients", label: "nav.clients", icon: "fa-solid fa-users" },
+  { to: "/employee/chat", label: "nav.messages", icon: "fa-solid fa-comments", get badge() { return messageStore.unreadCount || null } },
   { to: "/employee/profile", label: "nav.myProfile", icon: "fa-regular fa-user" },
 ];
 </script>
@@ -322,6 +327,20 @@ const accountNav = [
 .nav-item.active .nav-icon { color: #00e5ff; }
 .nav-label { transition: opacity 0.2s, width 0.3s; }
 .collapsed .nav-label { opacity: 0; width: 0; overflow: hidden; }
+.nav-badge {
+  margin-left: auto;
+  background: #EF4444;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+}
 
 .sidebar-footer {
   padding: 12px 8px;

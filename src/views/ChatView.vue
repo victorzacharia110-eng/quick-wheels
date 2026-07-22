@@ -11,20 +11,36 @@ const authStore = useAuthStore()
 const newMessage = ref('')
 const chatBody = ref(null)
 const sending = ref(false)
+const showSidebar = ref(true)
+const isMobileView = ref(window.innerWidth < 768)
+
+function handleResize() {
+  isMobileView.value = window.innerWidth < 768
+}
 
 onMounted(async () => {
   await messageStore.fetchContacts()
   messageStore.startPolling()
+  window.addEventListener('resize', handleResize)
 })
 
 onUnmounted(() => {
   messageStore.stopPolling()
+  window.removeEventListener('resize', handleResize)
 })
 
 async function openChat(userId) {
   await messageStore.fetchMessages(userId)
   await nextTick()
   scrollBottom()
+  if (isMobileView.value) {
+    showSidebar.value = false
+  }
+}
+
+function backToContacts() {
+  showSidebar.value = true
+  messageStore.activeContactId = null
 }
 
 async function send() {
@@ -73,7 +89,7 @@ function formatDate(dateStr) {
 </script>
 
 <template>
-  <div class="chat-container">
+  <div class="chat-container" :class="{ 'sidebar-hidden': !showSidebar }">
     <!-- Sidebar: contacts -->
     <div class="chat-sidebar">
       <div class="sidebar-header">
@@ -102,13 +118,19 @@ function formatDate(dateStr) {
     </div>
 
     <!-- Chat area -->
-    <div class="chat-main">
-      <div v-if="!messageStore.activeContactId" class="chat-empty">
+    <div class="chat-main" :class="{ active: messageStore.activeContactId }">
+      <!-- Desktop: no contact selected -->
+      <div v-if="!messageStore.activeContactId && !isMobileView" class="chat-empty">
         <font-awesome-icon icon="fa-solid fa-comments" size="3x" />
         <p>{{ t('chat.selectContact') }}</p>
       </div>
-      <template v-else>
+
+      <!-- Active chat -->
+      <template v-else-if="messageStore.activeContactId">
         <div class="chat-header">
+          <button v-if="isMobileView" class="back-btn" @click="backToContacts">
+            <font-awesome-icon icon="fa-solid fa-arrow-left" />
+          </button>
           <div class="chat-header-info">
             <font-awesome-icon :icon="messageStore.activeContact?.role === 'owner' ? 'fa-solid fa-user-tie' : 'fa-solid fa-wrench'" />
             <span>{{ messageStore.activeContact?.name }}</span>
@@ -147,6 +169,14 @@ function formatDate(dateStr) {
           </button>
         </div>
       </template>
+
+      <!-- Mobile: no contact selected -->
+      <div v-else class="chat-empty-mobile">
+        <button class="browse-contacts-btn" @click="showSidebar = true">
+          <font-awesome-icon icon="fa-solid fa-comments" size="2x" />
+          <span>{{ t('chat.selectContact') }}</span>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -159,13 +189,16 @@ function formatDate(dateStr) {
   overflow: hidden;
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.06);
+  position: relative;
 }
 
 .chat-sidebar {
   width: 280px;
+  min-width: 280px;
   border-right: 1px solid rgba(255,255,255,0.06);
   display: flex;
   flex-direction: column;
+  z-index: 2;
 }
 
 .sidebar-header {
@@ -237,10 +270,40 @@ function formatDate(dateStr) {
   gap: 12px;
 }
 
+.chat-empty-mobile {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.browse-contacts-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px;
+  background: rgba(139,92,246,0.1);
+  border: 1px solid rgba(139,92,246,0.2);
+  border-radius: 16px;
+  color: rgba(255,255,255,0.5);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+  font-family: 'Space Grotesk', sans-serif;
+}
+.browse-contacts-btn:hover {
+  background: rgba(139,92,246,0.18);
+  color: rgba(255,255,255,0.8);
+}
+
 .chat-header {
   padding: 12px 20px;
   border-bottom: 1px solid rgba(255,255,255,0.06);
   background: rgba(255,255,255,0.02);
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 .chat-header-info {
   display: flex;
@@ -248,6 +311,19 @@ function formatDate(dateStr) {
   gap: 10px;
   font-weight: 600;
 }
+
+.back-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  padding: 6px;
+  font-size: 1rem;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+.back-btn:hover { background: rgba(255,255,255,0.06); color: #fff; }
 
 .chat-messages {
   flex: 1;
@@ -326,7 +402,71 @@ function formatDate(dateStr) {
   align-items: center;
   justify-content: center;
   transition: background 0.2s;
+  flex-shrink: 0;
 }
 .btn-send:hover:not(:disabled) { background: #7C3AED; }
 .btn-send:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── Mobile responsive ──────────────────────────────────────── */
+@media (max-width: 768px) {
+  .chat-container {
+    height: calc(100vh - 100px);
+    border-radius: 0;
+    border: none;
+  }
+
+  .chat-sidebar {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    min-width: 100%;
+    z-index: 2;
+    transform: translateX(0);
+    transition: transform 0.3s ease;
+    background: #0d0b1e;
+  }
+
+  .chat-container.sidebar-hidden .chat-sidebar {
+    transform: translateX(-100%);
+    pointer-events: none;
+  }
+
+  .chat-main {
+    position: relative;
+  }
+
+  .chat-main.active {
+    z-index: 3;
+  }
+
+  .back-btn {
+    display: flex;
+  }
+
+  .chat-empty {
+    display: none;
+  }
+
+  .chat-messages {
+    padding: 16px;
+  }
+
+  .message-bubble {
+    max-width: 80%;
+  }
+
+  .chat-input {
+    padding: 12px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chat-container {
+    height: calc(100vh - 80px);
+  }
+  .message-bubble {
+    max-width: 85%;
+    font-size: 0.85rem;
+  }
+}
 </style>

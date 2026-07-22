@@ -30,7 +30,7 @@ function getPriorityIcon(priority) {
         <h1 class="page-title">{{ $t('maintenance.dashboard') }}</h1>
         <p class="page-sub">{{ $t('maintenance.welcomeBack') }}, {{ authStore.userName }}!</p>
       </div>
-      <RouterLink to="/technician/create-report" class="btn-primary">
+        <RouterLink to="/technician/reports/create" class="btn-primary">
         <font-awesome-icon icon="fa-solid fa-plus" /> {{ $t('maintenance.newReport') }}
       </RouterLink>
     </div>
@@ -99,7 +99,7 @@ function getPriorityIcon(priority) {
         <font-awesome-icon icon="fa-solid fa-clipboard" size="3x" />
         <h3>{{ $t('maintenance.noReportsYet') }}</h3>
         <p>{{ $t('maintenance.noReportsDesc') }}</p>
-        <RouterLink to="/technician/create-report" class="btn-primary">
+      <RouterLink to="/technician/reports/create" class="btn-primary">
           {{ $t('maintenance.createFirstReport') }}
         </RouterLink>
       </div>

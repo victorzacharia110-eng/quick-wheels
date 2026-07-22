@@ -116,7 +116,7 @@ const pageTitleKey = computed(() => {
   const map = {
     "/technician": "maintenance.dashboard",
     "/technician/reports": "maintenance.reports",
-    "/technician/create-report": "maintenance.createReport",
+    "/technician/reports/create": "maintenance.createReport",
   };
   return map[route.path] || "maintenance.dashboard";
 });
@@ -174,7 +174,7 @@ const mainNav = [
 ];
 const workshopNav = [
   { to: "/technician/reports", label: "maintenance.reports", icon: "fa-solid fa-clipboard-list" },
-  { to: "/technician/create-report", label: "maintenance.createReport", icon: "fa-solid fa-plus-circle" },
+  { to: "/technician/reports/create", label: "maintenance.createReport", icon: "fa-solid fa-plus-circle" },
   { to: "/technician/chat", label: "nav.messages", icon: "fa-solid fa-comments", get badge() { return messageStore.unreadCount || null } },
 ];
 </script>

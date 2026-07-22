@@ -123,6 +123,7 @@ const pageTitleKeys = {
   "/owner/reports": "nav.reports",
   "/owner/settings": "nav.settings",
   "/owner/gps": "nav.gps",
+  "/owner/chat": "nav.messages",
 };
 
 const currentPageTitle = computed(() => t(pageTitleKeys[route.path] || "nav.dashboard"));

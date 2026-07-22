@@ -69,6 +69,7 @@ const router = createRouter({
         { path: 'my-rides', component: () => import('../views/customer/MyRides.vue'), meta: { title: 'My Rides' } },
         { path: 'nearby', component: () => import('../views/customer/NearbyDrivers.vue'), meta: { title: 'Nearby Drivers' } },
         { path: 'payments', component: () => import('../views/customer/Payments.vue'), meta: { title: 'Payments' } },
+        { path: 'chat', component: () => import('../views/ChatView.vue'), meta: { title: 'Messages' } },
       ]
     },
     
@@ -82,6 +83,7 @@ const router = createRouter({
         { path: 'my-contract', component: () => import('../views/employee/MyContract.vue'), meta: { title: 'My Contract' } },
         { path: 'payments', component: () => import('../views/employee/Payments.vue'), meta: { title: 'My Payments' } },
         { path: 'profile', component: () => import('../views/employee/EmployeeProfile.vue'), meta: { title: 'Profile' } },
+        { path: 'chat', component: () => import('../views/ChatView.vue'), meta: { title: 'Messages' } },
       ]
     },
     
@@ -107,6 +109,7 @@ const router = createRouter({
       children: [
         { path: '', component: () => import('../views/superadmin/SuperAdminDashboard.vue'), meta: { title: 'Dashboard' } },
         { path: 'owners', component: () => import('../views/superadmin/SuperAdminOwners.vue'), meta: { title: 'Manage Owners' } },
+        { path: 'chat', component: () => import('../views/ChatView.vue'), meta: { title: 'Messages' } },
       ]
     },
     

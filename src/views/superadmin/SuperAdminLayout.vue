@@ -80,10 +80,12 @@ import { ref, computed, onMounted, onUnmounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/stores/auth';
+import { useMessageStore } from '@/stores/messages';
 
 const route = useRoute();
 const router = useRouter();
 const authStore = useAuthStore();
+const messageStore = useMessageStore();
 const { locale, t } = useI18n();
 const currentLocale = ref(locale.value);
 
@@ -100,6 +102,7 @@ const isMobile = ref(window.innerWidth < 768);
 const pageTitleKeys = {
   "/superadmin": "Dashboard",
   "/superadmin/owners": "Manage Owners",
+  "/superadmin/chat": "Messages",
 };
 
 const currentPageTitle = computed(() => pageTitleKeys[route.path] || "Dashboard");
@@ -140,6 +143,7 @@ onMounted(() => {
   updateTime();
   timer = setInterval(updateTime, 1000);
   window.addEventListener("resize", handleResize);
+  messageStore.fetchUnreadCount();
 });
 
 onUnmounted(() => {
@@ -155,6 +159,7 @@ watch(mobileOpen, (newVal) => {
 const mainNav = [
   { to: "/superadmin", label: "nav.dashboard", icon: "fa-solid fa-th-large" },
   { to: "/superadmin/owners", label: "nav.employees", icon: "fa-solid fa-users" },
+  { to: "/superadmin/chat", label: "nav.messages", icon: "fa-solid fa-comments", get badge() { return messageStore.unreadCount || null } },
 ];
 
 const locales = [
@@ -321,6 +326,7 @@ const locales = [
 .nav-item.active .nav-icon { color: #00e5ff; }
 .nav-label { transition: opacity 0.2s, width 0.3s; }
 .collapsed .nav-label { opacity: 0; width: 0; overflow: hidden; }
+.nav-badge { margin-left: auto; background: #EF4444; color: #fff; font-size: 0.65rem; font-weight: 700; min-width: 18px; height: 18px; border-radius: 9px; display: flex; align-items: center; justify-content: center; padding: 0 5px; }
 
 .sidebar-footer {
   padding: 12px 8px;
