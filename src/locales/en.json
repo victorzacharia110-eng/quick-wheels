@@ -939,8 +939,8 @@
     "reactivate": "Reactivate Account",
     "confirmDeactivate": "This will deactivate the account and prevent the employee from logging in. Continue?",
     "confirmReactivate": "This will reactivate the account and restore login access. Continue?",
-    "aiAnalyze": "AI Analyze Contract",
-    "aiAnalysis": "AI Contract Analysis",
+    "aiAnalyze": "AI Analyze Document",
+    "aiAnalysis": "AI Document Analysis",
     "analysisTitle": "AI Contract Analysis",
     "analysisFailed": "AI analysis failed. The document may not contain readable text.",
     "expired": "Expired",
@@ -957,12 +957,7 @@
     "restrictions": "Restrictions",
     "types": {
       "contract": "Contract",
-      "license": "License",
-      "nida": "NIDA",
-      "insurance": "Insurance",
-      "medical": "Medical",
-      "backgroundCheck": "Background Check",
-      "other": "Other"
+      "identification": "Driver Identification"
     },
     "analysis": {
       "contractType": "Contract Type",
@@ -976,7 +971,19 @@
       "insurance": "Insurance",
       "required": "Required",
       "notRequired": "Not Required",
-      "specialNotes": "Special Notes"
+      "specialNotes": "Special Notes",
+      "personalInfo": "Personal Information",
+      "fullName": "Full Name",
+      "idNumber": "ID Number",
+      "dateOfBirth": "Date of Birth",
+      "gender": "Gender",
+      "address": "Address",
+      "nationality": "Nationality",
+      "issueDate": "Issue Date",
+      "expiryDate": "Expiry Date",
+      "licenseClass": "License Class",
+      "licenseNumber": "License Number",
+      "validUntil": "Valid Until"
     }
   },
   "chat": {

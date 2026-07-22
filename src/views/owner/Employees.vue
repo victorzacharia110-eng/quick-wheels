@@ -213,12 +213,7 @@
                 <label>{{ $t('documents.type') }} *</label>
                 <select v-model="uploadForm.document_type" class="form-input">
                   <option value="contract">{{ $t('documents.types.contract') }}</option>
-                  <option value="license">{{ $t('documents.types.license') }}</option>
-                  <option value="nida">{{ $t('documents.types.nida') }}</option>
-                  <option value="insurance">{{ $t('documents.types.insurance') }}</option>
-                  <option value="medical">{{ $t('documents.types.medical') }}</option>
-                  <option value="background_check">{{ $t('documents.types.backgroundCheck') }}</option>
-                  <option value="other">{{ $t('documents.types.other') }}</option>
+                  <option value="identification">{{ $t('documents.types.identification') }}</option>
                 </select>
               </div>
               <div class="form-group">
@@ -317,6 +312,33 @@
                     <div class="analysis-terms">
                       <div v-for="(val, key) in analysisResult.terms" :key="key" class="term-item" v-show="val">
                         <span class="term-key">{{ key.replace(/_/g, ' ') }}</span>
+                        <span class="term-val">{{ val }}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div v-if="analysisResult.personal_info" class="analysis-section">
+                    <label>{{ $t('documents.analysis.personalInfo') }}</label>
+                    <div class="analysis-terms">
+                      <div v-for="(val, key) in analysisResult.personal_info" :key="key" class="term-item" v-show="val">
+                        <span class="term-key">{{ $t('documents.analysis.' + key.replace(/_/g, '')) || key.replace(/_/g, ' ') }}</span>
+                        <span class="term-val">{{ val }}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div v-if="analysisResult.document_info" class="analysis-section">
+                    <label>{{ $t('documents.analysis.personalInfo') }}</label>
+                    <div class="analysis-terms">
+                      <div v-for="(val, key) in analysisResult.document_info" :key="key" class="term-item" v-show="val">
+                        <span class="term-key">{{ $t('documents.analysis.' + key.replace(/_/g, '')) || key.replace(/_/g, ' ') }}</span>
+                        <span class="term-val">{{ val }}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div v-if="analysisResult.license_info" class="analysis-section">
+                    <label>{{ $t('documents.analysis.licenseNumber') }}</label>
+                    <div class="analysis-terms">
+                      <div v-for="(val, key) in analysisResult.license_info" :key="key" class="term-item" v-show="val">
+                        <span class="term-key">{{ $t('documents.analysis.' + key.replace(/_/g, '')) || key.replace(/_/g, ' ') }}</span>
                         <span class="term-val">{{ val }}</span>
                       </div>
                     </div>
@@ -565,7 +587,9 @@ async function viewDocument(doc) {
 async function analyzeDocument(doc) {
   analyzingId.value = doc.id
   try {
-    const { data } = await api.post(`/owner/employees/${selectedEmployee.value.id}/documents/${doc.id}/analyze`)
+    const { data } = await api.post(`/owner/employees/${selectedEmployee.value.id}/documents/${doc.id}/analyze`, {
+      document_type: doc.document_type
+    })
     analysisResult.value = data.data?.analysis
     showAnalysis.value = true
     await loadDocuments(selectedEmployee.value.id)

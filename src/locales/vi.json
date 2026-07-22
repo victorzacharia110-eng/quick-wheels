@@ -852,8 +852,8 @@
     "reactivate": "Kích hoạt lại tài khoản",
     "confirmDeactivate": "Thao tác này sẽ vô hiệu hóa tài khoản và ngăn nhân viên đăng nhập. Tiếp tục?",
     "confirmReactivate": "Thao tác này sẽ kích hoạt lại tài khoản và khôi phục quyền truy cập. Tiếp tục?",
-    "aiAnalyze": "Phân tích hợp đồng bằng AI",
-    "aiAnalysis": "Phân tích hợp đồng AI",
+    "aiAnalyze": "Phân tích tài liệu bằng AI",
+    "aiAnalysis": "Phân tích tài liệu AI",
     "analysisFailed": "Phân tích AI thất bại. Tài liệu có thể không chứa văn bản đọc được.",
     "expired": "Đã hết hạn",
     "expiresIn": "Hết hạn sau {{days}} ngày",
@@ -862,12 +862,7 @@
     "idCopy": "Bản sao CCCD",
     "types": {
       "contract": "Hợp đồng",
-      "license": "Giấy phép",
-      "nida": "NIDA",
-      "insurance": "Bảo hiểm",
-      "medical": "Y tế",
-      "backgroundCheck": "Kiểm tra lý lịch",
-      "other": "Khác"
+      "identification": "Giấy tờ tùy thân tài xế"
     },
     "analysis": {
       "contractType": "Loại hợp đồng",
@@ -881,7 +876,19 @@
       "insurance": "Bảo hiểm",
       "required": "Bắt buộc",
       "notRequired": "Không bắt buộc",
-      "specialNotes": "Ghi chú đặc biệt"
+      "specialNotes": "Ghi chú đặc biệt",
+      "personalInfo": "Thông tin cá nhân",
+      "fullName": "Họ và tên",
+      "idNumber": "Số CMND/CCCD",
+      "dateOfBirth": "Ngày sinh",
+      "gender": "Giới tính",
+      "address": "Địa chỉ",
+      "nationality": "Quốc tịch",
+      "issueDate": "Ngày cấp",
+      "expiryDate": "Ngày hết hạn",
+      "licenseClass": "Hạng giấy phép",
+      "licenseNumber": "Số giấy phép",
+      "validUntil": "Có hiệu lực đến"
     }
   },
   "chat": {

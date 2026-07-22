@@ -852,8 +852,8 @@
     "reactivate": "Riattiva account",
     "confirmDeactivate": "Questo disattiverà l'account e impedirà al dipendente di accedere. Continuare?",
     "confirmReactivate": "Questo riattiverà l'account e ripristinerà l'accesso. Continuare?",
-    "aiAnalyze": "Analizza contratto con IA",
-    "aiAnalysis": "Analisi contratto con IA",
+    "aiAnalyze": "Analizza documento con IA",
+    "aiAnalysis": "Analisi documento con IA",
     "analysisFailed": "Analisi IA non riuscita. Il documento potrebbe non contenere testo leggibile.",
     "expired": "Scaduto",
     "expiresIn": "Scade tra {{days}} giorni",
@@ -862,12 +862,7 @@
     "idCopy": "Copia del documento",
     "types": {
       "contract": "Contratto",
-      "license": "Licenza",
-      "nida": "NIDA",
-      "insurance": "Assicurazione",
-      "medical": "Medico",
-      "backgroundCheck": "Verifica dei precedenti",
-      "other": "Altro"
+      "identification": "Identificazione dell'autista"
     },
     "analysis": {
       "contractType": "Tipo di contratto",
@@ -881,7 +876,19 @@
       "insurance": "Assicurazione",
       "required": "Obbligatorio",
       "notRequired": "Non obbligatorio",
-      "specialNotes": "Note speciali"
+      "specialNotes": "Note speciali",
+      "personalInfo": "Informazioni personali",
+      "fullName": "Nome completo",
+      "idNumber": "Numero di identità",
+      "dateOfBirth": "Data di nascita",
+      "gender": "Sesso",
+      "address": "Indirizzo",
+      "nationality": "Nazionalità",
+      "issueDate": "Data di rilascio",
+      "expiryDate": "Data di scadenza",
+      "licenseClass": "Categoria patente",
+      "licenseNumber": "Numero patente",
+      "validUntil": "Valido fino al"
     }
   },
   "chat": {

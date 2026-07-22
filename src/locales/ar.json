@@ -852,8 +852,8 @@
     "reactivate": "إعادة تفعيل الحساب",
     "confirmDeactivate": "سيؤدي هذا إلى تعطيل الحساب ومنع الموظف من تسجيل الدخول. هل تريد المتابعة؟",
     "confirmReactivate": "سيؤدي هذا إلى إعادة تفعيل الحساب واستعادة وصول تسجيل الدخول. هل تريد المتابعة؟",
-    "aiAnalyze": "تحليل العقد بالذكاء الاصطناعي",
-    "aiAnalysis": "تحليل العقد بالذكاء الاصطناعي",
+    "aiAnalyze": "تحليل المستند بالذكاء الاصطناعي",
+    "aiAnalysis": "تحليل المستند بالذكاء الاصطناعي",
     "analysisFailed": "فشل التحليل بالذكاء الاصطناعي. قد لا يحتوي المستند على نص قابل للقراءة.",
     "expired": "منتهي الصلاحية",
     "expiresIn": "تنتهي الصلاحية خلال {{days}} يوم",
@@ -862,12 +862,7 @@
     "idCopy": "نسخة من الهوية",
     "types": {
       "contract": "عقد",
-      "license": "رخصة",
-      "nida": "NIDA",
-      "insurance": "تأمين",
-      "medical": "طبي",
-      "backgroundCheck": "تحقق من السجل",
-      "other": "أخرى"
+      "identification": "هوية السائق"
     },
     "analysis": {
       "contractType": "نوع العقد",
@@ -881,7 +876,19 @@
       "insurance": "التأمين",
       "required": "مطلوب",
       "notRequired": "غير مطلوب",
-      "specialNotes": "ملاحظات خاصة"
+      "specialNotes": "ملاحظات خاصة",
+      "personalInfo": "معلومات شخصية",
+      "fullName": "الاسم الكامل",
+      "idNumber": "رقم الهوية",
+      "dateOfBirth": "تاريخ الميلاد",
+      "gender": "الجنس",
+      "address": "العنوان",
+      "nationality": "الجنسية",
+      "issueDate": "تاريخ الإصدار",
+      "expiryDate": "تاريخ الانتهاء",
+      "licenseClass": "فئة الرخصة",
+      "licenseNumber": "رقم الرخصة",
+      "validUntil": "صالح حتى"
     }
   },
   "chat": {

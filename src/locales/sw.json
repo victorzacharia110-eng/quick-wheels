@@ -883,23 +883,18 @@
     "reactivate": "Washa Upya Akaunti",
     "confirmDeactivate": "Hii italemaza akaunti na kumzuia mfanyakazi kuingia. Endelea?",
     "confirmReactivate": "Hii itawasha upya akaunti na kurejesha ufikiaji wa kuingia. Endelea?",
-    "aiAnalyze": "Chambua Mkataba kwa AI",
-    "aiAnalysis": "Uchambuzi wa Mkataba wa AI",
+    "aiAnalyze": "Chambua Hati kwa AI",
+    "aiAnalysis": "Uchambuzi wa Hati kwa AI",
     "analysisFailed": "Uchambuzi wa AI umeshindikana. Hati huenda hauna maandishi yanayoweza kusomwa.",
     "expired": "Imeisha Muda",
     "expiresIn": "Inaisha baada ya siku {{days}}",
     "totalDocuments": "Hati",
     "signedContract": "Kandarati iliyosainiwa",
     "idCopy": "Nakala ya kitambulisho",
-    "analysisTitle": "Uchambuzi wa Mkataba wa AI",
+    "analysisTitle": "Uchambuzi wa Hati kwa AI",
     "types": {
       "contract": "Kandarati",
-      "license": "Leseni",
-      "nida": "NIDA",
-      "insurance": "Bima",
-      "medical": "Matibabu",
-      "backgroundCheck": "Ukaguzi wa Usuli",
-      "other": "Nyingine"
+      "identification": "Utambulisho wa Dereva"
     },
     "analysis": {
       "contractType": "Aina ya Kandarati",
@@ -913,7 +908,19 @@
       "insurance": "Bima",
       "required": "Inahitajika",
       "notRequired": "Haihitajiki",
-      "specialNotes": "Maelezo Maalum"
+      "specialNotes": "Maelezo Maalum",
+      "personalInfo": "Taarifa Binafsi",
+      "fullName": "Jina Kamili",
+      "idNumber": "Nambari ya Kitambulisho",
+      "dateOfBirth": "Tarehe ya Kuzaliwa",
+      "gender": "Jinsia",
+      "address": "Anwani",
+      "nationality": "Uraia",
+      "issueDate": "Tarehe ya Kutolewa",
+      "expiryDate": "Tarehe ya Mwisho",
+      "licenseClass": "Darasa la Leseni",
+      "licenseNumber": "Nambari ya Leseni",
+      "validUntil": "Inatumika Hadi"
     }
   },
   "chat": {

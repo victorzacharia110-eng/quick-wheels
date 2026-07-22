@@ -852,8 +852,8 @@
     "reactivate": "重新激活账户",
     "confirmDeactivate": "这将停用账户并阻止员工登录。是否继续？",
     "confirmReactivate": "这将重新激活账户并恢复登录权限。是否继续？",
-    "aiAnalyze": "AI 分析合同",
-    "aiAnalysis": "AI 合同分析",
+    "aiAnalyze": "AI 分析文档",
+    "aiAnalysis": "AI 文档分析",
     "analysisFailed": "AI 分析失败。该文档可能不包含可读文本。",
     "expired": "已过期",
     "expiresIn": "将在 {{days}} 天后过期",
@@ -862,12 +862,7 @@
     "idCopy": "身份证复印件",
     "types": {
       "contract": "合同",
-      "license": "许可证",
-      "nida": "NIDA",
-      "insurance": "保险",
-      "medical": "医疗",
-      "backgroundCheck": "背景调查",
-      "other": "其他"
+      "identification": "司机身份证明"
     },
     "analysis": {
       "contractType": "合同类型",
@@ -881,7 +876,19 @@
       "insurance": "保险",
       "required": "必需",
       "notRequired": "非必需",
-      "specialNotes": "特别说明"
+      "specialNotes": "特别说明",
+      "personalInfo": "个人信息",
+      "fullName": "全名",
+      "idNumber": "身份证号",
+      "dateOfBirth": "出生日期",
+      "gender": "性别",
+      "address": "地址",
+      "nationality": "国籍",
+      "issueDate": "签发日期",
+      "expiryDate": "到期日期",
+      "licenseClass": "驾照类别",
+      "licenseNumber": "驾照号码",
+      "validUntil": "有效期至"
     }
   },
   "chat": {

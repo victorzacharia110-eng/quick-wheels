@@ -852,8 +852,8 @@
     "reactivate": "Konto reaktivieren",
     "confirmDeactivate": "Dadurch wird das Konto deaktiviert und der Mitarbeiter kann sich nicht mehr anmelden. Fortfahren?",
     "confirmReactivate": "Dadurch wird das Konto reaktiviert und die Anmeldeberechtigung wiederhergestellt. Fortfahren?",
-    "aiAnalyze": "Vertrag mit KI analysieren",
-    "aiAnalysis": "KI-Vertragsanalyse",
+    "aiAnalyze": "Dokument mit KI analysieren",
+    "aiAnalysis": "KI-Dokumentanalyse",
     "analysisFailed": "KI-Analyse fehlgeschlagen. Das Dokument enthält möglicherweise keinen lesbaren Text.",
     "expired": "Abgelaufen",
     "expiresIn": "Läuft in {{days}} Tagen ab",
@@ -862,12 +862,7 @@
     "idCopy": "Ausweiskopie",
     "types": {
       "contract": "Vertrag",
-      "license": "Lizenz",
-      "nida": "NIDA",
-      "insurance": "Versicherung",
-      "medical": "Medizinisch",
-      "backgroundCheck": "Hintergrundprüfung",
-      "other": "Sonstiges"
+      "identification": "Führerschein"
     },
     "analysis": {
       "contractType": "Vertragstyp",
@@ -881,7 +876,19 @@
       "insurance": "Versicherung",
       "required": "Erforderlich",
       "notRequired": "Nicht erforderlich",
-      "specialNotes": "Besondere Hinweise"
+      "specialNotes": "Besondere Hinweise",
+      "personalInfo": "Persönliche Informationen",
+      "fullName": "Vollständiger Name",
+      "idNumber": "Ausweisnummer",
+      "dateOfBirth": "Geburtsdatum",
+      "gender": "Geschlecht",
+      "address": "Adresse",
+      "nationality": "Staatsangehörigkeit",
+      "issueDate": "Ausstellungsdatum",
+      "expiryDate": "Ablaufdatum",
+      "licenseClass": "Führerscheinklasse",
+      "licenseNumber": "Führerscheinnummer",
+      "validUntil": "Gültig bis"
     }
   },
   "chat": {

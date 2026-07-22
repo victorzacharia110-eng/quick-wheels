@@ -852,8 +852,8 @@
     "reactivate": "アカウントを再有効化",
     "confirmDeactivate": "これによりアカウットが無効化され、従業員のログインが制限されます。続行しますか？",
     "confirmReactivate": "これによりアカウットが再有効化され、ログインアクセスが復元されます。続行しますか？",
-    "aiAnalyze": "AIで契約書を分析",
-    "aiAnalysis": "AI契約分析",
+    "aiAnalyze": "AIで書類を分析",
+    "aiAnalysis": "AI書類分析",
     "analysisFailed": "AI分析に失敗しました。書類に読み取り可能なテキストがない可能性があります。",
     "expired": "期限切れ",
     "expiresIn": "{{days}}日後に期限切れ",
@@ -862,12 +862,7 @@
     "idCopy": "身分証明書のコピー",
     "types": {
       "contract": "契約書",
-      "license": "免許証",
-      "nida": "NIDA",
-      "insurance": "保険",
-      "medical": "医療",
-      "backgroundCheck": "身元調査",
-      "other": "その他"
+      "identification": "運転者の身分証"
     },
     "analysis": {
       "contractType": "契約の種類",
@@ -881,7 +876,19 @@
       "insurance": "保険",
       "required": "必須",
       "notRequired": "不要",
-      "specialNotes": "特記事項"
+      "specialNotes": "特記事項",
+      "personalInfo": "個人情報",
+      "fullName": "氏名",
+      "idNumber": "身分証番号",
+      "dateOfBirth": "生年月日",
+      "gender": "性別",
+      "address": "住所",
+      "nationality": "国籍",
+      "issueDate": "発行日",
+      "expiryDate": "有効期限",
+      "licenseClass": "免許の区分",
+      "licenseNumber": "免許証番号",
+      "validUntil": "有効期間"
     }
   },
   "chat": {

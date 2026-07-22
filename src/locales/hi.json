@@ -852,8 +852,8 @@
     "reactivate": "खाता पुनः सक्रिय करें",
     "confirmDeactivate": "इससे खाता निष्क्रिय हो जाएगा और कर्मचारी लॉग इन नहीं कर पाएगा। जारी रखें?",
     "confirmReactivate": "इससे खाता पुनः सक्रिय हो जाएगा और लॉग इन पहुंच बहाल हो जाएगी। जारी रखें?",
-    "aiAnalyze": "AI अनुबंध का विश्लेषण करें",
-    "aiAnalysis": "AI अनुबंध विश्लेषण",
+    "aiAnalyze": "AI दस्तावेज़ का विश्लेषण करें",
+    "aiAnalysis": "AI दस्तावेज़ विश्लेषण",
     "analysisFailed": "AI विश्लेषण विफल। दस्तावेज़ में शायद पठनीय टेक्स्ट न हो।",
     "expired": "समाप्त",
     "expiresIn": "{{days}} दिनों में समाप्त",
@@ -862,12 +862,7 @@
     "idCopy": "पहचान पत्र की प्रति",
     "types": {
       "contract": "अनुबंध",
-      "license": "लाइसेंस",
-      "nida": "NIDA",
-      "insurance": "बीमा",
-      "medical": "चिकित्सा",
-      "backgroundCheck": "पृष्ठभूमि जाँच",
-      "other": "अन्य"
+      "identification": "चालक पहचान"
     },
     "analysis": {
       "contractType": "अनुबंध का प्रकार",
@@ -881,7 +876,19 @@
       "insurance": "बीमा",
       "required": "आवश्यक",
       "notRequired": "आवश्यक नहीं",
-      "specialNotes": "विशेष नोट्स"
+      "specialNotes": "विशेष नोट्स",
+      "personalInfo": "व्यक्तिगत जानकारी",
+      "fullName": "पूरा नाम",
+      "idNumber": "पहचान संख्या",
+      "dateOfBirth": "जन्म तिथि",
+      "gender": "लिंग",
+      "address": "पता",
+      "nationality": "राष्ट्रीयता",
+      "issueDate": "जारी करने की तिथि",
+      "expiryDate": "समाप्ति तिथि",
+      "licenseClass": "लाइसेंस श्रेणी",
+      "licenseNumber": "लाइसेंस संख्या",
+      "validUntil": "valid until"
     }
   },
   "chat": {

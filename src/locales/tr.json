@@ -852,8 +852,8 @@
     "reactivate": "Hesabı yeniden etkinleştir",
     "confirmDeactivate": "Bu işlem hesabı devre dışı bırakacak ve çalışanın oturum açmasını engelleyecektir. Devam edilsin mi?",
     "confirmReactivate": "Bu işlem hesabı yeniden etkinleştirecek ve oturum erişimini geri yükleyecektir. Devam edilsin mi?",
-    "aiAnalyze": "AI ile sözleşmeyi analiz et",
-    "aiAnalysis": "AI sözleşme analizi",
+    "aiAnalyze": "AI ile belgeyi analiz et",
+    "aiAnalysis": "AI belge analizi",
     "analysisFailed": "AI analizi başarısız oldu. Belge okunabilir metin içermiyor olabilir.",
     "expired": "Süresi doldu",
     "expiresIn": "{{days}} gün içinde süresi doluyor",
@@ -862,12 +862,7 @@
     "idCopy": "Kimlik fotokopisi",
     "types": {
       "contract": "Sözleşme",
-      "license": "Lisans",
-      "nida": "NIDA",
-      "insurance": "Sigorta",
-      "medical": "Tıbbi",
-      "backgroundCheck": "Özgeçmiş kontrolü",
-      "other": "Diğer"
+      "identification": "Sürücü kimliği"
     },
     "analysis": {
       "contractType": "Sözleşme türü",
@@ -881,7 +876,19 @@
       "insurance": "Sigorta",
       "required": "Zorunlu",
       "notRequired": "Zorunlu değil",
-      "specialNotes": "Özel notlar"
+      "specialNotes": "Özel notlar",
+      "personalInfo": "Kişisel bilgiler",
+      "fullName": "Tam adı",
+      "idNumber": "Kimlik numarası",
+      "dateOfBirth": "Doğum tarihi",
+      "gender": "Cinsiyet",
+      "address": "Adres",
+      "nationality": "Uyruk",
+      "issueDate": "Düzenlenme tarihi",
+      "expiryDate": "Son kullanma tarihi",
+      "licenseClass": "Ehliyet sınıfı",
+      "licenseNumber": "Ehliyet numarası",
+      "validUntil": "Geçerlilik süresi"
     }
   },
   "chat": {

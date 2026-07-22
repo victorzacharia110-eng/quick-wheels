@@ -852,8 +852,8 @@
     "reactivate": "Réactiver le compte",
     "confirmDeactivate": "Cela désactivera le compte et empêchera l'employé de se connecter. Continuer ?",
     "confirmReactivate": "Cela réactivera le compte et restaurera l'accès de connexion. Continuer ?",
-    "aiAnalyze": "Analyser le contrat par IA",
-    "aiAnalysis": "Analyse de contrat par IA",
+    "aiAnalyze": "Analyser le document par IA",
+    "aiAnalysis": "Analyse de document par IA",
     "analysisFailed": "L'analyse IA a échoué. Le document peut ne pas contenir de texte lisible.",
     "expired": "Expiré",
     "expiresIn": "Expire dans {{days}} jours",
@@ -862,12 +862,7 @@
     "idCopy": "Copie de la pièce d'identité",
     "types": {
       "contract": "Contrat",
-      "license": "Permis",
-      "nida": "NIDA",
-      "insurance": "Assurance",
-      "medical": "Médical",
-      "backgroundCheck": "Vérification des antécédents",
-      "other": "Autre"
+      "identification": "Pièce d'identité du chauffeur"
     },
     "analysis": {
       "contractType": "Type de contrat",
@@ -881,7 +876,19 @@
       "insurance": "Assurance",
       "required": "Obligatoire",
       "notRequired": "Non obligatoire",
-      "specialNotes": "Notes spéciales"
+      "specialNotes": "Notes spéciales",
+      "personalInfo": "Informations personnelles",
+      "fullName": "Nom complet",
+      "idNumber": "Numéro d'identité",
+      "dateOfBirth": "Date de naissance",
+      "gender": "Genre",
+      "address": "Adresse",
+      "nationality": "Nationalité",
+      "issueDate": "Date de délivrance",
+      "expiryDate": "Date d'expiration",
+      "licenseClass": "Catégorie de permis",
+      "licenseNumber": "Numéro de permis",
+      "validUntil": "Valide jusqu'au"
     }
   },
   "chat": {

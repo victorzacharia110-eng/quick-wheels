@@ -852,8 +852,8 @@
     "reactivate": "Reativar conta",
     "confirmDeactivate": "Isto desativará a conta e impedirá o funcionário de iniciar sessão. Continuar?",
     "confirmReactivate": "Isto reativará a conta e restaurará o acesso de sessão. Continuar?",
-    "aiAnalyze": "Analisar contrato com IA",
-    "aiAnalysis": "Análise de contrato por IA",
+    "aiAnalyze": "Analisar documento com IA",
+    "aiAnalysis": "Análise de documento por IA",
     "analysisFailed": "A análise por IA falhou. O documento pode não conter texto legível.",
     "expired": "Expirado",
     "expiresIn": "Expira em {{days}} dias",
@@ -862,12 +862,7 @@
     "idCopy": "Cópia de identificação",
     "types": {
       "contract": "Contrato",
-      "license": "Licença",
-      "nida": "NIDA",
-      "insurance": "Seguro",
-      "medical": "Médico",
-      "backgroundCheck": "Verificação de antecedentes",
-      "other": "Outro"
+      "identification": "Identificação do motorista"
     },
     "analysis": {
       "contractType": "Tipo de contrato",
@@ -881,7 +876,19 @@
       "insurance": "Seguro",
       "required": "Obrigatório",
       "notRequired": "Não obrigatório",
-      "specialNotes": "Notas especiais"
+      "specialNotes": "Notas especiais",
+      "personalInfo": "Informações pessoais",
+      "fullName": "Nome completo",
+      "idNumber": "Número de identificação",
+      "dateOfBirth": "Data de nascimento",
+      "gender": "Gênero",
+      "address": "Endereço",
+      "nationality": "Nacionalidade",
+      "issueDate": "Data de emissão",
+      "expiryDate": "Data de validade",
+      "licenseClass": "Categoria da carta",
+      "licenseNumber": "Número da carta",
+      "validUntil": "Válido até"
     }
   },
   "chat": {
