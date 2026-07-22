@@ -894,7 +894,13 @@
     "analysisTitle": "Uchambuzi wa Hati kwa AI",
     "types": {
       "contract": "Kandarati",
-      "identification": "Utambulisho wa Dereva"
+      "identification": "Utambulisho wa Dereva",
+      "license": "Leseni",
+      "nida": "NIDA",
+      "insurance": "Bima",
+      "medical": "Matibabu",
+      "background_check": "Ukaguzi wa Usuli",
+      "other": "Nyingine"
     },
     "analysis": {
       "contractType": "Aina ya Kandarati",

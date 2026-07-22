@@ -862,7 +862,13 @@
     "idCopy": "Bản sao CCCD",
     "types": {
       "contract": "Hợp đồng",
-      "identification": "Giấy tờ tùy thân tài xế"
+      "identification": "Giấy tờ tùy thân tài xế",
+      "license": "Giấy phép",
+      "nida": "NIDA",
+      "insurance": "Bảo hiểm",
+      "medical": "Y tế",
+      "background_check": "Kiểm tra lý lịch",
+      "other": "Khác"
     },
     "analysis": {
       "contractType": "Loại hợp đồng",

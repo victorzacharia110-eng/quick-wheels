@@ -862,7 +862,13 @@
     "idCopy": "신분증 사본",
     "types": {
       "contract": "계약서",
-      "identification": "운전자 신분증"
+      "identification": "운전자 신분증",
+      "license": "면허증",
+      "nida": "NIDA",
+      "insurance": "보험",
+      "medical": "의료",
+      "background_check": "신원조사",
+      "other": "기타"
     },
     "analysis": {
       "contractType": "계약 유형",

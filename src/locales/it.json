@@ -862,7 +862,13 @@
     "idCopy": "Copia del documento",
     "types": {
       "contract": "Contratto",
-      "identification": "Identificazione dell'autista"
+      "identification": "Identificazione dell'autista",
+      "license": "Licenza",
+      "nida": "NIDA",
+      "insurance": "Assicurazione",
+      "medical": "Medico",
+      "background_check": "Verifica dei precedenti",
+      "other": "Altro"
     },
     "analysis": {
       "contractType": "Tipo di contratto",

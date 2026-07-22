@@ -862,7 +862,13 @@
     "idCopy": "Ausweiskopie",
     "types": {
       "contract": "Vertrag",
-      "identification": "Führerschein"
+      "identification": "Führerschein",
+      "license": "Lizenz",
+      "nida": "NIDA",
+      "insurance": "Versicherung",
+      "medical": "Medizinisch",
+      "background_check": "Hintergrundprüfung",
+      "other": "Sonstiges"
     },
     "analysis": {
       "contractType": "Vertragstyp",

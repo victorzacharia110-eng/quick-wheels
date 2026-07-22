@@ -862,7 +862,13 @@
     "idCopy": "身份证复印件",
     "types": {
       "contract": "合同",
-      "identification": "司机身份证明"
+      "identification": "司机身份证明",
+      "license": "许可证",
+      "nida": "NIDA",
+      "insurance": "保险",
+      "medical": "医疗",
+      "background_check": "背景调查",
+      "other": "其他"
     },
     "analysis": {
       "contractType": "合同类型",

@@ -957,7 +957,13 @@
     "restrictions": "Restrictions",
     "types": {
       "contract": "Contract",
-      "identification": "Driver Identification"
+      "identification": "Driver Identification",
+      "license": "License",
+      "nida": "NIDA",
+      "insurance": "Insurance",
+      "medical": "Medical",
+      "background_check": "Background Check",
+      "other": "Other"
     },
     "analysis": {
       "contractType": "Contract Type",

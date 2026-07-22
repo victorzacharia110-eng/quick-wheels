@@ -862,7 +862,13 @@
     "idCopy": "Kimlik fotokopisi",
     "types": {
       "contract": "Sözleşme",
-      "identification": "Sürücü kimliği"
+      "identification": "Sürücü kimliği",
+      "license": "Lisans",
+      "nida": "NIDA",
+      "insurance": "Sigorta",
+      "medical": "Tıbbi",
+      "background_check": "Özgeçmiş kontrolü",
+      "other": "Diğer"
     },
     "analysis": {
       "contractType": "Sözleşme türü",

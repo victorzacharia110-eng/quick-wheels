@@ -862,7 +862,13 @@
     "idCopy": "نسخة من الهوية",
     "types": {
       "contract": "عقد",
-      "identification": "هوية السائق"
+      "identification": "هوية السائق",
+      "license": "رخصة",
+      "nida": "NIDA",
+      "insurance": "تأمين",
+      "medical": "طبي",
+      "background_check": "تحقق من السجل",
+      "other": "أخرى"
     },
     "analysis": {
       "contractType": "نوع العقد",

@@ -862,7 +862,13 @@
     "idCopy": "पहचान पत्र की प्रति",
     "types": {
       "contract": "अनुबंध",
-      "identification": "चालक पहचान"
+      "identification": "चालक पहचान",
+      "license": "लाइसेंस",
+      "nida": "NIDA",
+      "insurance": "बीमा",
+      "medical": "चिकित्सा",
+      "background_check": "पृष्ठभूमि जाँच",
+      "other": "अन्य"
     },
     "analysis": {
       "contractType": "अनुबंध का प्रकार",

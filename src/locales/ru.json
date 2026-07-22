@@ -862,7 +862,13 @@
     "idCopy": "Копия документа",
     "types": {
       "contract": "Договор",
-      "identification": "Удостоверение водителя"
+      "identification": "Удостоверение водителя",
+      "license": "Лицензия",
+      "nida": "NIDA",
+      "insurance": "Страховка",
+      "medical": "Медицинский",
+      "background_check": "Проверка биографии",
+      "other": "Другое"
     },
     "analysis": {
       "contractType": "Тип договора",

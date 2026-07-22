@@ -862,7 +862,13 @@
     "idCopy": "Copia de identificación",
     "types": {
       "contract": "Contrato",
-      "identification": "Identificación del conductor"
+      "identification": "Identificación del conductor",
+      "license": "Licencia",
+      "nida": "NIDA",
+      "insurance": "Seguro",
+      "medical": "Médico",
+      "background_check": "Verificación de antecedentes",
+      "other": "Otro"
     },
     "analysis": {
       "contractType": "Tipo de contrato",

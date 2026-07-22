@@ -862,7 +862,13 @@
     "idCopy": "Copie de la pièce d'identité",
     "types": {
       "contract": "Contrat",
-      "identification": "Pièce d'identité du chauffeur"
+      "identification": "Pièce d'identité du chauffeur",
+      "license": "Permis",
+      "nida": "NIDA",
+      "insurance": "Assurance",
+      "medical": "Médical",
+      "background_check": "Vérification des antécédents",
+      "other": "Autre"
     },
     "analysis": {
       "contractType": "Type de contrat",

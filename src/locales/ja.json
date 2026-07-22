@@ -862,7 +862,13 @@
     "idCopy": "身分証明書のコピー",
     "types": {
       "contract": "契約書",
-      "identification": "運転者の身分証"
+      "identification": "運転者の身分証",
+      "license": "免許証",
+      "nida": "NIDA",
+      "insurance": "保険",
+      "medical": "医療",
+      "background_check": "身元調査",
+      "other": "その他"
     },
     "analysis": {
       "contractType": "契約の種類",
