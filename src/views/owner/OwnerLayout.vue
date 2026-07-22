@@ -32,7 +32,7 @@
         <div class="nav-section-label">{{ $t('nav.system') }}</div>
         <RouterLink v-for="item in systemNav" :key="item.to" :to="item.to" class="nav-item" active-class="active" @click="closeMobile">
           <span class="nav-icon"><font-awesome-icon :icon="item.icon" /></span>
-          <span class="nav-label">{{ item.label }}</span>
+          <span class="nav-label">{{ $t(item.label) }}</span>
         </RouterLink>
       </nav>
 
@@ -189,7 +189,7 @@ const managementNav = [
 const systemNav = [
   { to: "/owner/settings", label: "nav.settings", icon: "fa-solid fa-cog" },
   { to: "/owner/gps", label: "nav.gps", icon: "fa-solid fa-location-dot" },
-  { to: "/owner/site-content", label: "Site Content", icon: "fa-solid fa-palette" },
+  { to: "/owner/site-content", label: "nav.siteContent", icon: "fa-solid fa-palette" },
 ];
 
 const locales = [

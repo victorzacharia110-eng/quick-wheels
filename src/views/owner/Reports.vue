@@ -84,6 +84,7 @@ import { useContractStore } from '@/stores/contracts'
 import { useVehicleStore } from '@/stores/vehicles'
 import { useEmployeeStore } from '@/stores/employees'
 import { usePaymentStore } from '@/stores/payments'
+import api from '@/composables/api'
 
 const { t } = useI18n()
 const contractStore = useContractStore()
@@ -91,19 +92,13 @@ const vehicleStore = useVehicleStore()
 const employeeStore = useEmployeeStore()
 const paymentStore = usePaymentStore()
 
+const monthlyRevenue = ref([])
+const recentActivity = ref([])
+
 const totalRevenue = computed(() => paymentStore.totalAmount || 0)
 const totalActiveContracts = computed(() => contractStore.activeContracts.length || 0)
 const totalEmployees = computed(() => employeeStore.totalEmployees || 0)
 const totalVehicles = computed(() => vehicleStore.totalVehicles || 0)
-
-const monthlyRevenue = ref([
-  { month: 'Jan', amount: 500000, percentage: 40 },
-  { month: 'Feb', amount: 750000, percentage: 60 },
-  { month: 'Mar', amount: 600000, percentage: 48 },
-  { month: 'Apr', amount: 900000, percentage: 72 },
-  { month: 'May', amount: 800000, percentage: 64 },
-  { month: 'Jun', amount: 1200000, percentage: 100 },
-])
 
 const vehicleTypes = computed(() => {
   const types = {}
@@ -113,23 +108,6 @@ const vehicleTypes = computed(() => {
   })
   return types
 })
-
-const recentActivity = ref([
-  {
-    id: 1,
-    icon: 'fa-solid fa-money-bill-wave',
-    color: '#00E5FF',
-    message: 'John Mwangi made a payment of TZS 45,000',
-    date: '2024-06-01'
-  },
-  {
-    id: 2,
-    icon: 'fa-solid fa-file-contract',
-    color: '#FFD93D',
-    message: 'New contract created for Michael Peter',
-    date: '2024-06-01'
-  }
-])
 
 function getColor(type) {
   const colors = {
@@ -161,6 +139,22 @@ onMounted(async () => {
     employeeStore.fetchEmployees(),
     paymentStore.fetchPayments()
   ])
+
+  try {
+    const { data } = await api.get('/owner/reports')
+    if (data.success) {
+      monthlyRevenue.value = data.data.monthly_revenue || []
+      recentActivity.value = (data.data.recent_activity || []).map(a => ({
+        id: a.id + '-' + a.type,
+        icon: a.icon,
+        color: a.status_color || '#00E5FF',
+        message: a.message,
+        date: a.datetime
+      }))
+    }
+  } catch (err) {
+    console.error('Failed to load reports:', err)
+  }
 })
 </script>
 
