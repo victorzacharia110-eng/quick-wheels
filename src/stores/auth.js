@@ -16,6 +16,7 @@ export const useAuthStore = defineStore('auth', () => {
   const userNida = computed(() => user.value?.nida_number || '')
   const isOwner = computed(() => user.value?.role === 'owner')
   const isEmployee = computed(() => user.value?.role === 'employee')
+  const aiEnabled = computed(() => !!user.value?.ai_enabled)
 
   function setUser(userData) {
     user.value = userData
@@ -130,6 +131,13 @@ export const useAuthStore = defineStore('auth', () => {
     isInitialized.value = true
   }
 
+  function setAiEnabled(enabled) {
+    if (user.value) {
+      user.value = { ...user.value, ai_enabled: enabled }
+      try { localStorage.setItem('user', JSON.stringify(user.value)) } catch (e) {}
+    }
+  }
+
   return {
     user,
     isLoading,
@@ -143,9 +151,11 @@ export const useAuthStore = defineStore('auth', () => {
     userNida,
     isOwner,
     isEmployee,
+    aiEnabled,
     setUser,
     clearUser,
     setToken,
+    setAiEnabled,
     register,
     login,
     logout,

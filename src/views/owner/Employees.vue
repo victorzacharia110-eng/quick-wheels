@@ -266,7 +266,7 @@
                   </div>
                 </div>
                 <div class="doc-actions">
-                  <button @click="analyzeDocument(doc)" class="btn-icon" :class="{ 'analyzing': analyzingId === doc.id }" :title="$t('documents.aiAnalyze')" :disabled="analyzingId === doc.id">
+                  <button v-if="authStore.aiEnabled" @click="analyzeDocument(doc)" class="btn-icon" :class="{ 'analyzing': analyzingId === doc.id }" :title="$t('documents.aiAnalyze')" :disabled="analyzingId === doc.id">
                     <font-awesome-icon :icon="analyzingId === doc.id ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-robot'" />
                   </button>
                   <button @click="toggleVerify(doc)" class="btn-icon" :class="doc.is_verified ? 'success' : ''" :title="$t('documents.verify')">
@@ -383,6 +383,7 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useEmployeeStore } from '@/stores/employees'
 import { useVehicleStore } from '@/stores/vehicles'
+import { useAuthStore } from '@/stores/auth'
 import api from '@/composables/api'
 import Pagination from '@/components/common/Pagination.vue'
 import SkeletonLoader from '@/components/common/SkeletonLoader.vue'
@@ -390,6 +391,7 @@ import SkeletonLoader from '@/components/common/SkeletonLoader.vue'
 const { t } = useI18n()
 const employeeStore = useEmployeeStore()
 const vehicleStore = useVehicleStore()
+const authStore = useAuthStore()
 const searchQuery = ref('')
 const showModal = ref(false)
 const isEditing = ref(false)

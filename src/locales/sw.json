@@ -624,7 +624,15 @@
     "paymentReceived": "Malipo Yamepokelewa",
     "newContract": "Mkataba Mpya",
     "expiringContracts": "Mikataba Inayoisha",
-    "resetAllData": "Weka Upya Data Zote"
+    "resetAllData": "Weka Upya Data Zote",
+    "aiFeatures": "Vipengele vya AI",
+    "aiFeaturesDesc": "Washa uchambuzi wa hati kwa AI na uchukuaji wa data",
+    "aiEnabled": "Vipengele vya AI viko hai",
+    "aiDisabled": "Vipengele vya AI havijawashwa",
+    "togglingAi": "Inasasisha",
+    "aiFeatureDocAnalysis": "Uchambuzi wa hati kwa Gemini AI",
+    "aiFeatureSmartExtraction": "Uchukuaji wa data kwa mikataba na vitambulisho",
+    "aiFeatureAutoVerify": "Mapendekezo ya uthibitisho wa kiotomatiki"
   },
   "reports": {
     "subtitle": "Tazama uchambuzi wa biashara na ripoti",

@@ -633,7 +633,15 @@
     "paymentReceived": "Payment Received",
     "newContract": "New Contract",
     "expiringContracts": "Expiring Contracts",
-    "resetAllData": "Reset All Data"
+    "resetAllData": "Reset All Data",
+    "aiFeatures": "AI Features",
+    "aiFeaturesDesc": "Enable AI-powered document analysis and smart extraction",
+    "aiEnabled": "AI features are active",
+    "aiDisabled": "AI features are disabled",
+    "togglingAi": "Updating",
+    "aiFeatureDocAnalysis": "Document analysis with Gemini AI",
+    "aiFeatureSmartExtraction": "Smart data extraction from contracts & IDs",
+    "aiFeatureAutoVerify": "Auto-verification suggestions"
   },
   "reports": {
     "subtitle": "View business analytics and reports",

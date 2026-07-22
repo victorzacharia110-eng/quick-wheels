@@ -621,7 +621,7 @@ function getFileIcon(mimeType) {
                   <button v-if="!doc.verified_at" @click="toggleVerify(doc)" class="btn-icon" :title="$t('documents.verify')">
                     <font-awesome-icon icon="fa-solid fa-circle-check" />
                   </button>
-                  <button @click="analyzeDocument(doc)" class="btn-icon ai" :disabled="analyzingId === doc.id" :title="$t('documents.aiAnalyze')">
+                  <button v-if="authStore.aiEnabled" @click="analyzeDocument(doc)" class="btn-icon ai" :disabled="analyzingId === doc.id" :title="$t('documents.aiAnalyze')">
                     <font-awesome-icon :icon="analyzingId === doc.id ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-wand-magic-sparkles'" />
                   </button>
                   <button @click="deleteDocument(doc)" class="btn-icon danger" :title="$t('common.delete')">

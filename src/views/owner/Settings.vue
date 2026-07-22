@@ -84,6 +84,33 @@
         <button class="btn-primary">{{ $t('settings.saveNotificationSettings') }}</button>
       </div>
 
+      <!-- AI Features -->
+      <div class="settings-card glass-card ai-settings-card">
+        <div class="ai-header">
+          <div>
+            <h3><font-awesome-icon icon="fa-solid fa-robot" /> {{ $t('settings.aiFeatures') }}</h3>
+            <p class="ai-desc">{{ $t('settings.aiFeaturesDesc') }}</p>
+          </div>
+          <label class="ai-toggle">
+            <input type="checkbox" :checked="authStore.aiEnabled" @change="toggleAi" :disabled="aiToggling" />
+            <span class="ai-toggle-slider"></span>
+          </label>
+        </div>
+        <div v-if="aiToggling" class="ai-status">{{ $t('settings.togglingAi') }}...</div>
+        <div v-else-if="authStore.aiEnabled" class="ai-status active">
+          <font-awesome-icon icon="fa-solid fa-circle-check" /> {{ $t('settings.aiEnabled') }}
+        </div>
+        <div v-else class="ai-status inactive">
+          <font-awesome-icon icon="fa-solid fa-circle-xmark" /> {{ $t('settings.aiDisabled') }}
+        </div>
+        <div class="ai-features-list">
+          <div class="ai-feature"><font-awesome-icon icon="fa-solid fa-check" /> {{ $t('settings.aiFeatureDocAnalysis') }}</div>
+          <div class="ai-feature"><font-awesome-icon icon="fa-solid fa-check" /> {{ $t('settings.aiFeatureSmartExtraction') }}</div>
+          <div class="ai-feature"><font-awesome-icon icon="fa-solid fa-check" /> {{ $t('settings.aiFeatureAutoVerify') }}</div>
+        </div>
+        <p v-if="aiError" class="error-text">{{ aiError }}</p>
+      </div>
+
       <!-- Danger Zone -->
       <div class="settings-card danger-zone">
         <h3>{{ $t('settings.dangerZone') }}</h3>
@@ -154,6 +181,26 @@ async function saveProfile() {
 function confirmReset() {
   if (confirm(t('common.confirmResetData'))) {
     alert(t('common.resetAllData'))
+  }
+}
+
+const aiToggling = ref(false)
+const aiError = ref('')
+
+async function toggleAi() {
+  aiToggling.value = true
+  aiError.value = ''
+  try {
+    const res = await api.post('/owner/ai/toggle')
+    if (res.data.success) {
+      authStore.setAiEnabled(res.data.data.ai_enabled)
+    } else {
+      aiError.value = res.data.message || 'Failed to toggle AI'
+    }
+  } catch (err) {
+    aiError.value = err.response?.data?.message || 'Failed to toggle AI'
+  } finally {
+    aiToggling.value = false
   }
 }
 
@@ -290,6 +337,40 @@ select.form-input {
 .danger-zone p { color: rgba(255,255,255,0.4); font-size: 0.85rem; margin-bottom: 16px; }
 .success-text { color: #4ADE80; font-size: 0.85rem; margin-top: 8px; }
 .error-text { color: #ff6b6b; font-size: 0.85rem; margin-top: 8px; }
+
+.ai-settings-card { border: 1px solid rgba(0,229,255,0.15); }
+.ai-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.ai-header h3 { margin-bottom: 4px; }
+.ai-desc { color: rgba(255,255,255,0.4); font-size: 0.8rem; margin: 0; }
+.ai-toggle { position: relative; display: inline-block; width: 52px; height: 28px; cursor: pointer; flex-shrink: 0; }
+.ai-toggle input { opacity: 0; width: 0; height: 0; }
+.ai-toggle-slider {
+  position: absolute; inset: 0;
+  background: rgba(255,255,255,0.1);
+  border-radius: 28px;
+  transition: all 0.3s;
+}
+.ai-toggle-slider::before {
+  content: '';
+  position: absolute;
+  width: 22px; height: 22px;
+  left: 3px; bottom: 3px;
+  background: #fff;
+  border-radius: 50%;
+  transition: all 0.3s;
+}
+.ai-toggle input:checked + .ai-toggle-slider { background: linear-gradient(90deg, #00C4D4, #00E5FF); }
+.ai-toggle input:checked + .ai-toggle-slider::before { transform: translateX(24px); }
+.ai-toggle input:disabled { opacity: 0.5; cursor: not-allowed; }
+.ai-status { font-size: 0.85rem; margin-bottom: 14px; display: flex; align-items: center; gap: 6px; }
+.ai-status.active { color: #4ADE80; }
+.ai-status.inactive { color: rgba(255,255,255,0.4); }
+.ai-features-list { display: flex; flex-direction: column; gap: 8px; }
+.ai-feature {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 0.85rem; color: rgba(255,255,255,0.55);
+}
+.ai-feature svg { color: #00E5FF; font-size: 0.75rem; }
 
 @media (max-width: 768px) {
   .settings-grid { grid-template-columns: 1fr; }
