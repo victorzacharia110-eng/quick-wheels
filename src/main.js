@@ -158,6 +158,7 @@ import {
   faTimesCircle,
   faUserFriends,
   faUserGear,
+  faIdBadge,
   faUserPlus as faUserPlusSolid,
 } from '@fortawesome/free-solid-svg-icons'
 
@@ -347,6 +348,7 @@ library.add(
   faTimesCircle,
   faUserFriends,
   faUserGear,
+  faIdBadge,
   faGithub,
   faTwitter,
   faLinkedin,

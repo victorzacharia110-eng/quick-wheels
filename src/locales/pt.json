@@ -16,6 +16,11 @@
     "tr": "Türkçe",
     "vi": "Tiếng Việt"
   },
+  "roles": {
+    "owner": "Proprietário",
+    "technician": "Técnico",
+    "employee": "Motorista"
+  },
   "nav": {
     "home": "Início",
     "about": "Sobre",

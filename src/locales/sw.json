@@ -16,6 +16,11 @@
     "tr": "Türkçe",
     "vi": "Tiếng Việt"
   },
+  "roles": {
+    "owner": "Mmiliki",
+    "technician": "Mtaalamu",
+    "employee": "Dereva"
+  },
   "nav": {
     "home": "Nyumbani",
     "about": "Kuhusu",

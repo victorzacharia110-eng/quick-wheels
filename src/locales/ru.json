@@ -16,6 +16,11 @@
     "tr": "Türkçe",
     "vi": "Tiếng Việt"
   },
+  "roles": {
+    "owner": "Владелец",
+    "technician": "Техник",
+    "employee": "Водитель"
+  },
   "nav": {
     "home": "Главная",
     "about": "О нас",

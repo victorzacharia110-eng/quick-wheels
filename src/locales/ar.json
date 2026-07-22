@@ -16,6 +16,11 @@
     "tr": "Türkçe",
     "vi": "Tiếng Việt"
   },
+  "roles": {
+    "owner": "المالك",
+    "technician": "الفني",
+    "employee": "السائق"
+  },
   "nav": {
     "home": "الرئيسية",
     "about": "حول",

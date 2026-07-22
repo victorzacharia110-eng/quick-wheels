@@ -16,6 +16,11 @@
     "tr": "Türkçe",
     "vi": "Tiếng Việt"
   },
+  "roles": {
+    "owner": "车主",
+    "technician": "技师",
+    "employee": "司机"
+  },
   "nav": {
     "home": "首页",
     "about": "关于",

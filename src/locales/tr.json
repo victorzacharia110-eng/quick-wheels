@@ -16,6 +16,11 @@
     "tr": "Türkçe",
     "vi": "Tiếng Việt"
   },
+  "roles": {
+    "owner": "Sahip",
+    "technician": "Teknisyen",
+    "employee": "Şoför"
+  },
   "nav": {
     "home": "Ana Sayfa",
     "about": "Hakkımızda",

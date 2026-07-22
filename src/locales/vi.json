@@ -16,6 +16,11 @@
     "tr": "Türkçe",
     "vi": "Tiếng Việt"
   },
+  "roles": {
+    "owner": "Chủ sở hữu",
+    "technician": "Kỹ thuật viên",
+    "employee": "Tài xế"
+  },
   "nav": {
     "home": "Trang chủ",
     "about": "Giới thiệu",

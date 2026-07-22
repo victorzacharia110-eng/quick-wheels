@@ -16,6 +16,11 @@
     "tr": "Türkçe",
     "vi": "Tiếng Việt"
   },
+  "roles": {
+    "owner": "Proprietario",
+    "technician": "Tecnico",
+    "employee": "Autista"
+  },
   "nav": {
     "home": "Home",
     "about": "Chi siamo",

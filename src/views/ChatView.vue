@@ -86,6 +86,15 @@ function formatDate(dateStr) {
   if (d.toDateString() === today.toDateString()) return t('chat.today')
   return d.toLocaleDateString([], { month: 'short', day: 'numeric' })
 }
+
+function contactIcon(role) {
+  const icons = {
+    owner: 'fa-solid fa-user-tie',
+    technician: 'fa-solid fa-wrench',
+    employee: 'fa-solid fa-id-badge',
+  }
+  return icons[role] || 'fa-solid fa-user'
+}
 </script>
 
 <template>
@@ -107,7 +116,7 @@ function formatDate(dateStr) {
           @click="openChat(contact.id)"
         >
           <div class="contact-avatar">
-            <font-awesome-icon :icon="contact.role === 'owner' ? 'fa-solid fa-user-tie' : 'fa-solid fa-wrench'" />
+            <font-awesome-icon :icon="contactIcon(contact.role)" />
           </div>
           <div class="contact-info">
             <div class="contact-name">{{ contact.name }}</div>
@@ -132,7 +141,7 @@ function formatDate(dateStr) {
             <font-awesome-icon icon="fa-solid fa-arrow-left" />
           </button>
           <div class="chat-header-info">
-            <font-awesome-icon :icon="messageStore.activeContact?.role === 'owner' ? 'fa-solid fa-user-tie' : 'fa-solid fa-wrench'" />
+            <font-awesome-icon :icon="contactIcon(messageStore.activeContact?.role)" />
             <span>{{ messageStore.activeContact?.name }}</span>
           </div>
         </div>
