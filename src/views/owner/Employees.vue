@@ -277,7 +277,7 @@
                   <button @click="toggleVerify(doc)" class="btn-icon" :class="doc.is_verified ? 'success' : ''" :title="$t('documents.verify')">
                     <font-awesome-icon icon="fa-solid fa-shield-halved" />
                   </button>
-                  <a :href="`${api.defaults.baseURL}/owner/employees/${selectedEmployee.id}/documents/${doc.id}/download`" target="_blank" class="btn-icon" :title="$t('documents.view')"><font-awesome-icon icon="fa-solid fa-eye" /></a>
+                  <button @click="viewDocument(doc)" class="btn-icon" :title="$t('documents.view')"><font-awesome-icon icon="fa-solid fa-eye" /></button>
                   <button @click="deleteDocument(doc)" class="btn-icon danger" :title="$t('common.delete')"><font-awesome-icon icon="fa-solid fa-trash" /></button>
                 </div>
               </div>
@@ -536,6 +536,19 @@ async function toggleVerify(doc) {
     await api.patch(`/owner/employees/${selectedEmployee.value.id}/documents/${doc.id}/verify`)
     await loadDocuments(selectedEmployee.value.id)
   } catch (_) {}
+}
+
+async function viewDocument(doc) {
+  try {
+    const res = await api.get(`/owner/employees/${selectedEmployee.value.id}/documents/${doc.id}/download`, {
+      responseType: 'blob'
+    })
+    const url = URL.createObjectURL(res.data)
+    window.open(url, '_blank')
+    URL.revokeObjectURL(url)
+  } catch (err) {
+    alert(err.response?.data?.message || t('documents.viewFailed'))
+  }
 }
 
 async function analyzeDocument(doc) {
