@@ -96,6 +96,7 @@ const router = createRouter({
         { path: '', component: () => import('../views/technician/TechnicianDashboard.vue'), meta: { title: 'Dashboard' } },
         { path: 'reports', component: () => import('../views/technician/MaintenanceReports.vue'), meta: { title: 'Maintenance Reports' } },
         { path: 'reports/create', component: () => import('../views/technician/CreateReport.vue'), meta: { title: 'Create Report' } },
+        { path: 'create-report', redirect: '/technician/reports/create' },
         { path: 'reports/:id', component: () => import('../views/technician/ReportDetail.vue'), meta: { title: 'Report Detail' } },
         { path: 'chat', component: () => import('../views/ChatView.vue'), meta: { title: 'Messages' } },
       ]
