@@ -855,6 +855,7 @@
     "aiAnalyze": "AI ile belgeyi analiz et",
     "aiAnalysis": "AI belge analizi",
     "analysisFailed": "AI analizi başarısız oldu. Belge okunabilir metin içermiyor olabilir.",
+    "analysisQuotaExceeded": "Yoğun talep nedeniyle AI analizi geçici olarak kullanılamıyor. Lütfen daha sonra tekrar deneyin.",
     "expired": "Süresi doldu",
     "expiresIn": "{{days}} gün içinde süresi doluyor",
     "totalDocuments": "Belgeler",

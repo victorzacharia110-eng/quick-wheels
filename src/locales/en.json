@@ -943,6 +943,7 @@
     "aiAnalysis": "AI Document Analysis",
     "analysisTitle": "AI Contract Analysis",
     "analysisFailed": "AI analysis failed. The document may not contain readable text.",
+    "analysisQuotaExceeded": "AI analysis is temporarily unavailable due to high demand. Please try again later.",
     "expired": "Expired",
     "expiresIn": "Expires in {{days}} days",
     "totalDocuments": "Documents",

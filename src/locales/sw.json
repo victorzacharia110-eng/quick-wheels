@@ -886,6 +886,7 @@
     "aiAnalyze": "Chambua Hati kwa AI",
     "aiAnalysis": "Uchambuzi wa Hati kwa AI",
     "analysisFailed": "Uchambuzi wa AI umeshindikana. Hati huenda hauna maandishi yanayoweza kusomwa.",
+    "analysisQuotaExceeded": "Uchambuzi wa AI haupatikani kwa muda kwa sababu ya mahitaji makubwa. Tafadhali jaribu tena baadaye.",
     "expired": "Imeisha Muda",
     "expiresIn": "Inaisha baada ya siku {{days}}",
     "totalDocuments": "Hati",

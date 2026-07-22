@@ -855,6 +855,7 @@
     "aiAnalyze": "Analisar documento com IA",
     "aiAnalysis": "Análise de documento por IA",
     "analysisFailed": "A análise por IA falhou. O documento pode não conter texto legível.",
+    "analysisQuotaExceeded": "A análise por IA está temporariamente indisponível devido à alta procura. Por favor, tente novamente mais tarde.",
     "expired": "Expirado",
     "expiresIn": "Expira em {{days}} dias",
     "totalDocuments": "Documentos",

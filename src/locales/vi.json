@@ -855,6 +855,7 @@
     "aiAnalyze": "Phân tích tài liệu bằng AI",
     "aiAnalysis": "Phân tích tài liệu AI",
     "analysisFailed": "Phân tích AI thất bại. Tài liệu có thể không chứa văn bản đọc được.",
+    "analysisQuotaExceeded": "Phân tích AI tạm thời không khả dụng do nhu cầu cao. Vui lòng thử lại sau.",
     "expired": "Đã hết hạn",
     "expiresIn": "Hết hạn sau {{days}} ngày",
     "totalDocuments": "Tài liệu",

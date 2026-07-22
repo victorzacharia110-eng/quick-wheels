@@ -855,6 +855,7 @@
     "aiAnalyze": "AIで書類を分析",
     "aiAnalysis": "AI書類分析",
     "analysisFailed": "AI分析に失敗しました。書類に読み取り可能なテキストがない可能性があります。",
+    "analysisQuotaExceeded": "需要が多いため、AI分析は一時的に利用できません。しばらくしてからもう一度お試しください。",
     "expired": "期限切れ",
     "expiresIn": "{{days}}日後に期限切れ",
     "totalDocuments": "書類",

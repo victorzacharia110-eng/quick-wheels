@@ -855,6 +855,7 @@
     "aiAnalyze": "Dokument mit KI analysieren",
     "aiAnalysis": "KI-Dokumentanalyse",
     "analysisFailed": "KI-Analyse fehlgeschlagen. Das Dokument enthält möglicherweise keinen lesbaren Text.",
+    "analysisQuotaExceeded": "KI-Analyse ist aufgrund hoher Nachfrage vorübergehend nicht verfügbar. Bitte versuchen Sie es später erneut.",
     "expired": "Abgelaufen",
     "expiresIn": "Läuft in {{days}} Tagen ab",
     "totalDocuments": "Dokumente",

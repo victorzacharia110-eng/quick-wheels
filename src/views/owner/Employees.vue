@@ -594,7 +594,11 @@ async function analyzeDocument(doc) {
     showAnalysis.value = true
     await loadDocuments(selectedEmployee.value.id)
   } catch (err) {
-    alert(err.response?.data?.message || t('documents.analysisFailed'))
+    if (err.response?.status === 429 || err.response?.data?.message === 'quota_exceeded') {
+      alert(t('documents.analysisQuotaExceeded'))
+    } else {
+      alert(err.response?.data?.message || t('documents.analysisFailed'))
+    }
   }
   analyzingId.value = null
 }

@@ -855,6 +855,7 @@
     "aiAnalyze": "AI 分析文档",
     "aiAnalysis": "AI 文档分析",
     "analysisFailed": "AI 分析失败。该文档可能不包含可读文本。",
+    "analysisQuotaExceeded": "由于需求量大，AI 分析暂时不可用。请稍后再试。",
     "expired": "已过期",
     "expiresIn": "将在 {{days}} 天后过期",
     "totalDocuments": "文档",

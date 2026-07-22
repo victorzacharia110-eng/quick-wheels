@@ -855,6 +855,7 @@
     "aiAnalyze": "AI 문서 분석",
     "aiAnalysis": "AI 문서 분석",
     "analysisFailed": "AI 분석에 실패했습니다. 문서에 읽을 수 있는 텍스트가 없을 수 있습니다.",
+    "analysisQuotaExceeded": "수요가 많아 AI 분석을 일시적으로 사용할 수 없습니다. 나중에 다시 시도해 주세요.",
     "expired": "만료됨",
     "expiresIn": "{{days}}일 후 만료",
     "totalDocuments": "문서",
