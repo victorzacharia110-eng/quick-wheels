@@ -241,6 +241,7 @@
     "email": "이메일",
     "phone": "전화",
     "none": "없음",
+    "notes": "메모",
     "uploading": "업로드 중..."
   },
   "auth": {

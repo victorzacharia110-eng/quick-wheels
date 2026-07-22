@@ -241,6 +241,7 @@
     "email": "E-Mail",
     "phone": "Telefon",
     "none": "Keine",
+    "notes": "Notizen",
     "uploading": "Hochladen..."
   },
   "auth": {

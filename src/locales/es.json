@@ -241,6 +241,7 @@
     "email": "Correo",
     "phone": "Teléfono",
     "none": "Ninguno",
+    "notes": "Notas",
     "uploading": "Subiendo..."
   },
   "auth": {

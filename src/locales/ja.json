@@ -241,6 +241,7 @@
     "email": "メール",
     "phone": "電話",
     "none": "なし",
+    "notes": "メモ",
     "uploading": "アップロード中..."
   },
   "auth": {

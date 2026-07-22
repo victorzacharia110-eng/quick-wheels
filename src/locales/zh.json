@@ -241,6 +241,7 @@
     "email": "电子邮件",
     "phone": "电话",
     "none": "无",
+    "notes": "备注",
     "uploading": "上传中..."
   },
   "auth": {

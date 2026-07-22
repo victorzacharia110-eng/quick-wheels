@@ -241,6 +241,7 @@
     "email": "Email",
     "phone": "Điện thoại",
     "none": "Không",
+    "notes": "Ghi chú",
     "uploading": "Đang tải lên..."
   },
   "auth": {

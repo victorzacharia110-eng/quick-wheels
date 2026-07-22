@@ -241,6 +241,7 @@
     "email": "E-posta",
     "phone": "Telefon",
     "none": "Yok",
+    "notes": "Notlar",
     "uploading": "Yükleniyor..."
   },
   "auth": {
