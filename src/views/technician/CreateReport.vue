@@ -89,7 +89,7 @@ async function submitReport() {
 
 onMounted(async () => {
   try {
-    const { data } = await api.get('/employee/vehicles')
+    const { data } = await api.get('/technician/vehicles')
     vehicles.value = data.data?.data || data.data || []
   } catch {
     vehicles.value = []
