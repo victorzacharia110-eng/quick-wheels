@@ -4,6 +4,12 @@ import { useI18n } from 'vue-i18n'
 import api from '@/composables/api'
 
 const { t } = useI18n()
+
+function showError(title, details) {
+  errorTitle.value = title
+  errorDetails.value = Array.isArray(details) ? details : details ? [details] : []
+  showErrorModal.value = true
+}
 const technicians = ref([])
 const vehicles = ref([])
 const isLoading = ref(true)
@@ -13,6 +19,9 @@ const showEditModal = ref(false)
 const showDeleteModal = ref(false)
 const showForceDeleteModal = ref(false)
 const showPasswordModal = ref(false)
+const showErrorModal = ref(false)
+const errorTitle = ref('')
+const errorDetails = ref([])
 const createdPassword = ref('')
 const selectedTechnician = ref(null)
 const activeTab = ref('active')
@@ -81,7 +90,7 @@ async function createTechnician() {
     }
     const { data } = await api.post('/owner/technicians', payload)
     if (data.data.existing_user) {
-      alert(t('maintenance.technicianLinkedExisting'))
+      showError(t('maintenance.technicianLinkedExisting'))
     } else {
       createdPassword.value = data.data.password
       showPasswordModal.value = true
@@ -91,8 +100,8 @@ async function createTechnician() {
   } catch (err) {
     const errors = err.response?.data?.errors
     const msg = err.response?.data?.message || 'Failed to create technician'
-    const detail = errors ? '\n' + Object.entries(errors).map(([k, v]) => `${k}: ${v.join(', ')}`).join('\n') : ''
-    alert(msg + detail)
+    const details = errors ? Object.entries(errors).map(([k, v]) => `${k}: ${v.join(', ')}`) : []
+    showError(msg, details)
   }
   isSubmitting.value = false
 }
@@ -108,7 +117,7 @@ async function updateTechnician() {
     showEditModal.value = false
     loadTechnicians()
   } catch (err) {
-    alert(err.response?.data?.message || 'Failed to update technician')
+    showError(err.response?.data?.message || 'Failed to update technician')
   }
   isSubmitting.value = false
 }
@@ -119,7 +128,7 @@ async function deleteTechnician() {
     showDeleteModal.value = false
     loadTechnicians()
   } catch (err) {
-    alert(err.response?.data?.message || 'Failed to delete technician')
+    showError(err.response?.data?.message || 'Failed to delete technician')
   }
 }
 
@@ -136,7 +145,7 @@ async function restoreTechnician(tech) {
     loadDeletedTechnicians()
     loadTechnicians()
   } catch (err) {
-    alert(err.response?.data?.message || 'Failed to restore technician')
+    showError(err.response?.data?.message || 'Failed to restore technician')
   }
 }
 
@@ -151,7 +160,7 @@ async function forceDeleteTechnician() {
     showForceDeleteModal.value = false
     loadDeletedTechnicians()
   } catch (err) {
-    alert(err.response?.data?.message || 'Failed to permanently delete technician')
+    showError(err.response?.data?.message || 'Failed to permanently delete technician')
   }
 }
 
@@ -160,7 +169,7 @@ async function toggleStatus(tech) {
     await api.patch(`/owner/technicians/${tech.id}/toggle-status`)
     loadTechnicians()
   } catch (err) {
-    alert(err.response?.data?.message || 'Failed to toggle status')
+    showError(err.response?.data?.message || 'Failed to toggle status')
   }
 }
 
@@ -386,6 +395,30 @@ watch(activeTab, (tab) => {
           </div>
         </div>
       </div>
+    </Teleport>
+
+    <!-- Error Modal -->
+    <Teleport to="body">
+      <Transition name="error-modal">
+        <div v-if="showErrorModal" class="modal-overlay error-overlay" @click.self="showErrorModal = false">
+          <div class="error-modal">
+            <div class="error-icon-wrap">
+              <div class="error-icon-ring">
+                <font-awesome-icon icon="fa-solid fa-triangle-exclamation" class="error-icon" />
+              </div>
+              <div class="error-pulse"></div>
+            </div>
+            <h3 class="error-title">{{ errorTitle }}</h3>
+            <ul v-if="errorDetails.length" class="error-list">
+              <li v-for="(d, i) in errorDetails" :key="i" class="error-item">
+                <font-awesome-icon icon="fa-solid fa-circle-exclamation" class="error-item-icon" />
+                {{ d }}
+              </li>
+            </ul>
+            <button @click="showErrorModal = false" class="error-dismiss">{{ $t('common.close') }}</button>
+          </div>
+        </div>
+      </Transition>
     </Teleport>
   </div>
 </template>
@@ -687,5 +720,108 @@ watch(activeTab, (tab) => {
   .tech-grid { grid-template-columns: 1fr; }
   .modal { width: 95%; padding: 18px; max-height: 90vh; overflow-y: auto; }
   .form-row-2 { grid-template-columns: 1fr; }
+  .error-modal { width: 92%; }
+}
+
+/* Error Modal */
+.error-overlay { background: rgba(0,0,0,0.75); }
+.error-modal {
+  background: #13112a;
+  border: 1px solid rgba(255, 107, 107, 0.2);
+  border-radius: 16px;
+  padding: 28px;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+}
+.error-icon-wrap {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+.error-icon-ring {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: rgba(255, 107, 107, 0.1);
+  border: 2px solid rgba(255, 107, 107, 0.3);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; z-index: 1;
+}
+.error-icon {
+  font-size: 1.4rem;
+  color: #ff6b6b;
+}
+.error-pulse {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 107, 107, 0.15);
+  animation: error-pulse 2s ease-in-out infinite;
+}
+@keyframes error-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0; }
+}
+.error-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+.error-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px 0;
+  text-align: left;
+  max-height: 200px;
+  overflow-y: auto;
+}
+.error-item {
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  background: rgba(255, 107, 107, 0.06);
+  border: 1px solid rgba(255, 107, 107, 0.1);
+  border-radius: 8px;
+  color: rgba(255,255,255,0.75);
+  font-size: 0.8rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+}
+.error-item-icon {
+  color: rgba(255, 107, 107, 0.5);
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+.error-dismiss {
+  padding: 10px 28px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 107, 107, 0.2);
+  background: rgba(255, 107, 107, 0.08);
+  color: #ff6b6b;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.error-dismiss:hover {
+  background: rgba(255, 107, 107, 0.15);
+  border-color: rgba(255, 107, 107, 0.4);
+}
+
+/* Transitions */
+.error-modal-enter-active { animation: error-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.error-modal-leave-active { animation: error-out 0.2s ease-in forwards; }
+@keyframes error-in {
+  0% { opacity: 0; transform: scale(0.85) translateY(10px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes error-out {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.9) translateY(8px); }
 }
 </style>
