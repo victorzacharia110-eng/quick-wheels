@@ -372,7 +372,9 @@
     "hirePurchase": "Hire Purchase",
     "dailyRentals": "Daily Rentals",
     "weeklyRentals": "Weekly Rentals",
-    "deliveryServices": "Delivery Services"
+    "deliveryServices": "Delivery Services",
+    "color": "Color",
+    "chassisNumber": "Chassis Number"
   },
   "services": {
     "motorcycleHP": "Motorcycle Hire Purchase",
@@ -470,7 +472,14 @@
     "welcomeBack": "Welcome back",
     "recentPayments": "Recent Payments",
     "noPaymentsYet": "No payments recorded yet",
-    "noPaymentsDesc": "You haven't made any payments yet."
+    "noPaymentsDesc": "You haven't made any payments yet.",
+    "guarantors": "Guarantors (Mdhamini)",
+    "addGuarantor": "Add Guarantor",
+    "guarantorName": "Full Name",
+    "guarantorPhone": "Phone Number",
+    "guarantorRelationship": "Relationship (e.g. Parent, Sibling)",
+    "switchToDriver": "Switch to Driver",
+    "switchToTechnician": "Switch to Technician"
   },
   "contract": {
     "title": "Contracts",

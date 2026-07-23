@@ -36,6 +36,10 @@
             <div class="admin-role">{{ $t('nav.driver') }}</div>
           </div>
         </div>
+        <button v-if="authStore.canDrive" class="role-toggle-btn" @click="handleSwitchRole" :title="$t('employee.switchToTechnician')">
+          <font-awesome-icon icon="fa-solid fa-right-left" />
+          {{ $t('employee.switchToTechnician') }}
+        </button>
         <button @click="handleLogout" class="logout-btn-sidebar">
           <font-awesome-icon icon="fa-solid fa-sign-out-alt" /><span>{{ $t('nav.logout') }}</span>
         </button>
@@ -241,6 +245,15 @@ function handleResize() {
 async function handleLogout() {
   const result = await authStore.logout();
   if (result.success) { router.push('/'); }
+}
+
+async function handleSwitchRole() {
+  const result = await authStore.switchDashboardRole('technician')
+  if (result.success) {
+    router.push('/technician')
+  } else {
+    alert(result.message)
+  }
 }
 
 let timer;
@@ -658,4 +671,11 @@ const accountNav = [
 .force-pw-modal .btn-primary { width: 100%; justify-content: center; padding: 12px; }
 .force-pw-modal .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 .spinner-sm { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(10,8,24,0.2); border-top-color: #0a0818; border-radius: 50%; animation: spin 0.7s linear infinite; margin-right: 8px; }
+.role-toggle-btn {
+  display: flex; align-items: center; gap: 6px; width: 100%; padding: 8px 12px; margin-top: 8px;
+  background: rgba(255,217,61,0.1); border: 1px solid rgba(255,217,61,0.3); border-radius: 8px;
+  color: #FFD93D; font-size: 0.75rem; cursor: pointer; font-family: 'Space Grotesk', sans-serif;
+  transition: all 0.2s;
+}
+.role-toggle-btn:hover { background: rgba(255,217,61,0.2); }
 </style>

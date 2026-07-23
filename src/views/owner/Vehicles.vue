@@ -34,6 +34,7 @@
             <tr>
               <th>{{ $t('vehicle.name') }}</th>
               <th>{{ $t('common.type') }}</th>
+              <th>{{ $t('vehicle.color') || 'Color' }}</th>
               <th>{{ $t('vehicle.registration') }}</th>
               <th>{{ $t('vehicle.year') }}</th>
               <th>{{ $t('vehicle.price') }}</th>
@@ -45,6 +46,7 @@
             <tr v-for="v in paginatedData" :key="v.id" class="table-row-fade">
               <td><strong>{{ v.name }}</strong></td>
               <td><font-awesome-icon :icon="store.getTypeIcon(v.type)" size="xs" /> {{ v.type }}</td>
+              <td>{{ v.color || '—' }}</td>
               <td>{{ v.registration }}</td>
               <td>{{ v.year }}</td>
               <td>{{ Number(v.price).toLocaleString() }} TZS</td>
@@ -93,6 +95,14 @@
                   <option value="Bajaji">{{ $t('status.bajaji') }}</option>
                   <option value="SUV">{{ $t('status.suv') }}</option>
                 </select>
+              </div>
+              <div class="form-group">
+                <label>Color</label>
+                <input v-model="form.color" class="form-input" placeholder="e.g. Red, White..." />
+              </div>
+              <div v-if="form.type === 'Motorcycle'" class="form-group">
+                <label>Chassis Number</label>
+                <input v-model="form.chassis_number" class="form-input" placeholder="Chassis number..." />
               </div>
               <div class="form-group">
                 <label>{{ $t('vehicle.registration') }} <span class="required">*</span></label>
@@ -153,7 +163,7 @@ const isLoading = ref(true)
 const page = ref(1)
 const perPage = 15
 
-const form = ref({ name: '', type: '', registration: '', year: '', price: '', status: 'available', description: '' })
+const form = ref({ name: '', type: '', registration: '', year: '', price: '', status: 'available', description: '', color: '', chassis_number: '' })
 
 const filtered = computed(() => {
   if (!searchQuery.value) return store.vehicles
@@ -173,14 +183,14 @@ const paginatedData = computed(() => {
 function openCreateModal() {
   isEditing.value = false
   editingId.value = null
-  form.value = { name: '', type: '', registration: '', year: '', price: '', status: 'available', description: '' }
+  form.value = { name: '', type: '', registration: '', year: '', price: '', status: 'available', description: '', color: '', chassis_number: '' }
   showModal.value = true
 }
 
 function openEditModal(v) {
   isEditing.value = true
   editingId.value = v.id
-  form.value = { name: v.name, type: v.type, registration: v.registration, year: v.year, price: v.price, status: v.status, description: v.description || '' }
+  form.value = { name: v.name, type: v.type, registration: v.registration, year: v.year, price: v.price, status: v.status, description: v.description || '', color: v.color || '', chassis_number: v.chassis_number || '' }
   showModal.value = true
 }
 

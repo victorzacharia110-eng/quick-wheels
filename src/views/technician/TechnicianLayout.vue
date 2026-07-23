@@ -37,6 +37,10 @@
             <div class="admin-role">{{ $t('nav.technician') }}</div>
           </div>
         </div>
+        <button v-if="authStore.canDrive" class="role-toggle-btn" @click="handleSwitchRole" :title="$t('employee.switchToDriver')">
+          <font-awesome-icon icon="fa-solid fa-right-left" />
+          {{ $t('employee.switchToDriver') }}
+        </button>
         <button @click="handleLogout" class="logout-btn-sidebar">
           <font-awesome-icon icon="fa-solid fa-sign-out-alt" /><span>{{ $t('nav.logout') }}</span>
         </button>
@@ -149,6 +153,15 @@ function handleResize() {
 async function handleLogout() {
   const result = await authStore.logout();
   if (result.success) { router.push('/'); }
+}
+
+async function handleSwitchRole() {
+  const result = await authStore.switchDashboardRole('employee')
+  if (result.success) {
+    router.push('/employee')
+  } else {
+    alert(result.message)
+  }
 }
 
 let timer;
@@ -554,4 +567,11 @@ const workshopNav = [
   .mobile-close-btn { display: none !important; }
   .mobile-overlay { display: none !important; }
 }
+.role-toggle-btn {
+  display: flex; align-items: center; gap: 6px; width: 100%; padding: 8px 12px; margin-top: 8px;
+  background: rgba(255,217,61,0.1); border: 1px solid rgba(255,217,61,0.3); border-radius: 8px;
+  color: #FFD93D; font-size: 0.75rem; cursor: pointer; font-family: 'Space Grotesk', sans-serif;
+  transition: all 0.2s;
+}
+.role-toggle-btn:hover { background: rgba(255,217,61,0.2); }
 </style>

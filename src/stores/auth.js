@@ -16,6 +16,8 @@ export const useAuthStore = defineStore('auth', () => {
   const userNida = computed(() => user.value?.nida_number || '')
   const isOwner = computed(() => user.value?.role === 'owner')
   const isEmployee = computed(() => user.value?.role === 'employee')
+  const isTechnician = computed(() => user.value?.role === 'technician')
+  const canDrive = computed(() => !!user.value?.can_drive)
   const aiEnabled = computed(() => !!user.value?.ai_enabled)
   const mustChangePassword = computed(() => !!user.value?.must_change_password)
 
@@ -161,6 +163,18 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  async function switchDashboardRole(newRole) {
+    try {
+      const response = await api.post('/auth/switch-role', { role: newRole })
+      if (response.data.success) {
+        setUser(response.data.data.user)
+        return { success: true }
+      }
+    } catch (err) {
+      return { success: false, message: err.response?.data?.message || 'Failed to switch role' }
+    }
+  }
+
   return {
     user,
     isLoading,
@@ -174,6 +188,8 @@ export const useAuthStore = defineStore('auth', () => {
     userNida,
     isOwner,
     isEmployee,
+    isTechnician,
+    canDrive,
     aiEnabled,
     mustChangePassword,
     setUser,
@@ -186,6 +202,7 @@ export const useAuthStore = defineStore('auth', () => {
     logout,
     fetchUser,
     updateNidaNumber,
+    switchDashboardRole,
     init,
     rehydrate
   }

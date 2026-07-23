@@ -160,6 +160,24 @@
                   </option>
                 </select>
               </div>
+              <div class="form-group full-width">
+                <div class="guarantors-header">
+                  <label>{{ $t('employee.guarantors') }}</label>
+                  <button type="button" class="btn-add-guarantor" @click="addGuarantor">
+                    <font-awesome-icon icon="fa-solid fa-plus" /> {{ $t('employee.addGuarantor') }}
+                  </button>
+                </div>
+                <div v-for="(g, index) in form.guarantors" :key="index" class="guarantor-entry">
+                  <div class="guarantor-fields">
+                    <input v-model="g.name" class="form-input" :placeholder="$t('employee.guarantorName')" />
+                    <input v-model="g.phone" class="form-input" :placeholder="$t('employee.guarantorPhone')" />
+                    <input v-model="g.relationship" class="form-input" :placeholder="$t('employee.guarantorRelationship')" />
+                    <button type="button" class="btn-icon danger" @click="removeGuarantor(index)" :title="$t('common.delete')">
+                      <font-awesome-icon icon="fa-solid fa-trash" />
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="modal-actions">
               <button type="button" @click="showModal = false" class="btn-outline">{{ $t('common.cancel') }}</button>
@@ -442,7 +460,7 @@ const analysisResult = ref(null)
 const defaultForm = () => ({
   name: '', phone: '', email: '', password: '', address: '', nida_number: '',
   license_number: '', department: '', position: '', salary: '', shift: 'day',
-  vehicle_id: ''
+  vehicle_id: '', guarantors: []
 })
 const form = ref(defaultForm())
 
@@ -473,9 +491,17 @@ function openEditModal(emp) {
     nida_number: emp.nida_number || '', license_number: emp.license_number || '',
     department: emp.department || '', position: emp.position || '',
     salary: emp.salary || '', shift: emp.shift || 'day',
-    vehicle_id: emp.vehicle_id || ''
+    vehicle_id: emp.vehicle_id || '',
+    guarantors: emp.guarantors || []
   }
   errorMsg.value = ''; showModal.value = true
+}
+
+function addGuarantor() {
+  form.value.guarantors.push({ name: '', phone: '', email: '', address: '', nida_number: '', relationship: '' })
+}
+function removeGuarantor(index) {
+  form.value.guarantors.splice(index, 1)
 }
 
 async function handleSave() {
@@ -735,6 +761,13 @@ onMounted(() => {
 .form-success code { display: inline-block; margin: 4px 0; padding: 4px 10px; background: rgba(0,0,0,0.3); border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 1rem; letter-spacing: 1px; color: #fff; }
 .btn-copy { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 1px solid rgba(0,229,255,0.3); background: rgba(0,229,255,0.1); border-radius: 6px; color: #00E5FF; cursor: pointer; transition: all 0.2s; vertical-align: middle; }
 .btn-copy:hover { background: rgba(0,229,255,0.2); }
+.guarantors-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.guarantors-header label { margin-bottom: 0; }
+.btn-add-guarantor { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 8px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.3); color: #00E5FF; font-size: 0.8rem; cursor: pointer; font-family: 'Space Grotesk', sans-serif; }
+.btn-add-guarantor:hover { background: rgba(0,229,255,0.2); }
+.guarantor-entry { margin-bottom: 8px; }
+.guarantor-fields { display: flex; gap: 8px; align-items: center; }
+.guarantor-fields .form-input { flex: 1; }
 .form-hint { font-size: 0.75rem; color: rgba(255,255,255,0.35); }
 .form-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 10px 14px; color: #fff; font-size: 0.9rem; outline: none; transition: border-color 0.2s, box-shadow 0.2s; font-family: 'Space Grotesk', sans-serif; }
 .form-input:focus { border-color: rgba(0,229,255,0.4); box-shadow: 0 0 0 3px rgba(0,229,255,0.06); }
