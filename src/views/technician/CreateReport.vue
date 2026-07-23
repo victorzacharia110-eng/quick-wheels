@@ -129,7 +129,7 @@ onMounted(async () => {
             <label>{{ $t('contract.vehicle') }} *</label>
             <select v-model="form.vehicle_id" required>
               <option value="">{{ $t('common.selectVehicle') }}</option>
-              <option v-for="v in vehicles" :key="v.id" :value="v.id">{{ v.name }} ({{ v.type }}) - {{ v.registration_number || 'N/A' }}</option>
+              <option v-for="v in vehicles" :key="v.id" :value="v.id">{{ v.name }} ({{ v.type }}) - {{ v.color || 'N/A' }} · {{ v.chassis_number || 'N/A' }}</option>
             </select>
           </div>
           <div class="form-group">

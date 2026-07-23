@@ -98,6 +98,8 @@ onMounted(() => {
             <th>{{ $t('maintenance.reportNumber') }}</th>
             <th>{{ $t('maintenance.title') }}</th>
             <th>{{ $t('contract.vehicle') }}</th>
+            <th>{{ $t('vehicle.color') || 'Color' }}</th>
+            <th>{{ $t('vehicle.chassisNumber') || 'Chassis #' }}</th>
             <th>{{ $t('maintenance.priority') }}</th>
             <th>{{ $t('common.status') }}</th>
             <th>{{ $t('maintenance.items') }}</th>
@@ -114,6 +116,8 @@ onMounted(() => {
                 {{ report.vehicle_name }}
               </span>
             </td>
+            <td>{{ report.vehicle_color || '—' }}</td>
+            <td>{{ report.vehicle_chassis_number || '—' }}</td>
             <td>
               <span class="priority-badge" :style="{ background: maintenanceStore.getPriorityColor(report.priority) + '22', color: maintenanceStore.getPriorityColor(report.priority) }">
                 <font-awesome-icon :icon="getPriorityIcon(report.priority)" />
