@@ -72,7 +72,11 @@ function openDelete(tech) {
 async function createTechnician() {
   isSubmitting.value = true
   try {
-    const { data } = await api.post('/owner/technicians', form.value)
+    const payload = { ...form.value }
+    for (const k of Object.keys(payload)) {
+      if (payload[k] === '') payload[k] = null
+    }
+    const { data } = await api.post('/owner/technicians', payload)
     createdPassword.value = data.data.password
     showCreateModal.value = false
     showPasswordModal.value = true
@@ -86,7 +90,11 @@ async function createTechnician() {
 async function updateTechnician() {
   isSubmitting.value = true
   try {
-    await api.put(`/owner/technicians/${selectedTechnician.value.id}`, form.value)
+    const payload = { ...form.value }
+    for (const k of Object.keys(payload)) {
+      if (payload[k] === '') payload[k] = null
+    }
+    await api.put(`/owner/technicians/${selectedTechnician.value.id}`, payload)
     showEditModal.value = false
     loadTechnicians()
   } catch (err) {
@@ -558,5 +566,7 @@ onMounted(() => {
 @media (max-width: 768px) {
   .page-header { flex-direction: column; align-items: flex-start; gap: 12px; }
   .tech-grid { grid-template-columns: 1fr; }
+  .modal { width: 95%; padding: 18px; max-height: 90vh; overflow-y: auto; }
+  .form-row-2 { grid-template-columns: 1fr; }
 }
 </style>

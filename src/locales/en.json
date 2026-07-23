@@ -195,7 +195,7 @@
     "position": "Position",
     "salary": "Salary",
     "shift": "Shift",
-    "nida": "NIDA Number",
+    "nida": "NIDA Number / Voting ID Number",
     "day": "Day",
     "night": "Night",
     "flexible": "Flexible",
