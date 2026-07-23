@@ -85,7 +85,7 @@
 
     <!-- Force Password Change Modal -->
     <Transition name="modal">
-      <div v-if="authStore.mustChangePassword" class="modal-overlay force-pw-modal">
+      <div v-if="authStore.mustChangePassword && authStore.userRole === 'owner'" class="modal-overlay force-pw-modal">
         <div class="modal-box">
           <div class="modal-header">
             <div class="pw-modal-title">
