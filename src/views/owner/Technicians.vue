@@ -74,7 +74,7 @@ async function createTechnician() {
   try {
     const payload = { ...form.value }
     for (const k of Object.keys(payload)) {
-      if (payload[k] === '') payload[k] = null
+      if (payload[k] === '' || payload[k] === undefined) payload[k] = null
     }
     const { data } = await api.post('/owner/technicians', payload)
     createdPassword.value = data.data.password
@@ -82,7 +82,10 @@ async function createTechnician() {
     showPasswordModal.value = true
     loadTechnicians()
   } catch (err) {
-    alert(err.response?.data?.message || 'Failed to create technician')
+    const errors = err.response?.data?.errors
+    const msg = err.response?.data?.message || 'Failed to create technician'
+    const detail = errors ? '\n' + Object.entries(errors).map(([k, v]) => `${k}: ${v.join(', ')}`).join('\n') : ''
+    alert(msg + detail)
   }
   isSubmitting.value = false
 }
