@@ -2,77 +2,83 @@
   <div class="superadmin-dashboard">
     <div class="dashboard-header">
       <div>
-        <h1 class="page-title">SuperAdmin Dashboard</h1>
-        <p class="page-sub">Welcome back, {{ authStore.userName }}!</p>
+        <h1 class="page-title">{{ $t('superadmin.dashboard') }}</h1>
+        <p class="page-sub">{{ $t('dashboard.welcome') }}, {{ authStore.userName }}!</p>
       </div>
     </div>
 
     <SkeletonLoader v-if="loading" variant="stats" :rows="4" :cols="4" />
+
+    <div v-else-if="error" class="error-state">
+      <font-awesome-icon icon="fa-solid fa-exclamation-triangle" size="2x" />
+      <p>{{ $t('common.error') }}: {{ error }}</p>
+      <button class="btn-primary" @click="fetchDashboard">{{ $t('home.retry') }}</button>
+    </div>
 
     <template v-else>
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-icon owners-icon"><font-awesome-icon icon="fa-solid fa-building" /></div>
           <div class="stat-value">{{ stats.total_owners || 0 }}</div>
-          <div class="stat-label">Total Owners</div>
+          <div class="stat-label">{{ $t('superadmin.totalOwners') }}</div>
         </div>
         <div class="stat-card verified">
           <div class="stat-icon verified-icon"><font-awesome-icon icon="fa-solid fa-check-circle" /></div>
           <div class="stat-value">{{ stats.verified_owners || 0 }}</div>
-          <div class="stat-label">Verified</div>
+          <div class="stat-label">{{ $t('superadmin.verified') }}</div>
         </div>
         <div class="stat-card unverified">
           <div class="stat-icon unverified-icon"><font-awesome-icon icon="fa-solid fa-clock" /></div>
           <div class="stat-value">{{ stats.unverified_owners || 0 }}</div>
-          <div class="stat-label">Unverified</div>
+          <div class="stat-label">{{ $t('superadmin.unverified') }}</div>
         </div>
         <div class="stat-card employees">
           <div class="stat-icon employees-icon"><font-awesome-icon icon="fa-solid fa-users" /></div>
           <div class="stat-value">{{ stats.total_employees || 0 }}</div>
-          <div class="stat-label">Total Employees</div>
+          <div class="stat-label">{{ $t('superadmin.totalEmployees') }}</div>
         </div>
         <div class="stat-card clients">
           <div class="stat-icon clients-icon"><font-awesome-icon icon="fa-solid fa-user-friends" /></div>
           <div class="stat-value">{{ stats.total_clients || 0 }}</div>
-          <div class="stat-label">Total Clients</div>
+          <div class="stat-label">{{ $t('superadmin.totalClients') }}</div>
         </div>
         <div class="stat-card vehicles">
           <div class="stat-icon vehicles-icon"><font-awesome-icon icon="fa-solid fa-car" /></div>
           <div class="stat-value">{{ stats.total_vehicles || 0 }}</div>
-          <div class="stat-label">Total Vehicles</div>
+          <div class="stat-label">{{ $t('superadmin.totalVehicles') }}</div>
         </div>
       </div>
 
       <div class="recent-owners">
-        <h3 class="section-title">Recent Owners</h3>
+        <h3 class="section-title">{{ $t('superadmin.recentOwners') }}</h3>
         <div v-if="recentOwners.length === 0" class="empty-state-small">
-          <p>No owners registered yet.</p>
+          <p>{{ $t('superadmin.noOwners') }}</p>
         </div>
         <div v-else class="table-container">
           <table class="owners-table">
             <thead>
               <tr>
-                <th>Business Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Status</th>
-                <th>Verification</th>
-                <th>Joined</th>
+                <th>{{ $t('superadmin.businessName') }}</th>
+                <th>{{ $t('common.email') }}</th>
+                <th>{{ $t('common.phone') }}</th>
+                <th>{{ $t('common.status') }}</th>
+                <th>{{ $t('superadmin.verification') }}</th>
+                <th>{{ $t('superadmin.joined') }}</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="owner in recentOwners" :key="owner.id">
-                <td><strong>{{ owner.business?.business_name || owner.name }}</strong></td>
-                <td>{{ owner.business?.business_email || owner.email }}</td>
-                <td>{{ owner.business?.business_phone || owner.phone }}</td>
+                <td><strong>{{ owner.business_name || owner.user?.name }}</strong></td>
+                <td>{{ owner.business_email || owner.user?.email }}</td>
+                <td>{{ owner.business_phone || owner.user?.phone }}</td>
                 <td>
-                  <span class="badge" :class="owner.is_active ? 'active' : 'inactive'">
-                    {{ owner.is_active ? 'Active' : 'Inactive' }}
+                  <span class="badge" :class="owner.user?.is_active ? 'active' : 'inactive'">
+                    {{ owner.user?.is_active ? $t('status.active') : $t('status.inactive') }}
                   </span>
                 </td>
                 <td>
                   <span class="badge" :class="owner.is_verified ? 'verified' : 'unverified'">
-                    {{ owner.is_verified ? 'Verified' : 'Unverified' }}
+                    {{ owner.is_verified ? $t('superadmin.verified') : $t('superadmin.unverified') }}
                   </span>
                 </td>
                 <td>{{ formatDate(owner.created_at) }}</td>
@@ -95,27 +101,33 @@ const authStore = useAuthStore()
 const loading = ref(true)
 const stats = ref({})
 const recentOwners = ref([])
+const error = ref(null)
 
 function formatDate(date) {
-  if (!date) return '—'
+  if (!date) return '\u2014'
   return new Date(date).toLocaleDateString('en-US', {
     year: 'numeric', month: 'short', day: 'numeric'
   })
 }
 
-onMounted(async () => {
+async function fetchDashboard() {
+  loading.value = true
+  error.value = null
   try {
     const res = await api.get('/superadmin/dashboard')
     if (res.data.success) {
-      stats.value = res.data.data.stats || {}
+      stats.value = res.data.data || {}
       recentOwners.value = res.data.data.recent_owners || []
     }
   } catch (err) {
     console.error('Failed to load dashboard:', err)
+    error.value = err.response?.data?.message || err.message
   } finally {
     loading.value = false
   }
-})
+}
+
+onMounted(fetchDashboard)
 </script>
 
 <style scoped>
@@ -220,6 +232,30 @@ onMounted(async () => {
 .badge.unverified { background: rgba(255,217,61,0.15); color: #FFD93D; }
 
 .empty-state-small { text-align: center; padding: 20px; color: rgba(255,255,255,0.3); }
+
+.error-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: rgba(255,255,255,0.5);
+}
+.error-state svg { color: #ff6b6b; margin-bottom: 12px; }
+.error-state p { margin-bottom: 16px; color: rgba(255,255,255,0.4); }
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 30px;
+  background: linear-gradient(90deg, #00C4D4, #00E5FF);
+  color: #0a0818;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Space Grotesk', sans-serif;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,229,255,0.35); }
 
 @media (max-width: 768px) {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }

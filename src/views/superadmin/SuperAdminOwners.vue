@@ -2,144 +2,157 @@
   <div class="owners-page">
     <div class="page-header">
       <div>
-        <h1 class="page-title">Manage Owners</h1>
-        <p class="page-sub">View and manage all business owners</p>
+        <h1 class="page-title">{{ $t('superadmin.manageOwners') }}</h1>
+        <p class="page-sub">{{ $t('superadmin.ownersSubtitle') }}</p>
       </div>
     </div>
 
     <div class="filters-bar">
       <div class="search-bar">
         <font-awesome-icon icon="fa-solid fa-search" class="search-icon" />
-        <input v-model="searchQuery" type="text" placeholder="Search by business name..." class="search-input" @input="fetchOwners" />
+        <input v-model="searchQuery" type="text" :placeholder="$t('superadmin.searchOwners')" class="search-input" @input="debouncedSearch" />
       </div>
       <div class="filter-group">
-        <select v-model="verifiedFilter" class="filter-select" @change="fetchOwners">
-          <option value="">All Verification</option>
-          <option value="1">Verified</option>
-          <option value="0">Unverified</option>
+        <select v-model="verifiedFilter" class="filter-select" @change="fetchOwners(1)">
+          <option value="">{{ $t('superadmin.allVerification') }}</option>
+          <option value="1">{{ $t('superadmin.verified') }}</option>
+          <option value="0">{{ $t('superadmin.unverified') }}</option>
         </select>
       </div>
     </div>
 
     <SkeletonLoader v-if="loading" variant="table" :rows="8" :cols="5" />
 
+    <div v-else-if="error" class="error-state">
+      <font-awesome-icon icon="fa-solid fa-exclamation-triangle" size="2x" />
+      <p>{{ $t('common.error') }}: {{ error }}</p>
+      <button class="btn-primary" @click="fetchOwners(1)">{{ $t('home.retry') }}</button>
+    </div>
+
     <div v-else-if="owners.length === 0" class="empty-state">
       <font-awesome-icon icon="fa-solid fa-building" size="3x" />
-      <h3>No owners found</h3>
-      <p>No owners match your search criteria.</p>
+      <h3>{{ $t('superadmin.noOwnersFound') }}</h3>
+      <p>{{ $t('superadmin.noOwnersMatch') }}</p>
     </div>
 
     <div v-else class="table-container">
       <table class="owners-table">
         <thead>
           <tr>
-            <th>Business Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>License</th>
-            <th>Verification</th>
-            <th>Status</th>
-            <th>Actions</th>
+            <th>{{ $t('superadmin.businessName') }}</th>
+            <th>{{ $t('common.email') }}</th>
+            <th>{{ $t('common.phone') }}</th>
+            <th>{{ $t('superadmin.license') }}</th>
+            <th>{{ $t('superadmin.verification') }}</th>
+            <th>{{ $t('common.status') }}</th>
+            <th>{{ $t('common.actions') }}</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="owner in owners" :key="owner.id" @click="selectOwner(owner)" class="clickable-row">
-            <td><strong>{{ owner.business?.business_name || owner.name }}</strong></td>
-            <td>{{ owner.business?.business_email || owner.email }}</td>
-            <td>{{ owner.business?.business_phone || owner.phone }}</td>
-            <td>{{ owner.business?.business_license || '—' }}</td>
+            <td><strong>{{ owner.business_name || owner.user?.name }}</strong></td>
+            <td>{{ owner.business_email || owner.user?.email }}</td>
+            <td>{{ owner.business_phone || owner.user?.phone }}</td>
+            <td>{{ owner.business_license || '\u2014' }}</td>
             <td>
               <span class="badge" :class="owner.is_verified ? 'verified' : 'unverified'">
-                {{ owner.is_verified ? 'Verified' : 'Unverified' }}
+                {{ owner.is_verified ? $t('superadmin.verified') : $t('superadmin.unverified') }}
               </span>
             </td>
             <td>
-              <span class="badge" :class="owner.is_active ? 'active' : 'inactive'">
-                {{ owner.is_active ? 'Active' : 'Inactive' }}
+              <span class="badge" :class="owner.user?.is_active ? 'active' : 'inactive'">
+                {{ owner.user?.is_active ? $t('status.active') : $t('status.inactive') }}
               </span>
             </td>
             <td class="actions-cell" @click.stop>
-              <button @click="toggleVerification(owner)" class="btn-icon" :title="owner.is_verified ? 'Unverify' : 'Verify'">
+              <button @click="confirmToggleVerification(owner)" class="btn-icon" :title="owner.is_verified ? $t('superadmin.unverify') : $t('superadmin.verify')">
                 <font-awesome-icon :icon="owner.is_verified ? 'fa-solid fa-times-circle' : 'fa-solid fa-check-circle'" />
               </button>
-              <button @click="toggleStatus(owner)" class="btn-icon" :title="owner.is_active ? 'Deactivate' : 'Activate'">
-                <font-awesome-icon :icon="owner.is_active ? 'fa-solid fa-ban' : 'fa-solid fa-check'" />
+              <button @click="confirmToggleStatus(owner)" class="btn-icon" :title="owner.user?.is_active ? $t('superadmin.deactivate') : $t('superadmin.activate')">
+                <font-awesome-icon :icon="owner.user?.is_active ? 'fa-solid fa-ban' : 'fa-solid fa-check'" />
               </button>
-              <button @click="confirmDelete(owner)" class="btn-icon danger" title="Delete">
+              <button @click="confirmDelete(owner)" class="btn-icon danger" :title="$t('common.delete')">
                 <font-awesome-icon icon="fa-solid fa-trash" />
               </button>
-              <button @click="openEditModal(owner)" class="btn-icon" title="Edit">
+              <button @click="openEditModal(owner)" class="btn-icon" :title="$t('common.edit')">
                 <font-awesome-icon icon="fa-solid fa-pen" />
               </button>
             </td>
           </tr>
         </tbody>
       </table>
+
+      <Pagination
+        :currentPage="currentPage"
+        :perPage="perPage"
+        :total="totalOwners"
+        @page-change="fetchOwners"
+      />
     </div>
 
     <Transition name="modal">
       <div v-if="showDetailModal && selectedOwner" class="modal-overlay" @click.self="showDetailModal = false">
         <div class="modal-box">
           <div class="modal-header">
-            <h3>{{ selectedOwner.business?.business_name || selectedOwner.name }}</h3>
+            <h3>{{ selectedOwner.business_name || selectedOwner.user?.name }}</h3>
             <button class="modal-close" @click="showDetailModal = false"><font-awesome-icon icon="fa-solid fa-times" /></button>
           </div>
           <div class="detail-grid">
             <div class="detail-item">
-              <span class="detail-label">Owner Name</span>
-              <span class="detail-value">{{ selectedOwner.name }}</span>
+              <span class="detail-label">{{ $t('superadmin.ownerName') }}</span>
+              <span class="detail-value">{{ selectedOwner.user?.name }}</span>
             </div>
             <div class="detail-item">
-              <span class="detail-label">Email</span>
-              <span class="detail-value">{{ selectedOwner.business?.business_email || selectedOwner.email }}</span>
+              <span class="detail-label">{{ $t('common.email') }}</span>
+              <span class="detail-value">{{ selectedOwner.business_email || selectedOwner.user?.email }}</span>
             </div>
             <div class="detail-item">
-              <span class="detail-label">Phone</span>
-              <span class="detail-value">{{ selectedOwner.business?.business_phone || selectedOwner.phone }}</span>
+              <span class="detail-label">{{ $t('common.phone') }}</span>
+              <span class="detail-value">{{ selectedOwner.business_phone || selectedOwner.user?.phone }}</span>
             </div>
             <div class="detail-item">
-              <span class="detail-label">Business Name</span>
-              <span class="detail-value">{{ selectedOwner.business?.business_name || '—' }}</span>
+              <span class="detail-label">{{ $t('superadmin.businessName') }}</span>
+              <span class="detail-value">{{ selectedOwner.business_name || '\u2014' }}</span>
             </div>
             <div class="detail-item">
-              <span class="detail-label">Business Address</span>
-              <span class="detail-value">{{ selectedOwner.business?.business_address || '—' }}</span>
+              <span class="detail-label">{{ $t('superadmin.businessAddress') }}</span>
+              <span class="detail-value">{{ selectedOwner.business_address || '\u2014' }}</span>
             </div>
             <div class="detail-item">
-              <span class="detail-label">Business License</span>
-              <span class="detail-value">{{ selectedOwner.business?.business_license || '—' }}</span>
+              <span class="detail-label">{{ $t('superadmin.license') }}</span>
+              <span class="detail-value">{{ selectedOwner.business_license || '\u2014' }}</span>
             </div>
             <div class="detail-item">
-              <span class="detail-label">Business Website</span>
-              <span class="detail-value">{{ selectedOwner.business?.business_website || '—' }}</span>
+              <span class="detail-label">{{ $t('superadmin.businessWebsite') }}</span>
+              <span class="detail-value">{{ selectedOwner.business_website || '\u2014' }}</span>
             </div>
             <div class="detail-item">
-              <span class="detail-label">NIDA Number</span>
-              <span class="detail-value">{{ selectedOwner.nida_number || '—' }}</span>
+              <span class="detail-label">{{ $t('common.nida') }}</span>
+              <span class="detail-value">{{ selectedOwner.user?.nida_number || '\u2014' }}</span>
             </div>
             <div class="detail-item">
-              <span class="detail-label">Verification</span>
+              <span class="detail-label">{{ $t('superadmin.verification') }}</span>
               <span class="detail-value">
                 <span class="badge" :class="selectedOwner.is_verified ? 'verified' : 'unverified'">
-                  {{ selectedOwner.is_verified ? 'Verified' : 'Unverified' }}
+                  {{ selectedOwner.is_verified ? $t('superadmin.verified') : $t('superadmin.unverified') }}
                 </span>
               </span>
             </div>
             <div class="detail-item">
-              <span class="detail-label">Status</span>
+              <span class="detail-label">{{ $t('common.status') }}</span>
               <span class="detail-value">
-                <span class="badge" :class="selectedOwner.is_active ? 'active' : 'inactive'">
-                  {{ selectedOwner.is_active ? 'Active' : 'Inactive' }}
+                <span class="badge" :class="selectedOwner.user?.is_active ? 'active' : 'inactive'">
+                  {{ selectedOwner.user?.is_active ? $t('status.active') : $t('status.inactive') }}
                 </span>
               </span>
             </div>
             <div class="detail-item">
-              <span class="detail-label">Joined</span>
+              <span class="detail-label">{{ $t('superadmin.joined') }}</span>
               <span class="detail-value">{{ formatDate(selectedOwner.created_at) }}</span>
             </div>
           </div>
           <div class="modal-actions">
-            <button @click="showDetailModal = false" class="btn-outline">Close</button>
+            <button @click="showDetailModal = false" class="btn-outline">{{ $t('common.close') }}</button>
           </div>
         </div>
       </div>
@@ -149,45 +162,45 @@
       <div v-if="showEditModal && editingOwner" class="modal-overlay" @click.self="showEditModal = false">
         <div class="modal-box">
           <div class="modal-header">
-            <h3>Edit Owner</h3>
+            <h3>{{ $t('superadmin.editOwner') }}</h3>
             <button class="modal-close" @click="showEditModal = false"><font-awesome-icon icon="fa-solid fa-times" /></button>
           </div>
           <form @submit.prevent="saveEdit">
             <div class="form-grid">
               <div class="form-group">
-                <label>Owner Name</label>
+                <label>{{ $t('superadmin.ownerName') }}</label>
                 <input v-model="editForm.name" type="text" class="form-input" />
               </div>
               <div class="form-group">
-                <label>Email</label>
+                <label>{{ $t('common.email') }}</label>
                 <input v-model="editForm.email" type="email" class="form-input" />
               </div>
               <div class="form-group">
-                <label>Phone</label>
+                <label>{{ $t('common.phone') }}</label>
                 <input v-model="editForm.phone" type="tel" class="form-input" />
               </div>
               <div class="form-group">
-                <label>Business Name</label>
+                <label>{{ $t('superadmin.businessName') }}</label>
                 <input v-model="editForm.business_name" type="text" class="form-input" />
               </div>
               <div class="form-group">
-                <label>Business Address</label>
+                <label>{{ $t('superadmin.businessAddress') }}</label>
                 <input v-model="editForm.business_address" type="text" class="form-input" />
               </div>
               <div class="form-group">
-                <label>Business License</label>
+                <label>{{ $t('superadmin.license') }}</label>
                 <input v-model="editForm.business_license" type="text" class="form-input" />
               </div>
               <div class="form-group">
-                <label>Business Website</label>
+                <label>{{ $t('superadmin.businessWebsite') }}</label>
                 <input v-model="editForm.business_website" type="url" class="form-input" />
               </div>
             </div>
             <div class="modal-actions">
-              <button type="button" @click="showEditModal = false" class="btn-outline">Cancel</button>
+              <button type="button" @click="showEditModal = false" class="btn-outline">{{ $t('common.cancel') }}</button>
               <button type="submit" class="btn-primary" :disabled="isSaving">
-                <span v-if="isSaving"><span class="spinner-sm"></span> Saving...</span>
-                <span v-else>Save Changes</span>
+                <span v-if="isSaving"><span class="spinner-sm"></span> {{ $t('common.saving') }}</span>
+                <span v-else>{{ $t('common.saveChanges') }}</span>
               </button>
             </div>
           </form>
@@ -199,11 +212,16 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import api from '@/composables/api'
 import SkeletonLoader from '@/components/common/SkeletonLoader.vue'
+import Pagination from '@/components/common/Pagination.vue'
+
+const { t } = useI18n()
 
 const owners = ref([])
 const loading = ref(true)
+const error = ref(null)
 const searchQuery = ref('')
 const verifiedFilter = ref('')
 const showDetailModal = ref(false)
@@ -212,26 +230,42 @@ const showEditModal = ref(false)
 const editingOwner = ref(null)
 const isSaving = ref(false)
 const editForm = ref({})
+const currentPage = ref(1)
+const perPage = ref(15)
+const totalOwners = ref(0)
+
+let searchTimeout = null
+function debouncedSearch() {
+  clearTimeout(searchTimeout)
+  searchTimeout = setTimeout(() => { fetchOwners(1) }, 400)
+}
 
 function formatDate(date) {
-  if (!date) return '—'
+  if (!date) return '\u2014'
   return new Date(date).toLocaleDateString('en-US', {
     year: 'numeric', month: 'short', day: 'numeric'
   })
 }
 
-async function fetchOwners() {
+async function fetchOwners(page = 1) {
   loading.value = true
+  error.value = null
   try {
-    const params = {}
+    const params = { page }
     if (searchQuery.value) params.search = searchQuery.value
     if (verifiedFilter.value !== '') params.verified = verifiedFilter.value
     const res = await api.get('/superadmin/owners', { params })
     if (res.data.success) {
-      owners.value = res.data.data.owners || res.data.data || []
+      owners.value = res.data.data || []
+      if (res.data.meta) {
+        currentPage.value = res.data.meta.current_page || 1
+        perPage.value = res.data.meta.per_page || 15
+        totalOwners.value = res.data.meta.total || 0
+      }
     }
   } catch (err) {
     console.error('Failed to fetch owners:', err)
+    error.value = err.response?.data?.message || err.message
   } finally {
     loading.value = false
   }
@@ -241,12 +275,19 @@ async function selectOwner(owner) {
   try {
     const res = await api.get(`/superadmin/owners/${owner.id}`)
     if (res.data.success) {
-      selectedOwner.value = res.data.data.owner || res.data.data
+      selectedOwner.value = res.data.data
       showDetailModal.value = true
     }
   } catch (err) {
     console.error('Failed to fetch owner details:', err)
+    alert(err.response?.data?.message || err.message)
   }
+}
+
+function confirmToggleVerification(owner) {
+  const action = owner.is_verified ? t('superadmin.unverify') : t('superadmin.verify')
+  if (!confirm(`${action} "${owner.business_name || owner.user?.name}"?`)) return
+  toggleVerification(owner)
 }
 
 async function toggleVerification(owner) {
@@ -257,22 +298,30 @@ async function toggleVerification(owner) {
     }
   } catch (err) {
     console.error('Failed to toggle verification:', err)
+    alert(err.response?.data?.message || err.message)
   }
+}
+
+function confirmToggleStatus(owner) {
+  const action = owner.user?.is_active ? t('superadmin.deactivate') : t('superadmin.activate')
+  if (!confirm(`${action} "${owner.business_name || owner.user?.name}"?`)) return
+  toggleStatus(owner)
 }
 
 async function toggleStatus(owner) {
   try {
     const res = await api.post(`/superadmin/owners/${owner.id}/toggle-status`)
     if (res.data.success) {
-      owner.is_active = !owner.is_active
+      if (owner.user) owner.user.is_active = !owner.user.is_active
     }
   } catch (err) {
     console.error('Failed to toggle status:', err)
+    alert(err.response?.data?.message || err.message)
   }
 }
 
 function confirmDelete(owner) {
-  if (!confirm(`Delete owner "${owner.business?.business_name || owner.name}"? This cannot be undone.`)) return
+  if (!confirm(`Delete owner "${owner.business_name || owner.user?.name}"? This cannot be undone.`)) return
   deleteOwner(owner)
 }
 
@@ -281,22 +330,24 @@ async function deleteOwner(owner) {
     const res = await api.delete(`/superadmin/owners/${owner.id}`)
     if (res.data.success) {
       owners.value = owners.value.filter(o => o.id !== owner.id)
+      totalOwners.value = Math.max(0, totalOwners.value - 1)
     }
   } catch (err) {
     console.error('Failed to delete owner:', err)
+    alert(err.response?.data?.message || err.message)
   }
 }
 
 function openEditModal(owner) {
   editingOwner.value = owner
   editForm.value = {
-    name: owner.name || '',
-    email: owner.business?.business_email || owner.email || '',
-    phone: owner.business?.business_phone || owner.phone || '',
-    business_name: owner.business?.business_name || '',
-    business_address: owner.business?.business_address || '',
-    business_license: owner.business?.business_license || '',
-    business_website: owner.business?.business_website || '',
+    name: owner.user?.name || '',
+    email: owner.business_email || owner.user?.email || '',
+    phone: owner.business_phone || owner.user?.phone || '',
+    business_name: owner.business_name || '',
+    business_address: owner.business_address || '',
+    business_license: owner.business_license || '',
+    business_website: owner.business_website || '',
   }
   showEditModal.value = true
 }
@@ -308,16 +359,17 @@ async function saveEdit() {
     const res = await api.put(`/superadmin/owners/${editingOwner.value.id}`, editForm.value)
     if (res.data.success) {
       showEditModal.value = false
-      await fetchOwners()
+      await fetchOwners(currentPage.value)
     }
   } catch (err) {
     console.error('Failed to update owner:', err)
+    alert(err.response?.data?.message || err.message)
   } finally {
     isSaving.value = false
   }
 }
 
-onMounted(fetchOwners)
+onMounted(() => fetchOwners(1))
 </script>
 
 <style scoped>
@@ -448,6 +500,14 @@ onMounted(fetchOwners)
 }
 .empty-state svg { opacity: 0.3; margin-bottom: 16px; }
 .empty-state h3 { color: #fff; margin-bottom: 8px; }
+
+.error-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: rgba(255,255,255,0.5);
+}
+.error-state svg { color: #ff6b6b; margin-bottom: 12px; }
+.error-state p { margin-bottom: 16px; color: rgba(255,255,255,0.4); }
 
 .modal-overlay {
   position: fixed;

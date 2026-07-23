@@ -19,6 +19,7 @@
         <RouterLink v-for="item in mainNav" :key="item.to" :to="item.to" class="nav-item" active-class="active" @click="closeMobile">
           <span class="nav-icon"><font-awesome-icon :icon="item.icon" /></span>
           <span class="nav-label">{{ $t(item.label) }}</span>
+          <span v-if="item.badge" class="nav-badge">{{ item.badge }}</span>
         </RouterLink>
       </nav>
 
@@ -60,7 +61,7 @@
           </div>
           <button class="topbar-icon-btn" :title="$t('nav.notifications')">
             <font-awesome-icon icon="fa-regular fa-bell" />
-            <span class="notif-dot"></span>
+            <span v-if="messageStore.unreadCount > 0" class="notif-dot"></span>
           </button>
           <button @click="handleLogout" class="topbar-logout-btn" :title="$t('nav.logout')">
             <font-awesome-icon icon="fa-solid fa-sign-out-alt" />
@@ -100,12 +101,12 @@ const currentTime = ref("");
 const isMobile = ref(window.innerWidth < 768);
 
 const pageTitleKeys = {
-  "/superadmin": "Dashboard",
-  "/superadmin/owners": "Manage Owners",
-  "/superadmin/chat": "Messages",
+  "/superadmin": "superadmin.dashboard",
+  "/superadmin/owners": "superadmin.manageOwners",
+  "/superadmin/chat": "nav.messages",
 };
 
-const currentPageTitle = computed(() => pageTitleKeys[route.path] || "Dashboard");
+const currentPageTitle = computed(() => t(pageTitleKeys[route.path] || "superadmin.dashboard"));
 
 function updateTime() {
   currentTime.value = new Date().toLocaleTimeString("en-US", {
@@ -158,7 +159,7 @@ watch(mobileOpen, (newVal) => {
 
 const mainNav = [
   { to: "/superadmin", label: "nav.dashboard", icon: "fa-solid fa-th-large" },
-  { to: "/superadmin/owners", label: "nav.employees", icon: "fa-solid fa-users" },
+  { to: "/superadmin/owners", label: "nav.owners", icon: "fa-solid fa-users" },
   { to: "/superadmin/chat", label: "nav.messages", icon: "fa-solid fa-comments", get badge() { return messageStore.unreadCount || null } },
 ];
 
