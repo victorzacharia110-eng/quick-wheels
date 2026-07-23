@@ -258,7 +258,13 @@
     "resetPassword": "Reimposta password",
     "resetPasswordConfirm": "Reimpostare la password di questo dipendente a quella predefinita (NOME IN MAIUSCOLO)?",
     "passwordReset": "Password reimpostata con successo",
-    "defaultPassword": "Password predefinita"
+    "defaultPassword": "Password predefinita",
+    "active": "Attivo",
+    "deleted": "Eliminato",
+    "noDeleted": "Nessun tecnico eliminato",
+    "restore": "Ripristina",
+    "permanentDelete": "Elimina definitivamente",
+    "permanentDeleteConfirm": "Questo eliminerà permanentemente questo tecnico e tutti i suoi dati. Questa azione non può essere annullata!"
   },
   "auth": {
     "welcomeBack": "Bentornato",

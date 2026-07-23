@@ -264,7 +264,13 @@
     "resetPassword": "Weka upya Nenosiri",
     "resetPasswordConfirm": "Weka upya nenosiri la huyu mfanyakazi kuwa la msingi (JINA kwa herufi kubwa)?",
     "passwordReset": "Nenosiri limewekwa upya kwa mafanikio",
-    "defaultPassword": "Nenosiri la msingi"
+    "defaultPassword": "Nenosiri la msingi",
+    "active": "Hai",
+    "deleted": "Imefutwa",
+    "noDeleted": "Hakuna mafundi waliofutwa",
+    "restore": "Rejesha",
+    "permanentDelete": "Futa Kabisa",
+    "permanentDeleteConfirm": "Hii itafuta mafundi hii na data yote yake. Hairudishwi tena!"
   },
   "auth": {
     "welcomeBack": "Karibu Tena",

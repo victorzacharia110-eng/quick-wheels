@@ -258,7 +258,13 @@
     "resetPassword": "重置密码",
     "resetPasswordConfirm": "将此员工的密码重置为默认值（姓名大写）？",
     "passwordReset": "密码已成功重置",
-    "defaultPassword": "默认密码"
+    "defaultPassword": "默认密码",
+    "active": "活跃",
+    "deleted": "已删除",
+    "noDeleted": "没有已删除的技术人员",
+    "restore": "恢复",
+    "permanentDelete": "永久删除",
+    "permanentDeleteConfirm": "这将永久删除此技术人员及其所有数据。此操作无法撤销！"
   },
   "auth": {
     "welcomeBack": "欢迎回来",

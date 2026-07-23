@@ -258,7 +258,13 @@
     "resetPassword": "Passwort zurücksetzen",
     "resetPasswordConfirm": "Passwort dieses Mitarbeiters auf Standard (Name in GROSSSCHRIFT) zurücksetzen?",
     "passwordReset": "Passwort erfolgreich zurückgesetzt",
-    "defaultPassword": "Standardpasswort"
+    "defaultPassword": "Standardpasswort",
+    "active": "Aktiv",
+    "deleted": "Gelöscht",
+    "noDeleted": "Keine gelöschten Techniker",
+    "restore": "Wiederherstellen",
+    "permanentDelete": "Endgültig löschen",
+    "permanentDeleteConfirm": "Dadurch wird dieser Techniker und alle seine Daten dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden!"
   },
   "auth": {
     "welcomeBack": "Willkommen zurück",

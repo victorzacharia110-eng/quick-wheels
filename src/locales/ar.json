@@ -258,7 +258,13 @@
     "resetPassword": "إعادة تعيين كلمة المرور",
     "resetPasswordConfirm": "إعادة تعيين كلمة مرور هذا الموظف إلى الافتراضية (الاسم بأحرف كبيرة)؟",
     "passwordReset": "تم إعادة تعيين كلمة المرور بنجاح",
-    "defaultPassword": "كلمة المرور الافتراضية"
+    "defaultPassword": "كلمة المرور الافتراضية",
+    "active": "نشط",
+    "deleted": "محذوف",
+    "noDeleted": "لا يوجد فنيون محذوفون",
+    "restore": "استعادة",
+    "permanentDelete": "حذف نهائي",
+    "permanentDeleteConfirm": "سيؤدي هذا إلى الحذف الدائم لهذا الفني وجميع بياناته. لا يمكن التراجع عن هذا!"
   },
   "auth": {
     "welcomeBack": "مرحباً بعودتك",

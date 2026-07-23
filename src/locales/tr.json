@@ -258,7 +258,13 @@
     "resetPassword": "Şifreyi Sıfırla",
     "resetPasswordConfirm": "Bu çalışanın şifresini varsayılana (İSİM BÜYÜK HARF) sıfırlamak istiyor musunuz?",
     "passwordReset": "Şifre başarıyla sıfırlandı",
-    "defaultPassword": "Varsayılan şifre"
+    "defaultPassword": "Varsayılan şifre",
+    "active": "Aktif",
+    "deleted": "Silindi",
+    "noDeleted": "Silinen teknisyen yok",
+    "restore": "Geri yükle",
+    "permanentDelete": "Kalıcı olarak sil",
+    "permanentDeleteConfirm": "Bu, bu teknisyeni ve tüm verilerini kalıcı olarak silecektir. Bu işlem geri alınamaz!"
   },
   "auth": {
     "welcomeBack": "Tekrar Hoş Geldiniz",

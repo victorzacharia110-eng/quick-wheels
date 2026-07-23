@@ -258,7 +258,13 @@
     "resetPassword": "パスワードをリセット",
     "resetPasswordConfirm": "この従業員のパスワードをデフォルト（名前の大文字）にリセットしますか？",
     "passwordReset": "パスワードが正常にリセットされました",
-    "defaultPassword": "デフォルトパスワード"
+    "defaultPassword": "デフォルトパスワード",
+    "active": "アクティブ",
+    "deleted": "削除済み",
+    "noDeleted": "削除されたテクニシャンはいません",
+    "restore": "復元",
+    "permanentDelete": "完全に削除",
+    "permanentDeleteConfirm": "これにより、このテクニシャンとそのすべてのデータが完全に削除されます。この操作は元に戻せません！"
   },
   "auth": {
     "welcomeBack": "おかえりなさい",

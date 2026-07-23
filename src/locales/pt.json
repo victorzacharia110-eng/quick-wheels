@@ -258,7 +258,13 @@
     "resetPassword": "Redefinir senha",
     "resetPasswordConfirm": "Redefinir a senha deste funcionário para o padrão (NOME EM MAIÚSCULAS)?",
     "passwordReset": "Senha redefinida com sucesso",
-    "defaultPassword": "Senha padrão"
+    "defaultPassword": "Senha padrão",
+    "active": "Ativo",
+    "deleted": "Excluído",
+    "noDeleted": "Nenhum técnico excluído",
+    "restore": "Restaurar",
+    "permanentDelete": "Exclusão permanente",
+    "permanentDeleteConfirm": "Isso excluirá permanentemente este técnico e todos os seus dados. Esta ação não pode ser desfeita!"
   },
   "auth": {
     "welcomeBack": "Bem-vindo de Volta",

@@ -258,7 +258,13 @@
     "resetPassword": "Réinitialiser le mot de passe",
     "resetPasswordConfirm": "Réinitialiser le mot de passe de cet employé à la valeur par défaut (NOM EN MAJUSCULES) ?",
     "passwordReset": "Mot de passe réinitialisé avec succès",
-    "defaultPassword": "Mot de passe par défaut"
+    "defaultPassword": "Mot de passe par défaut",
+    "active": "Actif",
+    "deleted": "Supprimé",
+    "noDeleted": "Aucun technicien supprimé",
+    "restore": "Restaurer",
+    "permanentDelete": "Suppression permanente",
+    "permanentDeleteConfirm": "Cela supprimera définitivement ce technicien et toutes ses données. Cette action est irréversible !"
   },
   "auth": {
     "welcomeBack": "Bon Retour",

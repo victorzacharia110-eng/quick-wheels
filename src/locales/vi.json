@@ -258,7 +258,13 @@
     "resetPassword": "Đặt lại mật khẩu",
     "resetPasswordConfirm": "Đặt lại mật khẩu của nhân viên này về mặc định (TÊN IN HOA)?",
     "passwordReset": "Đặt lại mật khẩu thành công",
-    "defaultPassword": "Mật khẩu mặc định"
+    "defaultPassword": "Mật khẩu mặc định",
+    "active": "Đang hoạt động",
+    "deleted": "Đã xóa",
+    "noDeleted": "Không có kỹ thuật viên đã xóa",
+    "restore": "Khôi phục",
+    "permanentDelete": "Xóa vĩnh viễn",
+    "permanentDeleteConfirm": "Thao tác này sẽ xóa vĩnh viễn kỹ thuật viên này và tất cả dữ liệu. Không thể hoàn tác!"
   },
   "auth": {
     "welcomeBack": "Chào mừng trở lại",

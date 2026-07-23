@@ -258,7 +258,13 @@
     "resetPassword": "비밀번호 재설정",
     "resetPasswordConfirm": "이 직원의 비밀번호를 기본값(이름 대문자)으로 재설정하시겠습니까?",
     "passwordReset": "비밀번호가 성공적으로 재설정되었습니다",
-    "defaultPassword": "기본 비밀번호"
+    "defaultPassword": "기본 비밀번호",
+    "active": "활성",
+    "deleted": "삭제됨",
+    "noDeleted": "삭제된 기술자가 없습니다",
+    "restore": "복원",
+    "permanentDelete": "영구 삭제",
+    "permanentDeleteConfirm": "이 작업은 이 기술자와 모든 데이터를 영구적으로 삭제합니다. 이 작업은 되돌릴 수 없습니다!"
   },
   "auth": {
     "welcomeBack": "돌아오신 것을 환영합니다",

@@ -258,7 +258,13 @@
     "resetPassword": "Restablecer contraseña",
     "resetPasswordConfirm": "¿Restablecer la contraseña de este empleado a la predeterminada (NOMBRE EN MAYÚSCULAS)?",
     "passwordReset": "Contraseña restablecida exitosamente",
-    "defaultPassword": "Contraseña predeterminada"
+    "defaultPassword": "Contraseña predeterminada",
+    "active": "Activo",
+    "deleted": "Eliminado",
+    "noDeleted": "No hay técnicos eliminados",
+    "restore": "Restaurar",
+    "permanentDelete": "Eliminación permanente",
+    "permanentDeleteConfirm": "Esto eliminará permanentemente este técnico y todos sus datos. ¡Esto no se puede deshacer!"
   },
   "auth": {
     "welcomeBack": "Bienvenido de Nuevo",

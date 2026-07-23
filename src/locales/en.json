@@ -266,7 +266,13 @@
     "resetPassword": "Reset Password",
     "resetPasswordConfirm": "Reset this employee's password to their default (name in CAPS)?",
     "passwordReset": "Password reset successfully",
-    "defaultPassword": "Default password"
+    "defaultPassword": "Default password",
+    "active": "Active",
+    "deleted": "Deleted",
+    "noDeleted": "No deleted technicians",
+    "restore": "Restore",
+    "permanentDelete": "Permanent Delete",
+    "permanentDeleteConfirm": "This will permanently delete this technician and all their data. This cannot be undone!"
   },
   "auth": {
     "welcomeBack": "Welcome Back",

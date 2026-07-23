@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import api from '@/composables/api'
 
@@ -11,9 +11,12 @@ const searchQuery = ref('')
 const showCreateModal = ref(false)
 const showEditModal = ref(false)
 const showDeleteModal = ref(false)
+const showForceDeleteModal = ref(false)
 const showPasswordModal = ref(false)
 const createdPassword = ref('')
 const selectedTechnician = ref(null)
+const activeTab = ref('active')
+const deletedTechnicians = ref([])
 const isSubmitting = ref(false)
 
 const form = ref({
@@ -120,6 +123,38 @@ async function deleteTechnician() {
   }
 }
 
+async function loadDeletedTechnicians() {
+  try {
+    const { data } = await api.get('/owner/technicians', { params: { trashed: true } })
+    deletedTechnicians.value = data.data?.data || data.data || []
+  } catch { deletedTechnicians.value = [] }
+}
+
+async function restoreTechnician(tech) {
+  try {
+    await api.patch(`/owner/technicians/${tech.id}/restore`)
+    loadDeletedTechnicians()
+    loadTechnicians()
+  } catch (err) {
+    alert(err.response?.data?.message || 'Failed to restore technician')
+  }
+}
+
+function openForceDelete(tech) {
+  selectedTechnician.value = tech
+  showForceDeleteModal.value = true
+}
+
+async function forceDeleteTechnician() {
+  try {
+    await api.delete(`/owner/technicians/${selectedTechnician.value.id}/force-delete`)
+    showForceDeleteModal.value = false
+    loadDeletedTechnicians()
+  } catch (err) {
+    alert(err.response?.data?.message || 'Failed to permanently delete technician')
+  }
+}
+
 async function toggleStatus(tech) {
   try {
     await api.patch(`/owner/technicians/${tech.id}/toggle-status`)
@@ -151,6 +186,10 @@ onMounted(() => {
   loadTechnicians()
   loadVehicles()
 })
+
+watch(activeTab, (tab) => {
+  if (tab === 'deleted') loadDeletedTechnicians()
+})
 </script>
 
 <template>
@@ -166,59 +205,101 @@ onMounted(() => {
     </div>
 
     <div class="filters-bar">
+      <div class="tab-bar">
+        <button :class="['tab-btn', activeTab === 'active' && 'active']" @click="activeTab = 'active'">
+          <font-awesome-icon icon="fa-solid fa-users" /> {{ $t('common.active') }}
+        </button>
+        <button :class="['tab-btn', activeTab === 'deleted' && 'active']" @click="activeTab = 'deleted'">
+          <font-awesome-icon icon="fa-solid fa-trash-can" /> {{ $t('common.deleted') }}
+        </button>
+      </div>
       <div class="search-box">
         <font-awesome-icon icon="fa-solid fa-search" />
         <input v-model="searchQuery" :placeholder="$t('maintenance.searchTechnicians')" />
       </div>
     </div>
 
-    <div v-if="isLoading" class="loading-state">
+    <div v-if="isLoading && activeTab === 'active'" class="loading-state">
       <font-awesome-icon icon="fa-solid fa-spinner" spin size="2x" />
     </div>
 
-    <div v-else-if="filteredTechnicians.length === 0" class="empty-state">
-      <font-awesome-icon icon="fa-solid fa-user-gear" size="3x" />
-      <h3>{{ $t('maintenance.noTechnicians') }}</h3>
-      <p>{{ $t('maintenance.noTechniciansDesc') }}</p>
-    </div>
+    <template v-if="activeTab === 'active'">
+      <div v-if="!isLoading && filteredTechnicians.length === 0" class="empty-state">
+        <font-awesome-icon icon="fa-solid fa-user-gear" size="3x" />
+        <h3>{{ $t('maintenance.noTechnicians') }}</h3>
+        <p>{{ $t('maintenance.noTechniciansDesc') }}</p>
+      </div>
 
-    <div v-else class="tech-grid">
-      <div v-for="tech in filteredTechnicians" :key="tech.id" class="tech-card">
-        <div class="tech-header">
-          <div class="tech-avatar">{{ tech.name.charAt(0) }}</div>
-          <div class="tech-info">
-            <div class="tech-name">{{ tech.name }}</div>
-            <div class="tech-email">{{ tech.email }}</div>
+      <div v-else-if="!isLoading" class="tech-grid">
+        <div v-for="tech in filteredTechnicians" :key="tech.id" class="tech-card">
+          <div class="tech-header">
+            <div class="tech-avatar">{{ tech.name.charAt(0) }}</div>
+            <div class="tech-info">
+              <div class="tech-name">{{ tech.name }}</div>
+              <div class="tech-email">{{ tech.email }}</div>
+            </div>
+            <span class="status-dot" :class="tech.status"></span>
           </div>
-          <span class="status-dot" :class="tech.status"></span>
-        </div>
-        <div class="tech-details">
-          <div class="detail-row" v-if="tech.vehicle_name">
-            <font-awesome-icon icon="fa-solid fa-car" />
-            <span>{{ tech.vehicle_name }}</span>
+          <div class="tech-details">
+            <div class="detail-row" v-if="tech.vehicle_name">
+              <font-awesome-icon icon="fa-solid fa-car" />
+              <span>{{ tech.vehicle_name }}</span>
+            </div>
+            <div class="detail-row" v-if="tech.phone">
+              <font-awesome-icon icon="fa-solid fa-phone" />
+              <span>{{ tech.phone }}</span>
+            </div>
+            <div class="detail-row" v-if="tech.maintenance_stats">
+              <font-awesome-icon icon="fa-solid fa-clipboard-list" />
+              <span>{{ tech.maintenance_stats.total_reports }} {{ $t('maintenance.reports') }}</span>
+            </div>
           </div>
-          <div class="detail-row" v-if="tech.phone">
-            <font-awesome-icon icon="fa-solid fa-phone" />
-            <span>{{ tech.phone }}</span>
+          <div class="tech-actions">
+            <button @click="openEdit(tech)" class="action-btn edit">
+              <font-awesome-icon icon="fa-solid fa-edit" /> {{ $t('common.edit') }}
+            </button>
+            <button @click="toggleStatus(tech)" class="action-btn toggle" :title="tech.status === 'active' ? $t('documents.deactivate') : $t('documents.reactivate')">
+              <font-awesome-icon :icon="tech.status === 'active' ? 'fa-solid fa-user-slash' : 'fa-solid fa-user-check'" />
+            </button>
+            <button @click="openDelete(tech)" class="action-btn delete">
+              <font-awesome-icon icon="fa-solid fa-trash" />
+            </button>
           </div>
-          <div class="detail-row" v-if="tech.maintenance_stats">
-            <font-awesome-icon icon="fa-solid fa-clipboard-list" />
-            <span>{{ tech.maintenance_stats.total_reports }} {{ $t('maintenance.reports') }}</span>
-          </div>
-        </div>
-        <div class="tech-actions">
-          <button @click="openEdit(tech)" class="action-btn edit">
-            <font-awesome-icon icon="fa-solid fa-edit" /> {{ $t('common.edit') }}
-          </button>
-          <button @click="toggleStatus(tech)" class="action-btn toggle" :title="tech.status === 'active' ? $t('documents.deactivate') : $t('documents.reactivate')">
-            <font-awesome-icon :icon="tech.status === 'active' ? 'fa-solid fa-user-slash' : 'fa-solid fa-user-check'" />
-          </button>
-          <button @click="openDelete(tech)" class="action-btn delete">
-            <font-awesome-icon icon="fa-solid fa-trash" />
-          </button>
         </div>
       </div>
-    </div>
+    </template>
+
+    <template v-if="activeTab === 'deleted'">
+      <div v-if="deletedTechnicians.length === 0" class="empty-state">
+        <font-awesome-icon icon="fa-solid fa-trash-can" size="3x" />
+        <h3>{{ $t('common.noDeleted') }}</h3>
+      </div>
+      <div v-else class="tech-grid">
+        <div v-for="tech in deletedTechnicians" :key="tech.id" class="tech-card deleted-card">
+          <div class="tech-header">
+            <div class="tech-avatar">{{ tech.name.charAt(0) }}</div>
+            <div class="tech-info">
+              <div class="tech-name">{{ tech.name }}</div>
+              <div class="tech-email">{{ tech.email }}</div>
+            </div>
+          </div>
+          <div class="tech-details">
+            <div class="detail-row" v-if="tech.phone">
+              <font-awesome-icon icon="fa-solid fa-phone" />
+              <span>{{ tech.phone }}</span>
+            </div>
+          </div>
+          <div class="tech-actions">
+            <button @click="restoreTechnician(tech)" class="action-btn edit">
+              <font-awesome-icon icon="fa-solid fa-rotate-left" /> {{ $t('common.restore') }}
+            </button>
+            <button @click="openForceDelete(tech)" class="action-btn delete">
+              <font-awesome-icon icon="fa-solid fa-ban" /> {{ $t('common.permanentDelete') }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </template>
 
     <!-- Create/Edit Modal -->
     <Teleport to="body">
@@ -292,6 +373,20 @@ onMounted(() => {
         </div>
       </div>
     </Teleport>
+
+    <!-- Force Delete Modal -->
+    <Teleport to="body">
+      <div v-if="showForceDeleteModal" class="modal-overlay" @click.self="showForceDeleteModal = false">
+        <div class="modal">
+          <h3>{{ $t('common.permanentDelete') }}?</h3>
+          <p class="modal-desc">{{ $t('common.permanentDeleteConfirm') }}</p>
+          <div class="modal-actions">
+            <button @click="showForceDeleteModal = false" class="btn-outline">{{ $t('common.cancel') }}</button>
+            <button @click="forceDeleteTechnician" class="btn-danger">{{ $t('common.permanentDelete') }}</button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </div>
 </template>
 
@@ -349,7 +444,24 @@ onMounted(() => {
   font-family: 'Space Grotesk', sans-serif;
 }
 
-.filters-bar { margin-bottom: 20px; }
+.filters-bar { margin-bottom: 20px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.tab-bar { display: flex; gap: 4px; background: rgba(255,255,255,0.03); border-radius: 10px; padding: 4px; }
+.tab-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: rgba(255,255,255,0.4);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.tab-btn.active { background: rgba(0,229,255,0.1); color: #00E5FF; }
+.tab-btn:hover { color: rgba(255,255,255,0.7); }
+.deleted-card { opacity: 0.7; border-color: rgba(255,107,107,0.15); }
 .search-box {
   position: relative;
   max-width: 400px;
