@@ -112,6 +112,24 @@ async function toggleStatus(tech) {
   }
 }
 
+const geocoding = ref(false)
+async function geocodeWorkshopAddress() {
+  const address = form.value.workshop_address?.trim()
+  if (!address) return
+  geocoding.value = true
+  try {
+    const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&limit=1`, {
+      headers: { 'Accept-Language': 'en' }
+    })
+    const results = await res.json()
+    if (results.length > 0) {
+      form.value.workshop_latitude = parseFloat(results[0].lat)
+      form.value.workshop_longitude = parseFloat(results[0].lon)
+    }
+  } catch (e) { /* geocoding failed silently */ }
+  geocoding.value = false
+}
+
 onMounted(() => {
   loadTechnicians()
   loadVehicles()
@@ -201,7 +219,10 @@ onMounted(() => {
               <option v-for="v in vehicles" :key="v.id" :value="v.id">{{ v.name }} ({{ v.type }})</option>
             </select>
             <div class="form-section-label">{{ $t('technician.workshop') }}</div>
-            <input v-model="form.workshop_address" :placeholder="$t('technician.workshopAddress')" />
+            <div class="geocode-wrap">
+              <input v-model="form.workshop_address" :placeholder="$t('technician.workshopAddress')" @blur="geocodeWorkshopAddress" />
+              <span v-if="geocoding" class="geocode-spinner"><font-awesome-icon icon="fa-solid fa-spinner" spin /></span>
+            </div>
             <div class="form-row-2">
               <input v-model="form.workshop_latitude" type="number" step="any" :placeholder="$t('technician.latitude')" />
               <input v-model="form.workshop_longitude" type="number" step="any" :placeholder="$t('technician.longitude')" />
@@ -504,6 +525,13 @@ onMounted(() => {
   color: rgba(255,255,255,0.3);
   text-align: center;
   margin-bottom: 16px;
+}
+
+.geocode-wrap { position: relative; }
+.geocode-wrap input { width: 100%; padding-right: 36px; }
+.geocode-spinner {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  color: #00E5FF; font-size: 0.8rem;
 }
 
 @media (max-width: 768px) {
