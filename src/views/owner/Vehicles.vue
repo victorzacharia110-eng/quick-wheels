@@ -100,8 +100,8 @@
                 <label>Color</label>
                 <input v-model="form.color" class="form-input" placeholder="e.g. Red, White..." />
               </div>
-              <div v-if="form.type === 'Motorcycle'" class="form-group">
-                <label>Chassis Number</label>
+              <div class="form-group">
+                <label>{{ $t('vehicle.chassisNumber') || 'Chassis Number' }}</label>
                 <input v-model="form.chassis_number" class="form-input" placeholder="Chassis number..." />
               </div>
               <div class="form-group">
