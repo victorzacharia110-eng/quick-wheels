@@ -272,7 +272,11 @@
     "noDeleted": "No deleted technicians",
     "restore": "Restore",
     "permanentDelete": "Permanent Delete",
-    "permanentDeleteConfirm": "This will permanently delete this technician and all their data. This cannot be undone!"
+    "permanentDeleteConfirm": "This will permanently delete this technician and all their data. This cannot be undone!",
+    "deletedAt": "Deleted At",
+    "pleaseWait": "Please wait...",
+    "name": "Name",
+    "role": "Role"
   },
   "auth": {
     "welcomeBack": "Welcome Back",
@@ -1000,7 +1004,20 @@
     "confirmActivate": "Are you sure you want to activate this owner's account?",
     "errorLoadingDashboard": "Failed to load dashboard data",
     "errorLoadingOwners": "Failed to load owners",
-    "errorUpdatingOwner": "Failed to update owner"
+    "errorUpdatingOwner": "Failed to update owner",
+    "resetPassword": "Reset Password",
+    "resetPasswordConfirm": "Reset password for",
+    "resetPasswordSuccess": "Password has been reset. New password:",
+    "cleanupTitle": "Cleanup",
+    "cleanupSubtitle": "View and permanently delete soft-deleted records",
+    "standaloneUsers": "Standalone Users",
+    "totalSoftDeleted": "Total Soft-Deleted",
+    "noDeletedRecords": "No Deleted Records",
+    "noDeletedRecordsDesc": "There are no soft-deleted records to clean up.",
+    "purgeAll": "Purge All",
+    "permanentDelete": "Permanently Delete",
+    "confirmPermanentDelete": "Permanently delete",
+    "confirmPurgeAll": "Permanently delete all soft-deleted"
   },
   "technician": {
     "workshop": "Workshop Location",

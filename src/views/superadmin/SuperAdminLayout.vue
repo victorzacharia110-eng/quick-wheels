@@ -103,6 +103,7 @@ const isMobile = ref(window.innerWidth < 768);
 const pageTitleKeys = {
   "/superadmin": "superadmin.dashboard",
   "/superadmin/owners": "superadmin.manageOwners",
+  "/superadmin/cleanup": "superadmin.cleanupTitle",
   "/superadmin/chat": "nav.messages",
 };
 
@@ -160,6 +161,7 @@ watch(mobileOpen, (newVal) => {
 const mainNav = [
   { to: "/superadmin", label: "nav.dashboard", icon: "fa-solid fa-th-large" },
   { to: "/superadmin/owners", label: "nav.owners", icon: "fa-solid fa-users" },
+  { to: "/superadmin/cleanup", label: "superadmin.cleanupTitle", icon: "fa-solid fa-broom" },
   { to: "/superadmin/chat", label: "nav.messages", icon: "fa-solid fa-comments", get badge() { return messageStore.unreadCount || null } },
 ];
 

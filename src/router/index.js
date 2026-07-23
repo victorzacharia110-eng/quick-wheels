@@ -111,6 +111,7 @@ const router = createRouter({
       children: [
         { path: '', component: () => import('../views/superadmin/SuperAdminDashboard.vue'), meta: { title: 'Dashboard' } },
         { path: 'owners', component: () => import('../views/superadmin/SuperAdminOwners.vue'), meta: { title: 'Manage Owners' } },
+        { path: 'cleanup', component: () => import('../views/superadmin/SuperAdminCleanup.vue'), meta: { title: 'Cleanup' } },
         { path: 'chat', component: () => import('../views/ChatView.vue'), meta: { title: 'Messages' } },
       ]
     },

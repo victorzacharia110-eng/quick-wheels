@@ -74,6 +74,9 @@
               <button @click="confirmDelete(owner)" class="btn-icon danger" :title="$t('common.delete')">
                 <font-awesome-icon icon="fa-solid fa-trash" />
               </button>
+              <button @click="confirmResetPassword(owner)" class="btn-icon" :title="$t('superadmin.resetPassword')">
+                <font-awesome-icon icon="fa-solid fa-key" />
+              </button>
               <button @click="openEditModal(owner)" class="btn-icon" :title="$t('common.edit')">
                 <font-awesome-icon icon="fa-solid fa-pen" />
               </button>
@@ -207,6 +210,33 @@
         </div>
       </div>
     </Transition>
+
+    <Transition name="modal">
+      <div v-if="showResetModal" class="modal-overlay" @click.self="showResetModal = false">
+        <div class="modal-box">
+          <div class="modal-header">
+            <h3>{{ $t('superadmin.resetPassword') }}</h3>
+            <button class="modal-close" @click="showResetModal = false"><font-awesome-icon icon="fa-solid fa-times" /></button>
+          </div>
+          <p style="color: rgba(255,255,255,0.6); margin-bottom: 16px;">
+            {{ $t('superadmin.resetPasswordConfirm') }} <strong>{{ resettingOwner?.user?.name }}</strong>?
+          </p>
+          <div v-if="resetResult" class="reset-result">
+            <p style="color: #4ADE80; margin-bottom: 8px;">{{ $t('superadmin.resetPasswordSuccess') }}</p>
+            <div class="password-display">
+              <code>{{ resetResult.default_password }}</code>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button @click="showResetModal = false" class="btn-outline">{{ resetResult ? $t('common.close') : $t('common.cancel') }}</button>
+            <button v-if="!resetResult" @click="doResetPassword" class="btn-primary" :disabled="isResetting">
+              <span v-if="isResetting"><span class="spinner-sm"></span> {{ $t('common.pleaseWait') }}</span>
+              <span v-else><font-awesome-icon icon="fa-solid fa-key" /> {{ $t('superadmin.resetPassword') }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -233,6 +263,10 @@ const editForm = ref({})
 const currentPage = ref(1)
 const perPage = ref(15)
 const totalOwners = ref(0)
+const showResetModal = ref(false)
+const resettingOwner = ref(null)
+const resetResult = ref(null)
+const isResetting = ref(false)
 
 let searchTimeout = null
 function debouncedSearch() {
@@ -366,6 +400,28 @@ async function saveEdit() {
     alert(err.response?.data?.message || err.message)
   } finally {
     isSaving.value = false
+  }
+}
+
+function confirmResetPassword(owner) {
+  resettingOwner.value = owner
+  resetResult.value = null
+  showResetModal.value = true
+}
+
+async function doResetPassword() {
+  if (!resettingOwner.value) return
+  isResetting.value = true
+  try {
+    const res = await api.post(`/superadmin/owners/${resettingOwner.value.id}/reset-password`)
+    if (res.data.success) {
+      resetResult.value = res.data.data
+    }
+  } catch (err) {
+    console.error('Failed to reset password:', err)
+    alert(err.response?.data?.message || err.message)
+  } finally {
+    isResetting.value = false
   }
 }
 
@@ -627,6 +683,20 @@ onMounted(() => fetchOwners(1))
   border-top-color: #0a0818;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
+}
+
+.reset-result { margin: 16px 0; }
+.password-display {
+  background: rgba(74,222,128,0.1);
+  border: 1px solid rgba(74,222,128,0.2);
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+.password-display code {
+  color: #4ADE80;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
 .modal-enter-active, .modal-leave-active { transition: all 0.25s ease; }
