@@ -35,6 +35,7 @@
               <th>{{ $t('vehicle.name') }}</th>
               <th>{{ $t('common.type') }}</th>
               <th>{{ $t('vehicle.color') || 'Color' }}</th>
+              <th>{{ $t('vehicle.chassisNumber') || 'Chassis #' }}</th>
               <th>{{ $t('vehicle.registration') }}</th>
               <th>{{ $t('vehicle.year') }}</th>
               <th>{{ $t('vehicle.price') }}</th>
@@ -47,6 +48,7 @@
               <td><strong>{{ v.name }}</strong></td>
               <td><font-awesome-icon :icon="store.getTypeIcon(v.type)" size="xs" /> {{ v.type }}</td>
               <td>{{ v.color || '—' }}</td>
+              <td>{{ v.chassis_number || '—' }}</td>
               <td>{{ v.registration }}</td>
               <td>{{ v.year }}</td>
               <td>{{ Number(v.price).toLocaleString() }} TZS</td>
