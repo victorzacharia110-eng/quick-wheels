@@ -458,7 +458,10 @@
     "welcomeBack": "Bienvenido de nuevo",
     "recentPayments": "Pagos Recientes",
     "noPaymentsYet": "Aún no se registraron pagos",
-    "noPaymentsDesc": "Aún no has realizado ningún pago."
+    "noPaymentsDesc": "Aún no has realizado ningún pago.",
+    "canDrive": "También asignar como conductor",
+    "switchToDriver": "Cambiar a conductor",
+    "switchToTechnician": "Cambiar a técnico"
   },
   "contract": {
     "title": "Contratos",

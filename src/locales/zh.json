@@ -458,7 +458,10 @@
     "welcomeBack": "欢迎回来",
     "recentPayments": "最近付款",
     "noPaymentsYet": "尚未记录任何付款",
-    "noPaymentsDesc": "您尚未进行任何付款。"
+    "noPaymentsDesc": "您尚未进行任何付款。",
+    "canDrive": "同时分配为司机",
+    "switchToDriver": "切换到司机",
+    "switchToTechnician": "切换到技术员"
   },
   "contract": {
     "title": "合同",

@@ -20,6 +20,7 @@ const form = ref({
   name: '', email: '', phone: '', address: '', nida_number: '',
   license_number: '', salary: '', shift: '', vehicle_id: '',
   workshop_address: '', workshop_latitude: '', workshop_longitude: '',
+  can_drive: false,
 })
 
 const filteredTechnicians = computed(() => {
@@ -47,7 +48,7 @@ async function loadVehicles() {
 }
 
 function openCreate() {
-  form.value = { name: '', email: '', phone: '', address: '', nida_number: '', license_number: '', salary: '', shift: '', vehicle_id: '', workshop_address: '', workshop_latitude: '', workshop_longitude: '' }
+  form.value = { name: '', email: '', phone: '', address: '', nida_number: '', license_number: '', salary: '', shift: '', vehicle_id: '', workshop_address: '', workshop_latitude: '', workshop_longitude: '', can_drive: false }
   showCreateModal.value = true
 }
 
@@ -58,6 +59,7 @@ function openEdit(tech) {
     nida_number: tech.nida_number || '', license_number: tech.license_number || '',
     salary: tech.salary || '', shift: tech.shift || '', vehicle_id: tech.vehicle_id || '',
     workshop_address: tech.workshop_address || '', workshop_latitude: tech.workshop_latitude || '', workshop_longitude: tech.workshop_longitude || '',
+    can_drive: tech.can_drive || false,
   }
   showEditModal.value = true
 }
@@ -218,6 +220,10 @@ onMounted(() => {
               <option value="">{{ $t('common.none') }}</option>
               <option v-for="v in vehicles" :key="v.id" :value="v.id">{{ v.name }} ({{ v.type }})</option>
             </select>
+            <label class="checkbox-row">
+              <input type="checkbox" v-model="form.can_drive" />
+              <span>{{ $t('employee.canDrive') }}</span>
+            </label>
             <div class="form-section-label">{{ $t('technician.workshop') }}</div>
             <div class="geocode-wrap">
               <input v-model="form.workshop_address" :placeholder="$t('technician.workshopAddress')" @blur="geocodeWorkshopAddress" />
@@ -489,6 +495,21 @@ onMounted(() => {
   color: rgba(255,255,255,0.35);
   font-weight: 600;
   margin-top: 6px;
+}
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  color: rgba(255,255,255,0.7);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.checkbox-row input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #00C4D4;
+  cursor: pointer;
 }
 .form-row-2 {
   display: grid;

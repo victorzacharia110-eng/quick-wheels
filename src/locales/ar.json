@@ -458,7 +458,10 @@
     "welcomeBack": "مرحباً بعودتك",
     "recentPayments": "المدفوعات الأخيرة",
     "noPaymentsYet": "لم يتم تسجيل أي مدفوعات بعد",
-    "noPaymentsDesc": "لم تقم بأي دفعات بعد."
+    "noPaymentsDesc": "لم تقم بأي دفعات بعد.",
+    "canDrive": "تعيين أيضاً كسائق",
+    "switchToDriver": "التبديل إلى السائق",
+    "switchToTechnician": "التبديل إلى الفني"
   },
   "contract": {
     "title": "العقود",

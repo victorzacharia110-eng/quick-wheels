@@ -458,7 +458,10 @@
     "welcomeBack": "おかえりなさい",
     "recentPayments": "最近の支払い",
     "noPaymentsYet": "まだ支払いは記録されていません",
-    "noPaymentsDesc": "まだ支払いを行っていません。"
+    "noPaymentsDesc": "まだ支払いを行っていません。",
+    "canDrive": "ドライバーとしても割り当てる",
+    "switchToDriver": "ドライバーに切り替え",
+    "switchToTechnician": "技術者に切り替え"
   },
   "contract": {
     "title": "契約",

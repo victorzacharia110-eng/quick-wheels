@@ -458,7 +458,10 @@
     "welcomeBack": "Tekrar hoş geldiniz",
     "recentPayments": "Son Ödemeler",
     "noPaymentsYet": "Henüz ödeme kaydedilmedi",
-    "noPaymentsDesc": "Henüz ödeme yapmadınız."
+    "noPaymentsDesc": "Henüz ödeme yapmadınız.",
+    "canDrive": "Sürücü olarak da ata",
+    "switchToDriver": "Sürücüye geç",
+    "switchToTechnician": "Teknisyene geç"
   },
   "contract": {
     "title": "Sözleşmeler",

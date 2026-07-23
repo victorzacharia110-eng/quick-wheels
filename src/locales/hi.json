@@ -458,7 +458,10 @@
     "welcomeBack": "वापसी पर स्वागत है",
     "recentPayments": "हाल के भुगतान",
     "noPaymentsYet": "अभी तक कोई भुगतान दर्ज नहीं किया गया",
-    "noPaymentsDesc": "आपने अभी तक कोई भुगतान नहीं किया है।"
+    "noPaymentsDesc": "आपने अभी तक कोई भुगतान नहीं किया है।",
+    "canDrive": "ड्राइवर के रूप में भी नियुक्त करें",
+    "switchToDriver": "ड्राइवर में बदलें",
+    "switchToTechnician": "तकनीशियन में बदलें"
   },
   "contract": {
     "title": "अनुबंध",

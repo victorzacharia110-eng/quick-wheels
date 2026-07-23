@@ -458,7 +458,10 @@
     "welcomeBack": "돌아오신 것을 환영합니다",
     "recentPayments": "최근 결제",
     "noPaymentsYet": "아직 기록된 결제가 없습니다",
-    "noPaymentsDesc": "아직 결제를 하지 않았습니다."
+    "noPaymentsDesc": "아직 결제를 하지 않았습니다.",
+    "canDrive": "운전자로도 배정",
+    "switchToDriver": "운전자로 전환",
+    "switchToTechnician": "기술자로 전환"
   },
   "contract": {
     "title": "계약",

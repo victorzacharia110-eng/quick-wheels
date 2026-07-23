@@ -464,7 +464,10 @@
     "welcomeBack": "Karibu tena",
     "recentPayments": "Malipo ya Hivi Karibuni",
     "noPaymentsYet": "Bado hakuna malipo yaliyorekodiwa",
-    "noPaymentsDesc": "Hujafanya malipo yoyote bado."
+    "noPaymentsDesc": "Hujafanya malipo yoyote bado.",
+    "canDrive": "Pia kama Dereva",
+    "switchToDriver": "Badili kuwa Dereva",
+    "switchToTechnician": "Badili kuwa Mfanyakazi"
   },
   "contract": {
     "title": "Mikataba",

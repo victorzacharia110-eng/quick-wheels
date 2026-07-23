@@ -458,7 +458,10 @@
     "welcomeBack": "Chào mừng trở lại",
     "recentPayments": "Các khoản thanh toán gần đây",
     "noPaymentsYet": "Chưa có thanh toán nào được ghi nhận",
-    "noPaymentsDesc": "Bạn chưa thực hiện thanh toán nào."
+    "noPaymentsDesc": "Bạn chưa thực hiện thanh toán nào.",
+    "canDrive": "Cũng phân công làm tài xế",
+    "switchToDriver": "Chuyển sang tài xế",
+    "switchToTechnician": "Chuyển sang kỹ thuật viên"
   },
   "contract": {
     "title": "Hợp đồng",

@@ -458,7 +458,10 @@
     "welcomeBack": "С возвращением",
     "recentPayments": "Последние платежи",
     "noPaymentsYet": "Платежей пока нет",
-    "noPaymentsDesc": "Вы ещё не совершали платежей."
+    "noPaymentsDesc": "Вы ещё не совершали платежей.",
+    "canDrive": "Также назначить водителем",
+    "switchToDriver": "Переключить на водителя",
+    "switchToTechnician": "Переключить на техника"
   },
   "contract": {
     "title": "Договоры",

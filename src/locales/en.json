@@ -478,6 +478,7 @@
     "guarantorName": "Full Name",
     "guarantorPhone": "Phone Number",
     "guarantorRelationship": "Relationship (e.g. Parent, Sibling)",
+    "canDrive": "Also assign as Driver",
     "switchToDriver": "Switch to Driver",
     "switchToTechnician": "Switch to Technician"
   },
