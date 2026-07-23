@@ -854,6 +854,7 @@
     "technicians": "Technicians",
     "techniciansSubtitle": "Manage technician accounts for maintenance team",
     "technicianCreated": "Technician Created",
+    "technicianLinkedExisting": "This person already has an account. They have been linked as a technician and can log in with their existing credentials.",
     "sharePassword": "Share this password with the technician. They can change it after login.",
     "passwordHint": "Default password is the technician name in lowercase with no spaces.",
     "deleteConfirm": "This will permanently remove the technician account.",

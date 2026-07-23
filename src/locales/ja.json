@@ -842,7 +842,8 @@
       "in_progress": "In Progress",
       "completed": "Completed",
       "cancelled": "Cancelled"
-    }
+    },
+    "technicianLinkedExisting": "この人はすでにアカウントを持っています。技術者として紐付けられ、既存の資格情報でログインできます。"
   },
   "documents": {
     "title": "書類",

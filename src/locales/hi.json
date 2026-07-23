@@ -842,7 +842,8 @@
       "in_progress": "In Progress",
       "completed": "Completed",
       "cancelled": "Cancelled"
-    }
+    },
+    "technicianLinkedExisting": "इस व्यक्ति के पास पहले से एक खाता है। उन्हें तकनीशियन के रूप में जोड़ दिया गया है और वे अपनी मौजूदा साख से लॉग इन कर सकते हैं।"
   },
   "documents": {
     "title": "दस्तावेज़",

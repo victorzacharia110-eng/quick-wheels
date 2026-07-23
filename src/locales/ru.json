@@ -842,7 +842,8 @@
       "in_progress": "In Progress",
       "completed": "Completed",
       "cancelled": "Cancelled"
-    }
+    },
+    "technicianLinkedExisting": "У этого человека уже есть аккаунт. Он был привязан как техник и может войти с существующими учетными данными."
   },
   "documents": {
     "title": "Документы",

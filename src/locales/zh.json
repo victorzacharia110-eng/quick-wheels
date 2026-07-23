@@ -842,7 +842,8 @@
       "in_progress": "In Progress",
       "completed": "Completed",
       "cancelled": "Cancelled"
-    }
+    },
+    "technicianLinkedExisting": "此人已有账户。已将其链接为技术员，可以使用现有凭据登录。"
   },
   "documents": {
     "title": "文档",

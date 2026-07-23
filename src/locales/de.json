@@ -842,7 +842,8 @@
       "in_progress": "In Progress",
       "completed": "Completed",
       "cancelled": "Cancelled"
-    }
+    },
+    "technicianLinkedExisting": "Diese Person hat bereits ein Konto. Sie wurde als Techniker verknüpft und kann sich mit ihren bestehenden Anmeldedaten anmelden."
   },
   "documents": {
     "title": "Dokumente",

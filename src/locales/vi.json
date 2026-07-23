@@ -842,7 +842,8 @@
       "in_progress": "In Progress",
       "completed": "Completed",
       "cancelled": "Cancelled"
-    }
+    },
+    "technicianLinkedExisting": "Người này đã có tài khoản. Họ đã được liên kết làm kỹ thuật viên và có thể đăng nhập bằng thông tin đăng nhập hiện có."
   },
   "documents": {
     "title": "Tài liệu",

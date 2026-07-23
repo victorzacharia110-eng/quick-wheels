@@ -77,9 +77,13 @@ async function createTechnician() {
       if (payload[k] === '' || payload[k] === undefined) payload[k] = null
     }
     const { data } = await api.post('/owner/technicians', payload)
-    createdPassword.value = data.data.password
+    if (data.data.existing_user) {
+      alert(t('maintenance.technicianLinkedExisting'))
+    } else {
+      createdPassword.value = data.data.password
+      showPasswordModal.value = true
+    }
     showCreateModal.value = false
-    showPasswordModal.value = true
     loadTechnicians()
   } catch (err) {
     const errors = err.response?.data?.errors

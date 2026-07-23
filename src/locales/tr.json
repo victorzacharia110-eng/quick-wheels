@@ -842,7 +842,8 @@
       "in_progress": "In Progress",
       "completed": "Completed",
       "cancelled": "Cancelled"
-    }
+    },
+    "technicianLinkedExisting": "Bu kişinin zaten bir hesabı var. Teknisyen olarak bağlandı ve mevcut kimlik bilgileriyle giriş yapabilir."
   },
   "documents": {
     "title": "Belgeler",

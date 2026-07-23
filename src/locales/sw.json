@@ -801,7 +801,8 @@
     "assignedVehicle": "Chombo Kilichopangwa",
     "criticalAlerts": "Tahadhari za Hatari",
     "recentReports": "Ripoti za Hivi Karibuni",
-    "viewReport": "Tazama Ripoti"
+    "viewReport": "Tazama Ripoti",
+    "technicianLinkedExisting": "Mtumiaji huyu tayari ana akaunti. Ameunganishwa kama mtaalamu na anaweza kuingia kwa sifa zake za zamani."
   },
   "documents": {
     "title": "Hati",

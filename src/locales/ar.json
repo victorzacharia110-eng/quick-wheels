@@ -842,7 +842,8 @@
       "in_progress": "In Progress",
       "completed": "Completed",
       "cancelled": "Cancelled"
-    }
+    },
+    "technicianLinkedExisting": "هذا الشخص لديه بالفعل حساب. تم ربطه كفني ويمكنه تسجيل الدخول ببيانات اعتماده الحالية."
   },
   "documents": {
     "title": "المستندات",
