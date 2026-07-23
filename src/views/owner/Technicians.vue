@@ -20,6 +20,8 @@ const showDeleteModal = ref(false)
 const showForceDeleteModal = ref(false)
 const showPasswordModal = ref(false)
 const showErrorModal = ref(false)
+const showResetPasswordModal = ref(false)
+const resetDefaultPassword = ref('')
 const errorTitle = ref('')
 const errorDetails = ref([])
 const createdPassword = ref('')
@@ -173,6 +175,16 @@ async function toggleStatus(tech) {
   }
 }
 
+async function resetPassword(tech) {
+  try {
+    const { data } = await api.post(`/owner/technicians/${tech.id}/reset-password`)
+    resetDefaultPassword.value = data.data.default_password
+    showResetPasswordModal.value = true
+  } catch (err) {
+    showError(err.response?.data?.message || 'Failed to reset password')
+  }
+}
+
 const geocoding = ref(false)
 async function geocodeWorkshopAddress() {
   const address = form.value.workshop_address?.trim()
@@ -272,6 +284,9 @@ watch(activeTab, (tab) => {
             </button>
             <button @click="openDelete(tech)" class="action-btn delete">
               <font-awesome-icon icon="fa-solid fa-trash" />
+            </button>
+            <button @click="resetPassword(tech)" class="action-btn toggle" :title="$t('common.resetPassword')">
+              <font-awesome-icon icon="fa-solid fa-key" />
             </button>
           </div>
         </div>
@@ -392,6 +407,26 @@ watch(activeTab, (tab) => {
           <div class="modal-actions">
             <button @click="showForceDeleteModal = false" class="btn-outline">{{ $t('common.cancel') }}</button>
             <button @click="forceDeleteTechnician" class="btn-danger">{{ $t('common.permanentDelete') }}</button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
+
+    <!-- Reset Password Modal -->
+    <Teleport to="body">
+      <div v-if="showResetPasswordModal" class="modal-overlay" @click.self="showResetPasswordModal = false">
+        <div class="modal">
+          <div class="password-icon">
+            <font-awesome-icon icon="fa-solid fa-key" size="2x" />
+          </div>
+          <h3>{{ $t('common.passwordReset') }}</h3>
+          <p class="modal-desc">{{ $t('common.resetPasswordConfirm') }}</p>
+          <div class="password-display">
+            <code>{{ resetDefaultPassword }}</code>
+          </div>
+          <p class="password-hint">{{ $t('maintenance.passwordHint') }}</p>
+          <div class="modal-actions">
+            <button @click="showResetPasswordModal = false" class="btn-primary">{{ $t('common.close') }}</button>
           </div>
         </div>
       </div>
