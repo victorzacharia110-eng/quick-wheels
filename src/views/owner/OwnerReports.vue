@@ -86,7 +86,7 @@
                 <RouterLink v-if="r.status === 'draft'" :to="`/owner/owner-reports/${r.id}/edit`" class="action-btn edit" :title="$t('common.edit')">
                   <font-awesome-icon icon="fa-solid fa-edit" />
                 </RouterLink>
-                <button v-if="r.status === 'draft'" @click="confirmDelete(r)" class="action-btn delete" :title="$t('common.delete')">
+                <button v-if="r.status !== 'cancelled'" @click="confirmDelete(r)" class="action-btn delete" :title="$t('common.delete')">
                   <font-awesome-icon icon="fa-solid fa-trash" />
                 </button>
               </div>
