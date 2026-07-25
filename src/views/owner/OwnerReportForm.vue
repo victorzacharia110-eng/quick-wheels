@@ -258,13 +258,13 @@ function moveQuestion(index, direction) {
 
 async function fetchDropdowns() {
   try {
-    const [vRes, tRes] = await Promise.all([
-      api.get('/owner/vehicles'),
-      api.get('/owner/reports/technicians'),
-    ])
+    const vRes = await api.get('/owner/vehicles')
     vehicles.value = vRes.data.data?.data || vRes.data.data || []
+  } catch (e) { console.error('Failed to load vehicles:', e) }
+  try {
+    const tRes = await api.get('/owner/reports/technicians')
     technicians.value = tRes.data.data || []
-  } catch (e) { console.error(e) }
+  } catch (e) { console.error('Failed to load technicians:', e) }
 }
 
 async function loadReport() {
