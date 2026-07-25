@@ -144,6 +144,26 @@
                   <input v-model="q.optionsRaw" type="text" :placeholder="$t('ownerReports.optionsPlaceholder')" />
                 </div>
               </div>
+              <!-- Answer Preview -->
+              <div class="answer-preview">
+                <div class="preview-label">
+                  <font-awesome-icon icon="fa-solid fa-eye" />
+                  {{ $t('ownerReports.replyPreview') }}
+                </div>
+                <div class="preview-field">
+                  <input v-if="q.type === 'text'" type="text" disabled :placeholder="$t('ownerReports.textAnswerPlaceholder')" class="preview-input" />
+                  <textarea v-else-if="q.type === 'textarea'" disabled :placeholder="$t('ownerReports.textAnswerPlaceholder')" class="preview-input preview-textarea" rows="2"></textarea>
+                  <input v-else-if="q.type === 'number'" type="number" disabled :placeholder="$t('ownerReports.numberAnswerPlaceholder')" class="preview-input" />
+                  <select v-else-if="q.type === 'select'" disabled class="preview-input">
+                    <option value="">{{ $t('ownerReports.selectAnswer') }}</option>
+                    <option v-for="opt in (q.optionsRaw || '').split(',').map(o => o.trim()).filter(Boolean)" :key="opt">{{ opt }}</option>
+                  </select>
+                  <label v-else-if="q.type === 'checkbox'" class="checkbox-label preview-checkbox">
+                    <input type="checkbox" disabled />
+                    {{ $t('ownerReports.yes') }} / {{ $t('ownerReports.no') }}
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
         </TransitionGroup>
@@ -434,6 +454,37 @@ onMounted(() => { fetchDropdowns(); loadReport() })
 .checkbox-label { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: rgba(255,255,255,0.5); cursor: pointer; }
 .section-hint { font-size: 0.82rem; color: rgba(255,255,255,0.35); margin: -8px 0 12px; }
 .empty-questions { text-align: center; padding: 40px; color: rgba(255,255,255,0.3); }
+
+/* Answer Preview */
+.answer-preview {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(255,255,255,0.08);
+}
+.preview-label {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.preview-field { pointer-events: none; opacity: 0.5; }
+.preview-input {
+  width: 100%;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 6px;
+  color: rgba(255,255,255,0.3);
+  font-size: 0.85rem;
+  font-family: 'Space Grotesk', sans-serif;
+  outline: none;
+}
+.preview-textarea { min-height: 50px; resize: none; }
+.preview-checkbox { color: rgba(255,255,255,0.3); }
 
 /* Quick Add Bar */
 .quick-add {

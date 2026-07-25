@@ -1101,7 +1101,11 @@
     "moveUp": "Move up",
     "moveDown": "Move down",
     "removeQuestion": "Remove question",
-    "addAnotherQuestion": "Add another question"
+    "addAnotherQuestion": "Add another question",
+    "replyPreview": "Reply Preview",
+    "textAnswerPlaceholder": "Answer will appear here...",
+    "numberAnswerPlaceholder": "0",
+    "no": "No"
   },
   "techOwnerReports": {
     "title": "Owner Reports",

@@ -1078,7 +1078,11 @@
     "moveUp": "Hamisha juu",
     "moveDown": "Hamisha chini",
     "removeQuestion": "Ondoa swali",
-    "addAnotherQuestion": "Ongeza swali jingine"
+    "addAnotherQuestion": "Ongeza swali jingine",
+    "replyPreview": "Onyesho la Jibu",
+    "textAnswerPlaceholder": "Jibu litaonekana hapa...",
+    "numberAnswerPlaceholder": "0",
+    "no": "Hapana"
   },
   "techOwnerReports": {
     "title": "Ripoti za Mmiliki",

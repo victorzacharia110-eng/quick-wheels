@@ -6,7 +6,7 @@
           <font-awesome-icon icon="fa-solid fa-arrow-left" /> {{ $t('common.back') }}
         </RouterLink>
         <h1 class="page-title">{{ report.title }}</h1>
-        <p class="page-sub">{{ $t('techOwnerReports.reportFrom') }} {{ report.owner?.name || 'Owner' }}</p>
+        <p class="page-sub">{{ $t('techOwnerReports.reportFrom') }} {{ report.owner?.user?.name || report.owner?.business_name || 'Owner' }}</p>
       </div>
       <div class="header-actions">
         <span class="status-badge" :style="{ background: getStatusColor(report.status) + '18', color: getStatusColor(report.status) }">
