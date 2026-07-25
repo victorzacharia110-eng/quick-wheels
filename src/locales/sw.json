@@ -169,6 +169,12 @@
     "goHome": "Rudi Nyumbani"
   },
   "common": {
+    "back": "Rudi",
+    "clear": "Futa",
+    "deleting": "Inafuta...",
+    "description": "Maelezo",
+    "priority": "Kipaumbele",
+    "title": "Kichwa",
     "search": "Tafuta",
     "filter": "Chuja",
     "all": "Zote",

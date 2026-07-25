@@ -149,6 +149,12 @@
     "goHome": "Về trang chủ"
   },
   "common": {
+    "back": "Quay lại",
+    "clear": "Xóa",
+    "deleting": "Đang xóa...",
+    "description": "Mô tả",
+    "priority": "Ưu tiên",
+    "title": "Tiêu đề",
     "search": "Tìm kiếm",
     "filter": "Lọc",
     "all": "Tất cả",

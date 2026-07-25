@@ -149,6 +149,12 @@
     "goHome": "ホームに戻る"
   },
   "common": {
+    "back": "戻る",
+    "clear": "クリア",
+    "deleting": "削除中...",
+    "description": "説明",
+    "priority": "優先度",
+    "title": "タイトル",
     "search": "検索",
     "filter": "フィルター",
     "all": "すべて",

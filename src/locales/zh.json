@@ -149,6 +149,12 @@
     "goHome": "返回首页"
   },
   "common": {
+    "back": "返回",
+    "clear": "清除",
+    "deleting": "删除中...",
+    "description": "描述",
+    "priority": "优先级",
+    "title": "标题",
     "search": "搜索",
     "filter": "筛选",
     "all": "全部",

@@ -149,6 +149,12 @@
     "goHome": "العودة إلى الرئيسية"
   },
   "common": {
+    "back": "رجوع",
+    "clear": "مسح",
+    "deleting": "جارٍ الحذف...",
+    "description": "الوصف",
+    "priority": "الأولوية",
+    "title": "العنوان",
     "search": "بحث",
     "filter": "تصفية",
     "all": "الكل",

@@ -170,6 +170,12 @@
     "goHome": "Go Home"
   },
   "common": {
+    "back": "Back",
+    "clear": "Clear",
+    "deleting": "Deleting...",
+    "description": "Description",
+    "priority": "Priority",
+    "title": "Title",
     "search": "Search",
     "filter": "Filter",
     "all": "All",

@@ -150,6 +150,12 @@
     "goHome": "Ana Sayfaya Git"
   },
   "common": {
+    "back": "Geri",
+    "clear": "Temizle",
+    "deleting": "Siliniyor...",
+    "description": "Açıklama",
+    "priority": "Öncelik",
+    "title": "Başlık",
     "search": "Ara",
     "filter": "Filtrele",
     "all": "Tümü",

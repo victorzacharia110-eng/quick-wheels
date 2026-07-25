@@ -149,6 +149,12 @@
     "goHome": "Ir al Inicio"
   },
   "common": {
+    "back": "Volver",
+    "clear": "Limpiar",
+    "deleting": "Eliminando...",
+    "description": "Descripción",
+    "priority": "Prioridad",
+    "title": "Título",
     "search": "Buscar",
     "filter": "Filtrar",
     "all": "Todo",
