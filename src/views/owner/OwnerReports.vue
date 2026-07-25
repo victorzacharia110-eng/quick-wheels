@@ -5,14 +5,14 @@
         <h1 class="page-title">{{ $t('ownerReports.title') }}</h1>
         <p class="page-sub">{{ $t('ownerReports.subtitle') }}</p>
       </div>
-      <RouterLink to="/owner/owner-reports/create" class="btn btn-primary">
+      <RouterLink to="/owner/owner-reports/create" class="btn-primary">
         <font-awesome-icon icon="fa-solid fa-plus" /> {{ $t('ownerReports.createReport') }}
       </RouterLink>
     </div>
 
     <div class="stats-grid" v-if="stats">
       <div class="stat-card" v-for="s in statCards" :key="s.key">
-        <div class="stat-icon" :style="{ background: s.color + '15', color: s.color }">
+        <div class="stat-icon" :style="{ background: s.color + '18', color: s.color }">
           <font-awesome-icon :icon="s.icon" />
         </div>
         <div class="stat-info">
@@ -41,7 +41,7 @@
       <font-awesome-icon icon="fa-solid fa-clipboard-list" size="3x" />
       <h3>{{ $t('ownerReports.noReports') }}</h3>
       <p>{{ $t('ownerReports.noReportsDesc') }}</p>
-      <RouterLink to="/owner/owner-reports/create" class="btn btn-primary">
+      <RouterLink to="/owner/owner-reports/create" class="btn-primary">
         {{ $t('ownerReports.createFirst') }}
       </RouterLink>
     </div>
@@ -73,20 +73,20 @@
               <span class="progress-text">{{ getAnsweredCount(r) }}/{{ r.questions?.length || 0 }}</span>
             </td>
             <td>
-              <span class="status-badge" :style="{ background: getStatusColor(r.status) + '22', color: getStatusColor(r.status) }">
+              <span class="status-badge" :style="{ background: getStatusColor(r.status) + '18', color: getStatusColor(r.status) }">
                 {{ getStatusLabel(r.status) }}
               </span>
             </td>
             <td>{{ formatDate(r.created_at) }}</td>
             <td @click.stop>
               <div class="action-btns">
-                <RouterLink :to="`/owner/owner-reports/${r.id}`" class="btn-icon" :title="$t('common.view')">
+                <RouterLink :to="`/owner/owner-reports/${r.id}`" class="action-btn" :title="$t('common.view')">
                   <font-awesome-icon icon="fa-solid fa-eye" />
                 </RouterLink>
-                <RouterLink v-if="r.status === 'draft'" :to="`/owner/owner-reports/${r.id}/edit`" class="btn-icon" :title="$t('common.edit')">
+                <RouterLink v-if="r.status === 'draft'" :to="`/owner/owner-reports/${r.id}/edit`" class="action-btn edit" :title="$t('common.edit')">
                   <font-awesome-icon icon="fa-solid fa-edit" />
                 </RouterLink>
-                <button v-if="r.status === 'draft'" @click="confirmDelete(r)" class="btn-icon btn-danger" :title="$t('common.delete')">
+                <button v-if="r.status === 'draft'" @click="confirmDelete(r)" class="action-btn delete" :title="$t('common.delete')">
                   <font-awesome-icon icon="fa-solid fa-trash" />
                 </button>
               </div>
@@ -100,12 +100,12 @@
 
     <Teleport to="body">
       <div v-if="deleteModal" class="modal-overlay" @click.self="deleteModal = false">
-        <div class="modal-content">
+        <div class="modal">
           <h3>{{ $t('ownerReports.deleteReport') }}</h3>
-          <p>{{ $t('ownerReports.deleteConfirm') }}</p>
+          <p class="modal-desc">{{ $t('ownerReports.deleteConfirm') }}</p>
           <div class="modal-actions">
-            <button class="btn btn-secondary" @click="deleteModal = false">{{ $t('common.cancel') }}</button>
-            <button class="btn btn-danger" @click="deleteReport" :disabled="deleting">
+            <button class="btn-outline" @click="deleteModal = false">{{ $t('common.cancel') }}</button>
+            <button class="btn-danger" @click="deleteReport" :disabled="deleting">
               {{ deleting ? $t('common.deleting') : $t('common.delete') }}
             </button>
           </div>
@@ -149,10 +149,10 @@ const statuses = [
 ]
 
 const statCards = [
-  { key: 'total', label: 'ownerReports.totalReports', icon: 'fa-solid fa-clipboard-list', color: '#2563eb' },
-  { key: 'draft', label: 'ownerReports.statusDraft', icon: 'fa-solid fa-file-pen', color: '#6b7280' },
+  { key: 'total', label: 'ownerReports.totalReports', icon: 'fa-solid fa-clipboard-list', color: '#00E5FF' },
+  { key: 'draft', label: 'ownerReports.statusDraft', icon: 'fa-solid fa-file-pen', color: 'rgba(255,255,255,0.4)' },
   { key: 'pending', label: 'ownerReports.statusPending', icon: 'fa-solid fa-clock', color: '#3b82f6' },
-  { key: 'completed', label: 'ownerReports.statusCompleted', icon: 'fa-solid fa-check-circle', color: '#22c55e' },
+  { key: 'completed', label: 'ownerReports.statusCompleted', icon: 'fa-solid fa-check-circle', color: '#4ADE80' },
 ]
 
 let searchTimeout = null
@@ -208,8 +208,8 @@ function getAnsweredCount(r) {
   return r.questions?.filter(q => q.answer).length || 0
 }
 function getStatusColor(status) {
-  const map = { draft:'#6b7280', pending_technician:'#3b82f6', submitted:'#eab308', reviewed:'#a855f7', verified:'#4f46e5', completed:'#22c55e', cancelled:'#ef4444' }
-  return map[status] || '#6b7280'
+  const map = { draft:'rgba(255,255,255,0.35)', pending_technician:'#3b82f6', submitted:'#FFD93D', reviewed:'#a855f7', verified:'#6C63FF', completed:'#4ADE80', cancelled:'#ff6b6b' }
+  return map[status] || 'rgba(255,255,255,0.35)'
 }
 function getStatusLabel(status) {
   const map = { draft:'Draft', pending_technician:'Pending', submitted:'Submitted', reviewed:'Reviewed', verified:'Verified', completed:'Completed', cancelled:'Cancelled' }
@@ -224,39 +224,179 @@ onMounted(() => { fetchReports(); fetchStats() })
 </script>
 
 <style scoped>
-.owner-reports-page { padding: 24px; }
-.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-.page-title { font-size: 1.5rem; font-weight: 700; color: #111827; margin: 0; }
-.page-sub { color: #6b7280; margin: 4px 0 0 0; font-size: 0.9rem; }
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
-.stat-card { display: flex; align-items: center; gap: 14px; background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; }
-.stat-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
-.stat-number { font-size: 1.4rem; font-weight: 700; color: #111827; }
-.stat-label { font-size: 0.78rem; color: #6b7280; }
+.owner-reports-page { padding: 0; }
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.page-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.page-sub { color: rgba(255,255,255,0.4); font-size: 0.95rem; }
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #00C4D4, #00E5FF);
+  color: #0a0818;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 16px;
+}
+.stat-icon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+}
+.stat-number {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #fff;
+}
+.stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.4); }
+
 .filters-bar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
 .search-bar { position: relative; flex: 1; min-width: 220px; }
-.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af; }
-.search-input { width: 100%; padding: 10px 12px 10px 36px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.9rem; }
-.filter-select { padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.9rem; background: white; }
-.progress-bar-mini { display: inline-block; width: 60px; height: 6px; background: #e5e7eb; border-radius: 3px; vertical-align: middle; margin-right: 6px; }
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.3); }
+.search-input {
+  width: 100%;
+  padding: 10px 12px 10px 36px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 0.85rem;
+  font-family: 'Space Grotesk', sans-serif;
+  outline: none;
+}
+.search-input:focus { border-color: rgba(0, 229, 255, 0.3); }
+.search-input::placeholder { color: rgba(255,255,255,0.25); }
+.filter-select {
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 0.85rem;
+  font-family: 'Space Grotesk', sans-serif;
+  outline: none;
+}
+.filter-select option { background: #0a0818; }
+
+.table-container {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: rgba(255,255,255,0.35);
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.data-table td {
+  padding: 12px 16px;
+  color: rgba(255,255,255,0.75);
+  font-size: 0.85rem;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.clickable-row { cursor: pointer; transition: background 0.15s; }
+.clickable-row:hover { background: rgba(255,255,255,0.03); }
+
+.progress-bar-mini { display: inline-block; width: 60px; height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; vertical-align: middle; margin-right: 6px; }
 .progress-fill { height: 100%; border-radius: 3px; transition: width 0.3s; }
-.progress-text { font-size: 0.8rem; color: #6b7280; }
+.progress-text { font-size: 0.8rem; color: rgba(255,255,255,0.4); }
 .status-badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.78rem; font-weight: 600; }
 .action-btns { display: flex; gap: 6px; }
-.clickable-row { cursor: pointer; }
-.clickable-row:hover { background: #f9fafb; }
-.empty-state { text-align: center; padding: 60px 20px; color: #9ca3af; }
-.empty-state h3 { margin: 16px 0 8px; color: #374151; }
+.action-btn {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.02);
+  color: rgba(255,255,255,0.5);
+  font-size: 0.78rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: flex; align-items: center;
+}
+.action-btn:hover { color: #00E5FF; border-color: rgba(0,229,255,0.2); }
+.action-btn.edit:hover { color: #00E5FF; border-color: rgba(0,229,255,0.2); }
+.action-btn.delete:hover { color: #ff6b6b; border-color: rgba(255,107,107,0.2); }
+
+.empty-state { text-align: center; padding: 60px 20px; color: rgba(255,255,255,0.3); }
+.empty-state svg { opacity: 0.3; margin-bottom: 16px; }
+.empty-state h3 { margin: 16px 0 8px; color: #fff; }
 .empty-state p { margin: 0 0 20px; }
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; }
-.modal-content { background: white; border-radius: 12px; padding: 24px; max-width: 400px; width: 90%; }
-.modal-content h3 { margin: 0 0 12px; }
-.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
-.btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; border: none; cursor: pointer; text-decoration: none; }
-.btn-primary { background: #2563eb; color: white; }
-.btn-secondary { background: #f3f4f6; color: #374151; }
-.btn-danger { background: #ef4444; color: white; }
-.btn-icon { background: none; border: none; padding: 6px 8px; border-radius: 6px; cursor: pointer; color: #6b7280; }
-.btn-icon:hover { background: #f3f4f6; color: #2563eb; }
-.btn-danger:hover { color: #ef4444; }
+
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.modal {
+  background: #13112a;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 420px;
+  width: 90%;
+}
+.modal h3 { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+.modal-desc { color: rgba(255,255,255,0.4); font-size: 0.85rem; margin-bottom: 16px; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
+
+.btn-outline {
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.6);
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-family: 'Space Grotesk', sans-serif;
+}
+.btn-danger {
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: rgba(255, 107, 107, 0.15);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  color: #ff6b6b;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-family: 'Space Grotesk', sans-serif;
+}
 </style>

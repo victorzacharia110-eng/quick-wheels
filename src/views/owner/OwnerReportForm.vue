@@ -5,7 +5,7 @@
         <h1 class="page-title">{{ isEdit ? $t('ownerReports.editReport') : $t('ownerReports.createReport') }}</h1>
         <p class="page-sub">{{ isEdit ? $t('ownerReports.editReportDesc') : $t('ownerReports.createReportDesc') }}</p>
       </div>
-      <RouterLink to="/owner/owner-reports" class="btn btn-secondary">
+      <RouterLink to="/owner/owner-reports" class="btn-outline">
         <font-awesome-icon icon="fa-solid fa-arrow-left" /> {{ $t('common.back') }}
       </RouterLink>
     </div>
@@ -42,7 +42,7 @@
       <div class="form-section">
         <div class="section-header">
           <h3>{{ $t('ownerReports.questions') }} ({{ form.questions.length }})</h3>
-          <button type="button" class="btn btn-sm btn-outline" @click="addQuestion">
+          <button type="button" class="btn-add" @click="addQuestion">
             <font-awesome-icon icon="fa-solid fa-plus" /> {{ $t('ownerReports.addQuestion') }}
           </button>
         </div>
@@ -61,7 +61,7 @@
                   <input type="checkbox" v-model="q.required" />
                   {{ $t('ownerReports.required') }}
                 </label>
-                <button type="button" class="btn-icon btn-danger" @click="removeQuestion(index)">
+                <button type="button" class="action-btn delete" @click="removeQuestion(index)">
                   <font-awesome-icon icon="fa-solid fa-trash" />
                 </button>
               </div>
@@ -93,8 +93,8 @@
       </div>
 
       <div class="form-actions">
-        <RouterLink to="/owner/owner-reports" class="btn btn-secondary">{{ $t('common.cancel') }}</RouterLink>
-        <button type="submit" class="btn btn-primary" :disabled="saving">
+        <RouterLink to="/owner/owner-reports" class="btn-outline">{{ $t('common.cancel') }}</RouterLink>
+        <button type="submit" class="btn-primary" :disabled="saving">
           <font-awesome-icon v-if="saving" icon="fa-solid fa-spinner fa-spin" />
           {{ saving ? $t('common.saving') : (isEdit ? $t('common.saveChanges') : $t('ownerReports.createReport')) }}
         </button>
@@ -210,42 +210,140 @@ onMounted(() => { fetchDropdowns(); loadReport() })
 </script>
 
 <style scoped>
-.report-form-page { padding: 24px; max-width: 900px; }
-.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-.page-title { font-size: 1.5rem; font-weight: 700; color: #111827; margin: 0; }
-.page-sub { color: #6b7280; margin: 4px 0 0 0; font-size: 0.9rem; }
+.report-form-page { padding: 0; max-width: 900px; }
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.page-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.page-sub { color: rgba(255,255,255,0.4); font-size: 0.95rem; }
+
 .report-form { display: flex; flex-direction: column; gap: 24px; }
-.form-section { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; }
-.form-section h3 { margin: 0 0 16px; font-size: 1.1rem; color: #111827; }
+
+.form-section {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 24px;
+}
+.form-section h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 16px;
+}
 .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.section-header h3 { margin: 0; font-size: 1.1rem; color: #111827; }
+.section-header h3 { margin: 0; }
+
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .form-group { display: flex; flex-direction: column; gap: 4px; }
 .form-group.full-width { grid-column: 1 / -1; }
-.form-group label { font-size: 0.85rem; font-weight: 600; color: #374151; }
-.form-group input, .form-group select, .form-group textarea {
-  padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.9rem;
+.form-group label { font-size: 0.85rem; font-weight: 600; color: rgba(255,255,255,0.6); }
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 0.85rem;
+  font-family: 'Space Grotesk', sans-serif;
+  outline: none;
 }
-.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-  outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: rgba(0, 229, 255, 0.3);
 }
+.form-group select option { background: #0a0818; }
+.form-group input::placeholder,
+.form-group textarea::placeholder { color: rgba(255,255,255,0.25); }
+
 .questions-list { display: flex; flex-direction: column; gap: 12px; }
-.question-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; }
+.question-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: 16px;
+}
 .question-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-.question-number { font-weight: 700; color: #2563eb; font-size: 0.9rem; }
+.question-number {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  color: #00E5FF;
+  font-size: 0.9rem;
+}
 .question-actions { display: flex; align-items: center; gap: 12px; }
 .question-body { display: flex; flex-direction: column; gap: 12px; }
 .question-meta { display: flex; gap: 12px; }
-.checkbox-label { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: #6b7280; cursor: pointer; }
-.empty-questions { text-align: center; padding: 40px; color: #9ca3af; }
+.checkbox-label { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: rgba(255,255,255,0.5); cursor: pointer; }
+.empty-questions { text-align: center; padding: 40px; color: rgba(255,255,255,0.3); }
 .form-actions { display: flex; justify-content: flex-end; gap: 12px; padding-top: 16px; }
-.btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; border: none; cursor: pointer; text-decoration: none; }
-.btn-primary { background: #2563eb; color: white; }
-.btn-secondary { background: #f3f4f6; color: #374151; }
-.btn-outline { background: white; border: 1px solid #d1d5db; color: #374151; }
-.btn-sm { padding: 6px 14px; font-size: 0.82rem; }
-.btn-icon { background: none; border: none; padding: 6px 8px; border-radius: 6px; cursor: pointer; color: #6b7280; }
-.btn-icon:hover { background: #fee2e2; color: #ef4444; }
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #00C4D4, #00E5FF);
+  color: #0a0818;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: 'Space Grotesk', sans-serif;
+}
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.6);
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: 'Space Grotesk', sans-serif;
+}
+.btn-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  background: rgba(0, 229, 255, 0.1);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  color: #00E5FF;
+  font-size: 0.82rem;
+  cursor: pointer;
+  font-family: 'Space Grotesk', sans-serif;
+}
+.action-btn {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.02);
+  color: rgba(255,255,255,0.5);
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+.action-btn.delete:hover { color: #ff6b6b; border-color: rgba(255,107,107,0.2); }
+
 .question-enter-active, .question-leave-active { transition: all 0.3s ease; }
 .question-enter-from { opacity: 0; transform: translateY(-10px); }
 .question-leave-to { opacity: 0; transform: translateX(20px); }
