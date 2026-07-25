@@ -672,4 +672,13 @@ onMounted(fetchReport)
 .form-group textarea:focus { border-color: rgba(0,229,255,0.3); }
 .form-group input::placeholder,
 .form-group textarea::placeholder { color: rgba(255,255,255,0.25); }
+
+@media (max-width: 768px) {
+  .export-bar { flex-wrap: wrap; gap: 12px; }
+  .question-row { flex-direction: column; }
+  .q-main, .q-answer { flex: auto; }
+  .signatures-grid { grid-template-columns: 1fr; }
+  .page-header { flex-wrap: wrap; gap: 12px; }
+  .page-title { font-size: 1.4rem; }
+}
 </style>

@@ -318,9 +318,9 @@ onMounted(() => { fetchReports(); fetchStats() })
   background: rgba(255,255,255,0.02);
   border: 1px solid rgba(255,255,255,0.06);
   border-radius: 12px;
-  overflow: hidden;
+  overflow-x: auto;
 }
-.data-table { width: 100%; border-collapse: collapse; }
+.data-table { width: 100%; min-width: 700px; border-collapse: collapse; }
 .data-table th {
   text-align: left;
   padding: 12px 16px;
@@ -398,5 +398,10 @@ onMounted(() => { fetchReports(); fetchStats() })
   font-size: 0.85rem;
   cursor: pointer;
   font-family: 'Space Grotesk', sans-serif;
+}
+
+@media (max-width: 768px) {
+  .page-header { flex-wrap: wrap; gap: 12px; }
+  .page-title { font-size: 1.4rem; }
 }
 </style>

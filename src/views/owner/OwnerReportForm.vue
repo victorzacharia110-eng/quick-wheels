@@ -630,5 +630,12 @@ onMounted(() => { fetchDropdowns(); loadReport() })
 @media (max-width: 768px) {
   .mode-cards { grid-template-columns: 1fr; }
   .question-meta { flex-direction: column; }
+  .form-grid { grid-template-columns: 1fr; }
+  .page-header { flex-wrap: wrap; gap: 12px; }
+  .page-title { font-size: 1.4rem; }
+  .form-actions { flex-wrap: wrap; justify-content: stretch; }
+  .form-actions .btn-primary,
+  .form-actions .btn-outline { flex: 1; justify-content: center; }
+  .form-section { padding: 16px; }
 }
 </style>
