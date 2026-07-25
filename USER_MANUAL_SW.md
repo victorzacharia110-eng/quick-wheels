@@ -15,6 +15,8 @@
 5. [Kusimamia Magari](#5-kusimamia-magari)
 6. [Kusimamia Wataalamu](#6-kusimamia-wataalamu)
 6a. [Ripoti za Matengenezo (Mtazamo wa Mmiliki)](#6a-ripoti-za-matengenezo-mtazamo-wa-mmiliki)
+6b. [Ripoti za Mmiliki (Ripoti za Ukaguzi)](#6b-ripoti-za-mmiliki-ripoti-za-ukaguzi)
+6c. [Kurasa za Biashara za Umma](#6c-kurasa-za-biashara-za-umma)
 7. [Mikataba](#7-mikataba)
 8. [Malipo](#8-malipo)
 9. [Ufuatiliaji wa GPS](#9-ufuatiliaji-wa-gps)
@@ -105,6 +107,7 @@ Dashibodi ya Mmiliki ndio paneli yako kuu ya udhibiti. Baada ya kuingia kama mmi
 | Malipo | Ufuatiliaji wa malipo |
 | Ufuatiliaji wa GPS | Maeneo ya magari kwa wakati halisi |
 | Maudhui ya Tovuti | Simamia maudhui ya tovuti |
+| Ripoti za Mmiliki | Ripoti za ukaguzi na ukaguzi |
 | Ujumbe | Ujumbe wa ndani |
 | Mipangilio | Mipangilio ya akaunti |
 
@@ -249,6 +252,106 @@ Ukurasa wa maelezo ya ripoti unaonyesha:
 ### Sahihi ya Mmiliki
 
 Unapokagua ripoti, sahihi yako ya kidijitali inarekodiwa na muda. Mtaalamu anaweza kuona sahihi yako kwenye mtazamo wa ripoti yake, ikithibitisha idhini yako.
+
+---
+
+## 6b. Ripoti za Mmiliki (Ripoti za Ukaguzi)
+
+Ripoti za Mmiliki inakuwezesha kuunda ripoti za ukaguzi na ukaguzi na maswali maalum. Tofauti na Ripoti za Matengenezo (ambazo wataalamu huwasilisha), Ripoti za Mmiliki zinaundwa na wewe na zinajazwa na wewe au kwa mtaalamu.
+
+### Kuunda Ripoti ya Mmiliki
+
+1. Nenda kwenye **Ripoti za Mmiliki** kutoka kwenye upande
+2. Bofya **"Unda Ripoti"**
+3. Jaza maelezo ya ripoti:
+   - **Kichwa** — Maelezo fupi (mf., "Ukaguzi wa Gari wa Kila Wiki")
+   - **Gari** — Unganisha na gari maalum (hiari)
+   - **Mtaalamu** — Kagua mtaalamu kujaza majibu (hiari)
+   - **Maelezo** — Maelezo ya ziada (hiari)
+4. Ongeza maswali kwa kitufe **"Ongeza Swali"**
+5. Kwa kila swali, sanidi:
+   - **Mswali** — Swali la ukaguzi
+   - **Aina ya Jibu** — Mafupi, Mrefu, Nambari, Orodha, au Ndiyo/Hapana
+   - **Chaguo** — Kwa maswali ya orodha, weka chaguo kwa koma
+   - **Lazima** — Washa ikiwa swali lazima lijibiwe
+6. Bofya **"Unda Ripoti"**
+
+### Kujibu Maswali
+
+**Kama Mmiliki (Jibu mwenyewe):**
+1. Fungua ukurasa wa maelezo ya ripoti
+2. Bofya **"Jibu Mwenyewe"**
+3. Jaza kila jibu la swali
+4. Bofya **"Hifadhi Majibu"**
+
+**Kama Mtaalamu (Aliyekabidhiwa):**
+1. Ingia kama mtaalamu aliyeabidhiwa
+2. Fungua ripoti kutoka kwenye dashibodi ya mtaalamu
+3. Jaza majibu na ongeza maelezo
+4. Saini na sahihi yako ya kidijitali
+5. Bofya **"Wasilisha Ripoti"**
+
+### Mtiririko wa Kazi wa Ripoti za Mmiliki
+
+Ripoti zinafuata mtiririko wa idhini:
+
+```
+Rasimu → Inasubiri Mtaalamu → Imewasilishwa → Imekaguliwa → Imethibitishwa → Imekamilika
+```
+
+| Hatua | Nani | Maelezo |
+|-------|------|---------|
+| Rasimu | Mmiliki | Ripoti imeundwa na maswali, bado haijatumwa |
+| Inasubiri Mtaalamu | Mfumo | Inasubiri mtaalamu kujaza majibu |
+| Imewasilishwa | Mtaalamu | Mtaalamu amejibu na kusaini |
+| Imekaguliwa | Mmiliki | Mmiliki amekagua majibu yote |
+| Imethibitishwa | Mmiliki | Mmiliki anasaini kuthibitisha ripoti |
+| Imekamilika | Mfumo | Imekamilika kiotomatiki dakika 2 baada ya ukaguzi |
+
+### Kuhifadhi Ripoti
+
+Unaweza kuhifadhi ripoti yoyote kwa muundo wa tatu:
+
+1. Fungua ukurasa wa maelezo ya ripoti
+2. Bofya kitufe cha kuhifadhi kwa muundo unaopendelea:
+   - **PDF** — Hati ya kitaalamu na kichwa, metadata, meza ya maswali, na sahihi zote
+   - **DOCX** — Hati ya Word na maudhui yale yale
+   - **XLSX** - Jedwali na majukwaa mawili: Ripoti na Maswali na Majibu
+3. Faili inapakuliwa moja kwa moja
+
+### Sahihi za Mmiliki na Mtaalamu
+
+- **Sahihi ya Mtaalamu** — Inarekodiwa wakati mtaalamu anawasilisha majibu yake
+- **Sahihi ya Mmiliki** — Inarekodiwa wakati mmiliki anathibitisha ripoti
+- Sahihi zote zinaonekana kwenye hati zilizohifadhiwa
+
+---
+
+## 6c. Kurasa za Biashara za Umma
+
+QuickWheels inatoa kurasa za biashara za umma kwa kila mmiliki aliyeethibitisha, kuruhusu wateja wanaotaka kusafiri kuangalia msafara wako bila kuingia.
+
+### Jinsi Inavyofanya Kazi
+
+- Kila mmiliki aliyeethibitisha anapata kikao maalum cha biashara kwenye `/business/{slug}`
+- Slug inatokana na jina la biashara yako (mf., "Victor Zacharia's Business" inakuwa `victor-zacharia-s-business`)
+- Ukurasa wa nyumbani kwenye [https://quickwheels.online](https://quickwheels.online) unaonyesha orodha ya biashara zote zilizothibitishwa
+
+### Vipengele vya Kikao cha Biashara
+
+- **Taarifa za Biashara** — Jina, maelezo, simu, barua pepe, anwani
+- **Bendi ya Uthibitisho** — Inaonyesha biashara imethibitishwa na jukwaa
+- **Orodha ya Magari** — Vinjari magari yote kwenye msafara wa biashara
+- **Chaguo za Mawasiliano** — Piga au barua pepe biashara moja kwa moja
+
+### Kwa Wamiliki wa Biashara
+
+Kikao chako cha biashara za umma kinaundwa kiotomatiki akaunti yako inapothibitishwa. URL inategemea jina la biashara yako. Shiriki kiungo hiki na wateja wanaotaka kuangalia msafara wako.
+
+Kuona kikao chako cha biashara:
+1. Nenda kwenye **Mipangilio** kutoka kwenye upande
+2. Slug ya biashara yako imeonyeshwa katika maelezo ya biashara
+3. Au tembelea [https://quickwheels.online](https://quickwheels.online) na ubofye biashara yako kwenye orodha
 
 ---
 

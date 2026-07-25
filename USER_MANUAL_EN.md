@@ -15,6 +15,8 @@
 5. [Managing Vehicles](#5-managing-vehicles)
 6. [Managing Technicians](#6-managing-technicians)
 6a. [Maintenance Reports (Owner View)](#6a-maintenance-reports-owner-view)
+6b. [Owner Reports (Custom Inspection Reports)](#6b-owner-reports-custom-inspection-reports)
+6c. [Public Business Pages](#6c-public-business-pages)
 7. [Contracts](#7-contracts)
 8. [Payments](#8-payments)
 9. [GPS Tracking](#9-gps-tracking)
@@ -105,6 +107,7 @@ The Owner Dashboard is your central control panel. After logging in as a busines
 | Payments | Payment tracking |
 | GPS Tracking | Real-time vehicle locations |
 | Site Content | Manage website content |
+| Owner Reports | Custom inspection & audit reports |
 | Messages | Internal messaging |
 | Settings | Account settings |
 
@@ -249,6 +252,106 @@ The report detail page shows:
 ### Owner Signature
 
 When you verify a report, your digital signature is recorded with a timestamp. The technician can see your signature on their report view, confirming your approval.
+
+---
+
+## 6b. Owner Reports (Custom Inspection Reports)
+
+Owner Reports allow you to create custom inspection and audit reports with tailored questions. Unlike Maintenance Reports (which technicians submit), Owner Reports are created by you and can be filled by you or assigned to a technician.
+
+### Creating an Owner Report
+
+1. Go to **Owner Reports** from the sidebar
+2. Click **"Create Report"**
+3. Fill in report details:
+   - **Title** — Brief description (e.g., "Weekly Vehicle Inspection")
+   - **Vehicle** — Optionally link to a specific vehicle
+   - **Technician** — Optionally assign a technician to fill answers
+   - **Description** — Optional notes about the report
+4. Add questions using the **"Add Question"** button
+5. For each question, configure:
+   - **Question Text** — The inspection question
+   - **Answer Type** — Short Text, Long Text, Number, Dropdown, or Yes/No
+   - **Options** — For dropdown questions, enter comma-separated options
+   - **Required** — Toggle if the question must be answered
+6. Click **"Create Report"**
+
+### Answering Questions
+
+**As Owner (Self-fill):**
+1. Open the report detail page
+2. Click **"Fill Answers Yourself"**
+3. Fill in each question's answer
+4. Click **"Save Answers"**
+
+**As Technician (Assigned):**
+1. Log in as the assigned technician
+2. Open the report from the technician dashboard
+3. Fill in answers and add notes
+4. Sign with your digital signature
+5. Click **"Submit Report"**
+
+### Owner Report Workflow
+
+Reports follow a structured approval pipeline:
+
+```
+Draft → Pending Technician → Submitted → Reviewed → Verified → Completed
+```
+
+| Step | Who | Description |
+|------|-----|-------------|
+| Draft | Owner | Report created with questions, not yet submitted |
+| Pending Technician | System | Waiting for technician to fill answers |
+| Submitted | Technician | Technician has answered and signed |
+| Reviewed | Owner | Owner has reviewed all answers |
+| Verified | Owner | Owner signs to verify the report |
+| Completed | System | Auto-completed 2 minutes after verification |
+
+### Exporting Reports
+
+You can export any report in three formats:
+
+1. Open the report detail page
+2. Click the export button for your preferred format:
+   - **PDF** — Professional document with styled header, metadata, Q&A table, and both signatures
+   - **DOCX** — Word document with the same content structure
+   - **XLSX** — Spreadsheet with two sheets: Report Info and Questions & Answers
+3. The file downloads automatically
+
+### Owner vs Technician Signatures
+
+- **Technician Signature** — Recorded when the technician submits their answers
+- **Owner Signature** — Recorded when the owner verifies the report
+- Both signatures appear on exported documents
+
+---
+
+## 6c. Public Business Pages
+
+QuickWheels provides public business pages for each verified owner, allowing potential customers to browse your fleet without logging in.
+
+### How It Works
+
+- Each verified owner gets a unique business page at `/business/{slug}`
+- The slug is auto-generated from your business name (e.g., "Victor Zacharia's Business" becomes `victor-zacharia-s-business`)
+- The homepage at [https://quickwheels.online](https://quickwheels.online) shows a directory of all verified businesses
+
+### Business Page Features
+
+- **Business Info** — Name, description, phone, email, address
+- **Verification Badge** — Shows the business is verified by the platform
+- **Vehicle Listings** — Browse all vehicles in the business's fleet
+- **Contact Options** — Call or email the business directly
+
+### For Business Owners
+
+Your public business page is automatically created when your account is verified. The URL is based on your business name. Share this link with potential customers to showcase your fleet.
+
+To view your business page:
+1. Go to **Settings** from the sidebar
+2. Your business slug is displayed in the business details section
+3. Or visit [https://quickwheels.online](https://quickwheels.online) and click your business in the directory
 
 ---
 

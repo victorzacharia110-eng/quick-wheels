@@ -41,6 +41,8 @@ QuickWheels is a full-stack fleet management and vehicle rental platform built w
 |------------|---------|---------|
 | PHP | 8.3+ | Runtime |
 | Laravel | 13.x | Framework |
+| Laravel PHPWord | 1.x | DOCX export |
+| PhpSpreadsheet | 3.x | XLSX export |
 | Laravel Sanctum | 4.x | API authentication |
 | Laravel DomPDF | 3.x | PDF generation |
 | Flysystem S3 | 3.x | S3 file storage |
@@ -55,6 +57,9 @@ QuickWheels is a full-stack fleet management and vehicle rental platform built w
 | Cloudflare | CDN & DNS proxy |
 | Google Gemini AI | Document analysis (2.0 Flash) |
 | ClickPesa | Mobile money & bank payments |
+| PhpOffice DomPDF | PDF generation for owner reports |
+| PhpOffice PHPWord | DOCX generation for owner reports |
+| PhpOffice PhpSpreadsheet | XLSX generation for owner reports |
 | Vercel / Cloudflare Pages | Frontend hosting |
 
 ---
@@ -147,6 +152,8 @@ app/
 │           │   ├── EmployeeDashboardController
 │           │   ├── TechnicianController
 │           │   ├── DocumentController
+│           │   ├── OwnerReportController  # Owner inspection reports
+│           │   ├── OwnerReportExport      # Excel export class
 │           │   └── ContractAnalysisController
 │           ├── Employee/          # Employee-specific endpoints
 │           │   ├── EmployeeDashboardController
@@ -170,6 +177,8 @@ app/
 │           ├── MessageController  # Messaging
 │           ├── ContractPdfController  # PDF generation
 │           ├── SiteContentController  # CMS
+│           ├── Public/              # Public endpoints (no auth)
+│           │   └── PublicController  # Business listing & detail
 │           └── SuperAdminController   # Super admin
 ├── Models/               # Eloquent models (14 models)
 ├── Services/             # Business logic services
@@ -182,7 +191,7 @@ routes/
 └── api.php               # All API routes (325 lines)
 
 database/
-└── migrations/           # 17 migration files
+└── migrations/           # 18 migration files
 ```
 
 ---
@@ -207,6 +216,7 @@ database/
 | `vehicle_locations` | GPS location history | id, vehicle_id, latitude, longitude, speed, timestamp |
 | `messages` | Internal messages | id, sender_id, receiver_id, content, read_at |
 | `site_contents` | CMS content | id, section, key, value, type |
+| `owner_reports` | Owner inspection/audit reports | id, owner_id, vehicle_id, technician_id, title, description, questions (JSON), status, technician_signature, owner_signature, notes |
 
 ### Key Relationships
 
@@ -217,6 +227,9 @@ Owner ──1:N── Vehicle
 Owner ──1:N── Employee
 Owner ──1:N── Contract
 Owner ──1:N── Technician
+Owner ──1:N── OwnerReport
+OwnerReport ──N:1── Vehicle
+OwnerReport ──N:1── Technician
 Employee ──N:1── Vehicle (assigned)
 Contract ──N:1── Employee (driver)
 Contract ──N:1── Vehicle
@@ -257,6 +270,36 @@ Maintenance ──N:1── Technician
 | Contracts | CRUD + `/sign-owner`, `/activate`, `/complete`, `/cancel` | Contract lifecycle |
 | Payments | CRUD + `/approve`, `/reject` | Payment management |
 | GPS | POST `/update`, GET `/latest`, `/history`, `/all-latest` | Location tracking |
+
+### Owner Report Routes (`/api/owner/reports/`)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/` | List reports (paginated, filterable) |
+| POST | `/` | Create new report with questions |
+| GET | `/{id}` | Get report detail with questions |
+| PUT | `/{id}` | Update report (draft only) |
+| DELETE | `/{id}` | Delete report (draft only) |
+| POST | `/{id}/answer` | Answer a question |
+| POST | `/{id}/technician/answer` | Technician answers a question |
+| POST | `/{id}/technician/submit` | Technician submits report |
+| POST | `/{id}/review` | Owner marks as reviewed |
+| POST | `/{id}/verify` | Owner verifies & signs |
+| POST | `/{id}/complete` | Mark report as completed |
+| POST | `/{id}/cancel` | Cancel report |
+| GET | `/stats` | Report statistics |
+| GET | `/technicians` | List technicians for dropdown |
+| GET | `/{id}/export/pdf` | Export report as PDF |
+| GET | `/{id}/export/docx` | Export report as DOCX |
+| GET | `/{id}/export/xlsx` | Export report as XLSX |
+
+### Public Routes (`/api/public/`)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/businesses` | List all verified businesses |
+| GET | `/business/{slug}` | Get business detail by slug |
+| GET | `/business/{slug}/vehicles` | Get business vehicles |
 
 ### Employee Routes (`/api/employee/`)
 
@@ -346,6 +389,36 @@ Built-in CMS for managing the public website:
 - Image upload support
 - Section visibility toggles
 - Drag-and-drop reordering
+
+### 7.8 Owner Reports (Custom Inspection Reports)
+
+Owners can create inspection/audit reports with custom questions:
+
+- **Custom Questions** — Text, textarea, number, dropdown, checkbox types
+- **Vehicle Assignment** — Reports can be linked to specific vehicles
+- **Technician Assignment** — Reports can be assigned to technicians for answers
+- **Workflow Pipeline** — Draft → Pending Technician → Submitted → Reviewed → Verified → Completed
+- **Digital Signatures** — Technician signs on submission, owner signs on verification
+- **Export to PDF/DOCX/XLSX** — Professional documents with styled header, Q&A table, signatures
+- **Auto-verification** — Reports auto-complete 2 minutes after owner verification
+
+### 7.9 Multi-Owner Public Business Pages
+
+Each verified owner gets a public business page:
+
+- **Business Directory** — Homepage shows all verified businesses
+- **Business Slug** — Each business has a unique URL: `/business/{slug}`
+- **Vehicle Listings** — Public visitors can browse the business's fleet
+- **Business Info** — Contact details, address, verification badge
+- **No Auth Required** — Public pages are accessible without login
+
+### 7.10 Report Export System
+
+Owner reports can be exported in three formats:
+
+- **PDF** — Styled document via DomPDF with header, report metadata, Q&A table, both signatures
+- **DOCX** — Word document via PHPWord with same content structure
+- **XLSX** — Spreadsheet via PhpSpreadsheet with two sheets: Report Info + Questions & Answers
 
 ---
 
@@ -481,3 +554,12 @@ cloud deploy quickwheels production -n
 - Internationalization (15 languages)
 - PDF contract generation
 - S3 file storage via Cloudflare R2
+
+### v1.1 (July 2026)
+
+- Owner Reports — Custom inspection/audit reports with questions and workflow
+- Report Export — PDF, DOCX, XLSX export with professional formatting
+- Public Business Pages — Multi-owner business directory with slug-based URLs
+- Owner slug field — Auto-generated from business_name
+- Missing locale keys — Added `common.back`, `common.title`, `common.description`, `common.priority`, `common.clear`, `common.deleting` to all 15 locales
+- Dark theme UI — Owner report pages now use consistent dark glass-morphism theme
