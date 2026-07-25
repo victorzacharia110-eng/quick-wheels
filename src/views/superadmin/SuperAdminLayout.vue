@@ -188,7 +188,8 @@ const locales = [
 .superadmin-root {
   display: grid;
   grid-template-columns: 240px 1fr;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   background: #0d0b1e;
   transition: grid-template-columns 0.3s ease;
   font-family: "Space Grotesk", sans-serif;
@@ -424,7 +425,7 @@ const locales = [
 .superadmin-main {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
   overflow: hidden;
 }
 .superadmin-topbar {

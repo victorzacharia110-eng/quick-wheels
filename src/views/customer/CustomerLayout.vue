@@ -173,7 +173,7 @@ const communicationNav = [
 </script>
 
 <style scoped>
-.customer-root { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; background: #0d0b1e; transition: grid-template-columns 0.3s ease; font-family: "Space Grotesk", sans-serif; color: #fff; }
+.customer-root { display: grid; grid-template-columns: 240px 1fr; height: 100vh; overflow: hidden; background: #0d0b1e; transition: grid-template-columns 0.3s ease; font-family: "Space Grotesk", sans-serif; color: #fff; }
 .customer-root.collapsed { grid-template-columns: 64px 1fr; }
 .sidebar { background: #0a0818; border-right: 1px solid rgba(0, 229, 255, 0.08); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; overflow: hidden; z-index: 100; }
 .sidebar-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); flex-shrink: 0; }
@@ -212,7 +212,7 @@ const communicationNav = [
 .view-site-btn { display: flex; align-items: center; gap: 6px; padding: 7px 10px; border-radius: 8px; background: rgba(0, 196, 212, 0.08); border: 1px solid rgba(0, 196, 212, 0.2); color: #00c4d4; font-size: 0.75rem; font-weight: 500; text-decoration: none; transition: all 0.2s; white-space: nowrap; overflow: hidden; }
 .view-site-btn:hover { background: rgba(0, 196, 212, 0.15); }
 .collapsed .view-site-btn span { display: none; }
-.customer-main { display: flex; flex-direction: column; min-height: 100vh; overflow: hidden; }
+.customer-main { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 .customer-topbar { display: flex; align-items: center; justify-content: space-between; padding: 0 28px; height: 56px; flex-shrink: 0; background: rgba(10, 8, 24, 0.8); border-bottom: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 10; }
 .topbar-left { display: flex; align-items: center; gap: 12px; }
 .breadcrumb { display: flex; align-items: center; gap: 6px; }
