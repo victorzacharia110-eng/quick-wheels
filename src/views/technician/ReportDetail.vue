@@ -21,6 +21,20 @@ const parts = computed(() => report.value?.items?.filter(i => i.type === 'part')
 const services = computed(() => report.value?.items?.filter(i => i.type === 'service') || [])
 const requiredParts = computed(() => parts.value.filter(p => p.is_required))
 
+const workflowSteps = computed(() => [
+  t('maintenance.wfSubmitted'),
+  t('maintenance.wfViewed'),
+  t('maintenance.wfProcessing'),
+  t('maintenance.wfConfirmed'),
+  t('maintenance.wfVerified'),
+  t('maintenance.wfCompleted'),
+])
+
+function formatDate(d) {
+  if (!d) return '—'
+  return new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+}
+
 function getPriorityIcon(priority) {
   const icons = { low: 'fa-solid fa-arrow-down', medium: 'fa-solid fa-minus', high: 'fa-solid fa-arrow-up', critical: 'fa-solid fa-exclamation-triangle' }
   return icons[priority] || 'fa-solid fa-circle'
@@ -94,6 +108,20 @@ onMounted(() => {
       </div>
       <div class="progress-bar">
         <div class="progress-fill" :style="{ width: report.progress + '%' }"></div>
+      </div>
+    </div>
+
+    <!-- Workflow Progress Bar -->
+    <div class="workflow-bar">
+      <div v-for="(step, i) in workflowSteps" :key="i" class="wf-step" :class="{ active: report.workflow_step >= i + 1, current: report.workflow_step === i + 1 }">
+        <div class="wf-dot">
+          <font-awesome-icon v-if="report.workflow_step > i + 1" icon="fa-solid fa-check" />
+          <span v-else>{{ i + 1 }}</span>
+        </div>
+        <span class="wf-label">{{ step }}</span>
+      </div>
+      <div class="wf-line">
+        <div class="wf-fill" :style="{ width: ((report.workflow_step - 1) / (workflowSteps.length - 1) * 100) + '%' }"></div>
       </div>
     </div>
 
@@ -263,6 +291,20 @@ onMounted(() => {
     <div class="notes-section" v-if="report.notes">
       <h3 class="detail-title">{{ $t('common.notes') }}</h3>
       <p class="detail-text">{{ report.notes }}</p>
+    </div>
+
+    <!-- Signatures -->
+    <div class="signatures-row" v-if="report.technician_signature || report.owner_signature">
+      <div v-if="report.technician_signature" class="sig-card">
+        <div class="sig-label">{{ $t('maintenance.technicianSignature') }}</div>
+        <div class="sig-box"><img :src="report.technician_signature" alt="Tech signature" /></div>
+        <div class="sig-date">{{ formatDate(report.technician_signed_at) }}</div>
+      </div>
+      <div v-if="report.owner_signature" class="sig-card verified">
+        <div class="sig-label">{{ $t('maintenance.ownerSignature') }} <font-awesome-icon icon="fa-solid fa-circle-check" class="verified-icon" /></div>
+        <div class="sig-box"><img :src="report.owner_signature" alt="Owner signature" /></div>
+        <div class="sig-date">{{ formatDate(report.owner_signed_at) }}</div>
+      </div>
     </div>
 
     <!-- Add Item Modal -->
@@ -695,5 +737,28 @@ onMounted(() => {
   .header-actions { flex-wrap: wrap; }
   .detail-sections { grid-template-columns: 1fr; }
   .info-grid { grid-template-columns: 1fr; }
+  .signatures-row { flex-direction: column; }
 }
+
+/* Workflow Bar */
+.workflow-bar { position: relative; display: flex; justify-content: space-between; margin: 0 auto 32px; max-width: 600px; padding-top: 16px; }
+.wf-step { display: flex; flex-direction: column; align-items: center; z-index: 2; flex: 1; }
+.wf-dot { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.06); border: 2px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: rgba(255,255,255,0.3); font-weight: 700; transition: all 0.3s; }
+.wf-step.active .wf-dot { background: rgba(0,229,255,0.15); border-color: #00E5FF; color: #00E5FF; }
+.wf-step.current .wf-dot { background: #00E5FF; color: #0a0818; box-shadow: 0 0 16px rgba(0,229,255,0.4); animation: pulse-dot 2s infinite; }
+.wf-label { font-size: 0.65rem; color: rgba(255,255,255,0.3); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.3px; }
+.wf-step.active .wf-label { color: rgba(255,255,255,0.6); }
+.wf-line { position: absolute; top: 32px; left: 5%; right: 5%; height: 2px; background: rgba(255,255,255,0.06); z-index: 1; }
+.wf-fill { height: 100%; background: linear-gradient(90deg, #00E5FF, #4ADE80); transition: width 0.5s ease; border-radius: 1px; }
+@keyframes pulse-dot { 0%, 100% { box-shadow: 0 0 16px rgba(0,229,255,0.4); } 50% { box-shadow: 0 0 28px rgba(0,229,255,0.7); } }
+
+/* Signatures */
+.signatures-row { display: flex; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+.sig-card { flex: 1; min-width: 200px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 16px; text-align: center; }
+.sig-card.verified { border-color: rgba(74,222,128,0.2); }
+.sig-label { font-size: 0.7rem; color: rgba(255,255,255,0.4); text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.verified-icon { color: #4ADE80; }
+.sig-box { background: rgba(0,0,0,0.3); border-radius: 8px; padding: 12px; min-height: 80px; display: flex; align-items: center; justify-content: center; }
+.sig-box img { max-width: 100%; max-height: 80px; object-fit: contain; }
+.sig-date { font-size: 0.75rem; color: rgba(255,255,255,0.3); margin-top: 8px; }
 </style>

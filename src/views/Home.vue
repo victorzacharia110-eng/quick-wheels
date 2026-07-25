@@ -1,20 +1,18 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { RouterLink } from 'vue-router'
 import Hero3D from '../components/common/Hero3D.vue'
 import SkillsOrbit from '../components/common/SkillsOrbit.vue'
-import VehicleCard3D from '@/components/common/VehicleCard3D.vue'
-import { useVehicleStore } from '@/stores/vehicles'
 import { useSiteContentStore } from '@/stores/siteContent'
-import { storeToRefs } from 'pinia'
 import SkeletonLoader from '@/components/common/SkeletonLoader.vue'
+import api from '@/composables/api'
 
 const { t } = useI18n()
-const store = useVehicleStore()
 const scStore = useSiteContentStore()
-const { vehicles, isLoading, error, availableVehicles } = storeToRefs(store)
 
-const activeService = ref(null)
+const businesses = ref([])
+const businessesLoading = ref(true)
 
 const stats = computed(() => [
   { value: scStore.contents?.stats?.vehicles_count || '50+', labelKey: 'hero.vehiclesAvailable', icon: 'fa-solid fa-car' },
@@ -68,23 +66,22 @@ const services = computed(() => [
   },
 ])
 
-const featuredVehicles = computed(() => {
-  return vehicles.value.slice(0, 3)
-})
-
-const showingText = computed(() => {
-  const count = featuredVehicles.value.length
-  return count === 1
-    ? t('home.showing', { count })
-    : t('home.showing_plural', { count })
-})
-
-async function loadVehicles() {
-  await store.fetchPublicVehicles()
+async function loadBusinesses() {
+  businessesLoading.value = true
+  try {
+    const res = await api.get('/public/businesses')
+    if (res.data.success) {
+      businesses.value = res.data.data || []
+    }
+  } catch (err) {
+    console.error('Failed to load businesses:', err)
+  } finally {
+    businessesLoading.value = false
+  }
 }
 
 onMounted(() => {
-  loadVehicles()
+  loadBusinesses()
   scStore.fetchContents()
 })
 </script>
@@ -158,40 +155,33 @@ onMounted(() => {
 
     <SkillsOrbit />
 
-    <section class="vehicles-preview">
+    <section class="businesses-preview">
       <div class="section-header">
-        <p class="section-label">{{ $t('home.ourFleet') }}</p>
-        <h2 class="section-title">{{ $t('home.featuredVehicles') }}</h2>
-        <p v-if="!isLoading && !error && featuredVehicles.length > 0" class="section-sub">
-          {{ showingText }}
-        </p>
+        <p class="section-label">{{ $t('home.ourPartners') }}</p>
+        <h2 class="section-title">{{ $t('home.browseBusinesses') }}</h2>
+        <p class="section-sub">{{ $t('home.browseBusinessesDesc') }}</p>
       </div>
 
-      <SkeletonLoader v-if="isLoading" variant="card" :rows="3" :cols="3" />
+      <SkeletonLoader v-if="businessesLoading" variant="card" :rows="3" :cols="3" />
 
-      <div v-else-if="error" class="error-banner">
-        <font-awesome-icon icon="fa-solid fa-circle-exclamation" /> {{ error }}
-        <button @click="loadVehicles" class="btn-retry">
-          <font-awesome-icon icon="fa-solid fa-rotate" /> {{ $t('home.retry') }}
-        </button>
+      <div v-else-if="businesses.length === 0" class="empty-state">
+        <font-awesome-icon icon="fa-solid fa-store" size="3x" />
+        <h3>{{ $t('home.noBusinessesYet') }}</h3>
+        <p>{{ $t('home.noBusinessesDesc') }}</p>
       </div>
 
-      <div v-else-if="featuredVehicles.length === 0" class="empty-state">
-        <font-awesome-icon icon="fa-solid fa-car" size="3x" />
-        <h3>{{ $t('home.noVehiclesAvailable') }}</h3>
-        <p>{{ $t('home.noVehiclesDesc') }}</p>
-        <RouterLink to="/contact" class="btn-primary" style="margin-top: 16px;">
-          {{ $t('home.contactUs') }} <font-awesome-icon icon="fa-solid fa-arrow-right" />
-        </RouterLink>
-      </div>
-
-      <div v-else class="vehicles-grid">
-        <VehicleCard3D v-for="vehicle in featuredVehicles" :key="vehicle.id" :vehicle="vehicle" />
-      </div>
-
-      <div v-if="featuredVehicles.length > 0" style="text-align:center; margin-top:48px">
-        <RouterLink to="/vehicles" class="btn-outline">
-          {{ $t('home.seeAllVehicles') }} <font-awesome-icon icon="fa-solid fa-arrow-right" />
+      <div v-else class="businesses-grid">
+        <RouterLink v-for="biz in businesses" :key="biz.id" :to="'/business/' + biz.slug" class="business-card glass-card">
+          <div class="biz-card-icon">
+            <font-awesome-icon icon="fa-solid fa-store" />
+          </div>
+          <h3 class="biz-card-name">{{ biz.business_name }}</h3>
+          <p class="biz-card-desc">{{ biz.business_description || $t('home.defaultTagline') }}</p>
+          <div class="biz-card-meta">
+            <span><font-awesome-icon icon="fa-solid fa-car" /> {{ biz.total_vehicles || 0 }} {{ $t('home.vehicles') }}</span>
+            <span v-if="biz.business_address"><font-awesome-icon icon="fa-solid fa-location-dot" /> {{ biz.business_address }}</span>
+          </div>
+          <span class="biz-card-link">{{ $t('home.viewFleet') }} <font-awesome-icon icon="fa-solid fa-arrow-right" /></span>
         </RouterLink>
       </div>
     </section>
@@ -203,8 +193,8 @@ onMounted(() => {
         <p class="section-label">{{ $t('hero.readyToRide') }}</p>
         <h2 class="cta-title">{{ $t('hero.dreamRide') }}</h2>
         <p class="cta-sub">{{ $t('hero.ctaSub') }}</p>
-        <RouterLink to="/vehicles" class="btn-primary" style="font-size:1rem; padding:16px 40px">
-          <font-awesome-icon icon="fa-solid fa-rocket" /> {{ $t('hero.bookNow') }}
+        <RouterLink :to="scStore.contents?.hero?.cta_link || '/'" class="btn-primary" style="font-size:1rem; padding:16px 40px">
+          <font-awesome-icon icon="fa-solid fa-rocket" /> {{ $t('hero.cta_text') || $t('hero.bookNow') }}
         </RouterLink>
       </div>
     </section>
@@ -419,17 +409,55 @@ onMounted(() => {
   padding: 60px 32px;
 }
 
-.vehicles-preview {
+.businesses-preview {
   padding: 80px 32px 100px;
   position: relative;
   z-index: 1;
 }
-.vehicles-grid {
+.businesses-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   max-width: 1200px;
   margin: 0 auto;
+}
+.business-card {
+  display: flex;
+  flex-direction: column;
+  padding: 28px 24px;
+  border-radius: 16px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+.business-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0,229,255,0.3);
+}
+.biz-card-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: rgba(0,229,255,0.1); color: #00E5FF;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; margin-bottom: 16px;
+}
+.biz-card-name {
+  font-family: 'Syne', sans-serif; font-size: 1.15rem; font-weight: 700;
+  color: #fff; margin-bottom: 8px;
+}
+.biz-card-desc {
+  color: rgba(255,255,255,0.45); font-size: 0.85rem; line-height: 1.5;
+  margin-bottom: 16px; flex: 1;
+}
+.biz-card-meta {
+  display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;
+}
+.biz-card-meta span {
+  display: flex; align-items: center; gap: 5px;
+  color: rgba(255,255,255,0.4); font-size: 0.78rem;
+}
+.biz-card-meta svg { color: #00E5FF; font-size: 0.7rem; }
+.biz-card-link {
+  color: #00E5FF; font-size: 0.85rem; font-weight: 600;
+  display: flex; align-items: center; gap: 6px;
 }
 
 .error-banner {
@@ -547,16 +575,16 @@ onMounted(() => {
 }
 
 @media (max-width: 1024px) {
-  .services-grid, .vehicles-grid { grid-template-columns: repeat(2, 1fr); }
+  .services-grid, .businesses-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 768px) {
   .services-section { padding: 60px 16px; }
-  .vehicles-preview { padding: 60px 16px 80px; }
+  .businesses-preview { padding: 60px 16px 80px; }
   .cta-inner { padding: 48px 24px; }
   .skills-orbit { padding: 40px 16px; }
 }
 @media (max-width: 640px) {
-  .services-grid, .vehicles-grid { grid-template-columns: 1fr; }
+  .services-grid, .businesses-grid { grid-template-columns: 1fr; }
   .hero-content { padding: 100px 24px 60px; margin-left: 0; }
   .hero-stats { gap: 24px; }
   .cta-inner { padding: 32px 16px; }

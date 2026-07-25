@@ -70,7 +70,7 @@ export const useVehicleStore = defineStore('vehicles', () => {
     error.value = null
     try {
       const { data } = await api.get('/vehicles')
-      vehicles.value = data.data || []
+      vehicles.value = (data.data || []).filter(v => v.owner_id != null)
       return { success: true, data: vehicles.value }
     } catch (err) {
       error.value = err.response?.data?.message || err.message

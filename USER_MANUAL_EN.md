@@ -14,6 +14,7 @@
 4. [Managing Employees](#4-managing-employees)
 5. [Managing Vehicles](#5-managing-vehicles)
 6. [Managing Technicians](#6-managing-technicians)
+6a. [Maintenance Reports (Owner View)](#6a-maintenance-reports-owner-view)
 7. [Contracts](#7-contracts)
 8. [Payments](#8-payments)
 9. [GPS Tracking](#9-gps-tracking)
@@ -25,6 +26,7 @@
 15. [Technician Portal](#15-technician-portal)
 16. [Customer Portal](#16-customer-portal)
 17. [Settings](#17-settings)
+17a. [Superadmin Panel](#17a-superadmin-panel)
 18. [Language Support](#18-language-support)
 19. [Troubleshooting](#19-troubleshooting)
 
@@ -185,15 +187,68 @@ See [Section 11](#11-employee-document-management) for detailed document managem
 
 1. Go to **Technicians** from the sidebar
 2. Click **"Add Technician"**
-3. Fill in their details (name, phone, email, specialty)
+3. Fill in their details:
+   - **Name** — Technician's full name
+   - **Phone** — Contact number
+   - **Email** — Email address
+   - **Specialty** — Area of expertise (e.g., Engine, Brakes, Electrical)
+   - **Can Drive** — Toggle if the technician can also drive vehicles
 4. Click **"Create"**
 
 ### Technician Actions
 
 - **View assigned maintenance reports**
 - **Create maintenance reports** with itemized parts and labor costs
-- **Mark maintenance as complete**
-- **Update repair status**
+- **Submit reports** for owner review and approval
+- **Track report status** through the workflow pipeline
+
+### Default Passwords
+
+When a technician is created, their default password is their **full name in uppercase with no spaces** (e.g., "KHAMISIALLY"). Share this password securely and advise them to change it after first login.
+
+### Restoring & Deleting Technicians
+
+- **Restore** — Restore a previously deleted technician and their account
+- **Force Delete** — Permanently remove the technician record (user account preserved if they can also drive)
+
+---
+
+## 6a. Maintenance Reports (Owner View)
+
+Owners can view and manage all maintenance reports submitted by technicians.
+
+### Viewing Reports
+
+1. Go to **Maintenance** from the sidebar
+2. Browse the list of all reports with status badges
+3. Use the **search bar** to filter by report number, vehicle, or technician
+4. Use the **status filter** to view specific workflow stages
+5. Click any row to view full details
+
+### Report Details
+
+The report detail page shows:
+- **Workflow Progress Bar** — 6-step visual pipeline
+- **Vehicle Information** — Name, type, color, chassis number
+- **Technician Info** — Who submitted the report
+- **Priority & Costs** — Priority level, estimated cost, actual cost, mileage
+- **Description & Issues** — Detailed notes from the technician
+- **Parts & Services** — Itemized list with costs
+- **Technician Signature** — Digital signature from the submitting technician
+
+### Approving Maintenance
+
+1. **Review** the report details and items
+2. Click **"Confirm Service"** to approve the maintenance
+3. Click **"Verify & Sign"** to sign and finalize
+4. Draw your signature on the canvas
+5. Click **"Verify & Sign"** to submit
+6. An animated sending indicator shows the report being sent back to the technician
+7. The report auto-completes after 2 minutes
+
+### Owner Signature
+
+When you verify a report, your digital signature is recorded with a timestamp. The technician can see your signature on their report view, confirming your approval.
 
 ---
 
@@ -458,16 +513,50 @@ Technicians have a dedicated portal for maintenance management.
 
 - **Assigned Reports** — Maintenance tasks assigned to you
 - **Report History** — Past completed reports
+- **Dashboard Stats** — Total reports, pending, completed counts
 
 ### Creating Maintenance Reports
 
 1. Go to **Create Report**
 2. Select the vehicle
-3. Add maintenance items:
+3. Fill in report details:
+   - **Title** — Brief description of the issue
+   - **Priority** — Low, Medium, High, or Critical
+   - **Description** — Detailed description of the maintenance issue
+   - **Diagnosed Issues** — Problems identified during inspection
+   - **Mileage** — Current vehicle mileage
+   - **Estimated Cost** — Estimated repair cost
+4. Add maintenance items (parts and services):
    - **Part Name** — What was repaired/replaced
+   - **Category** — Engine, brake, tire, electrical, etc.
    - **Cost** — Part and labor cost
-   - **Notes** — Description of work done
-4. Submit the report
+   - **Quantity** — Number of items
+   - **Required** — Mark if essential for contract compliance
+5. **Sign** the report with your digital signature
+6. Submit the report
+
+### Maintenance Workflow
+
+Reports follow a structured approval pipeline:
+
+```
+Submitted → Viewed → Processing → Confirmed → Verified → Completed
+```
+
+| Step | Who | Description |
+|------|-----|-------------|
+| Submitted | Technician | Report submitted with technician's signature |
+| Viewed | Owner | Owner has opened and reviewed the report |
+| Processing | System | Auto-transitioned 1 minute after being viewed |
+| Confirmed | Owner | Owner confirms the service is approved |
+| Verified | Owner | Owner signs to verify work is satisfactory |
+| Completed | System | Auto-transitioned 2 minutes after verification |
+
+### What Technicians See
+
+- **Workflow Progress Bar** — Visual indicator of report status
+- **Owner Signature** — When the owner verifies, their signature appears on the report
+- **Status Updates** — Real-time status as the owner reviews
 
 ---
 
@@ -524,6 +613,45 @@ Customers can book rides and make payments.
 4. Enter new password
 5. Confirm new password
 6. Click **"Update"**
+
+### Force Password Change
+
+When an owner logs in for the first time or after a password reset, they will be prompted to change their password before accessing the dashboard.
+
+---
+
+## 17a. Superadmin Panel
+
+Superadmins have full system access to manage all owners and monitor the platform.
+
+### Dashboard
+
+- **Total Owners** — Number of registered business owners
+- **Total Users** — All users across all roles
+- **Revenue Statistics** — Platform-wide earnings
+- **Recent Activity** — Latest registrations and actions
+
+### Managing Owners
+
+1. Go to **Manage Owners** from the sidebar
+2. View all registered owners with their business details
+3. **Toggle Verification** — Verify or unverify an owner's account
+4. **Toggle Status** — Activate or deactivate an owner
+5. **Reset Password** — Reset an owner's password to their name in uppercase (e.g., "VICTORZACHARIA")
+6. **Edit Owner** — Update owner name, email, phone, or business details
+7. **Delete Owner** — Soft-delete an owner (can be restored)
+
+### Cleanup Tool
+
+The Cleanup tool helps manage soft-deleted records:
+
+1. Go to **Cleanup** from the sidebar
+2. View summary cards showing deleted owners, employees, and users
+3. Browse per-type tables of deleted records
+4. **Force Delete** — Permanently remove a single record
+5. **Purge All** — Permanently remove all records of a type
+
+> **Safety:** The system will not delete a user account if other active records (owners, employees) still reference it.
 
 ---
 

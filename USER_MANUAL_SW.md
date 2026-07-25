@@ -14,6 +14,7 @@
 4. [Kusimamia Wafanyakazi](#4-kusimamia-wafanyakazi)
 5. [Kusimamia Magari](#5-kusimamia-magari)
 6. [Kusimamia Wataalamu](#6-kusimamia-wataalamu)
+6a. [Ripoti za Matengenezo (Mtazamo wa Mmiliki)](#6a-ripoti-za-matengenezo-mtazamo-wa-mmiliki)
 7. [Mikataba](#7-mikataba)
 8. [Malipo](#8-malipo)
 9. [Ufuatiliaji wa GPS](#9-ufuatiliaji-wa-gps)
@@ -25,6 +26,7 @@
 15. [Dira ya Mtaalamu](#15-dira-ya-mtaalamu)
 16. [Dira ya Mteja](#16-dira-ya-mteja)
 17. [Mipangilio](#17-mipangilio)
+17a. [Paneli ya Msimamizi Mkuu](#17a-paneli-ya-msimamizi-mkuu)
 18. [Msaada wa Lugha](#18-msaada-wa-lugha)
 19. [Utatuzi wa Matatizo](#19-utatuzi-wa-matatizo)
 
@@ -134,7 +136,7 @@ Dashibodi ya Mmiliki ndio paneli yako kuu ya udhibiti. Baada ya kuingia kama mmi
 ### Hali ya Mfanyakazi
 
 - **Hai** — Mfanyakazi anaweza kuingia na kufikia dira yake
-- **Haihivyo** — Akaunti ya mfanyakazi imewashwa
+- **Haijatumika** — Akaunti ya mfanyakazi imewashwa
 
 Badilisha hali kwa kubofya kitufe cha hali kwenye kadi ya mfanyakazi.
 
@@ -168,7 +170,7 @@ Angalia [Sehemu 11](#11-usimamizi-wa-hati-za-wafanyakazi) kwa usimamizi wa hati.
 | Inapatikana | Tayari kwa ukodaji |
 | Imekodwa | Chini ya mkataba sasa hivi |
 | Matengenezo | Inarekebishwa/Inatengenezwa |
-| Haihivyo | Imeondolewa kwenye msafara |
+| Haijatumika | Imeondolewa kwenye msafara |
 
 ### Kupanga Matengenezo
 
@@ -185,15 +187,68 @@ Angalia [Sehemu 11](#11-usimamizi-wa-hati-za-wafanyakazi) kwa usimamizi wa hati.
 
 1. Nenda kwenye **Wataalamu** kutoka kwenye upande
 2. Bofya **"Add Technician"**
-3. Jaza maelezo yao (jina, simu, barua pepe, utaalamu)
+3. Jaza maelezo yao:
+   - **Jina** — Jina kamili la mtaalamu
+   - **Simu** — Nambari ya mawasiliano
+   - **Barua Pepe** — Anwani ya barua pepe
+   - **Utaalamu** — Eneo la utaalamu (mf. injini, breki, umeme)
+   - **Anaweza Kuendesha** — Washa ikiwa mtaalamu anaweza pia kuendesha magari
 4. Bofya **"Create"**
 
 ### Vitendo vya Mtaalamu
 
 - **Kuona ripoti za matengenezo zilizopewa**
-- **Kuunda ripoti za matengenezo** gharama za sehemu na kazi
-- **Kumaliza matengenezo** kama yamekamilika
-- **Kusasisha hali ya ukarabati**
+- **Kuunda ripoti za matengenezo** na gharama za sehemu na kazi
+- **Kuwasilisha ripoti** kwa ukaguzi na idhini ya mmiliki
+- **Kufuatilia hali ya ripoti** kupitia mtiririko wa kazi
+
+### Nenosiri Chaguo-msingi
+
+Mtaalamu anapoundwa, nenosiri chaguo-msingi ni **jina lake lake kwa herufi kubwa bila nafasi** (mf. "KHAMISIALLY"). Shiriki nenosiri hili kwa usalama na ushauri mfanyakazi ailibilishe baada ya kuingia mara ya kwanza.
+
+### Kurejesha na Kufuta Wataalamu
+
+- **Rejesha** — Rejesha mtaalamu aliyefutwa na akaunti yake
+- **Futa Kabisa** — Ondoa kumbukumbu ya mtaalamu kabisa (akaunti ya mtumiaji inahifadhiwa ikiwa anaweza pia kuendesha)
+
+---
+
+## 6a. Ripoti za Matengenezo (Mtazamo wa Mmiliki)
+
+Wamiliki wanaweza kuona na kusimamia ripoti zote za matengenezo zilizowasilishwa na wataalamu.
+
+### Kuona Ripoti
+
+1. Nenda kwenye **Matengenezo** kutoka kwenye upande
+2. Vinjari orodha ya ripoti zote na viashiria vya hali
+3. Tumia **mtafutaji** kuchuja kwa nambari ya ripoti, gari, au mtaalamu
+4. Tumia **kichaguzi cha hali** kuona hatua maalum za mtiririko
+5. Bofya safu yoyote kuona maelezo kamili
+
+### Maelezo ya Ripoti
+
+Ukurasa wa maelezo ya ripoti unaonyesha:
+- **Upendo wa Mtiririko wa Kazi** — Kiashiria cha kuona cha hatua 6
+- **Taarifa za Gari** — Jina, aina, rangi, nambari ya ushindi
+- **Taarifa za Mtaalamu** — Nani aliwasilisha ripoti
+- **Kipaumbele na Gharama** — Kipaumbele, gharama inayotarajiwa, gharama halisi, kilomita
+- **Maelezo na Matatizo** — Maelezo ya kina kutoka kwa mtaalamu
+- **Sehemu na Huduma** — Orodha ya vitengo gharama kwa gharama
+- **Sahihi ya Mtaalamu** — Sahihi ya kidijitali kutoka kwa mtaalamu aliwasilishaye
+
+### Kuthibitisha Matengenezo
+
+1. **Kagua** maelezo ya ripoti na vitengo
+2. Bofya **"Thibitisha Huduma"** kuidhinisha matengenezo
+3. Bofya **"Kagua na Sahihi"** kusaini na kukamilisha
+4. Chora sahihi yako kwenye kanzasi
+5. Bofya **"Kagua na Sahihi"** kuwasilisha
+6. Kiashiria cha ujumbe wa kupelekwa kinaonyesha ripoti inapelekwa kwa mtaalamu
+7. Ripoti inakamilika kiotomatiki baada ya dakika 2
+
+### Sahihi ya Mmiliki
+
+Unapokagua ripoti, sahihi yako ya kidijitali inarekodiwa na muda. Mtaalamu anaweza kuona sahihi yako kwenye mtazamo wa ripoti yake, ikithibitisha idhini yako.
 
 ---
 
@@ -272,7 +327,7 @@ Dashibodi ya Malipo inaonyesha:
 - Jumla ya malipo yaliyopokelewa
 - Malipo kwa njia (pesa za simu dhidi ya benki)
 - Mwelekeo wa malipo ya kila mwezi
- | Mikopo iliyobaki
+- Mikopo iliyobaki
 
 ---
 
@@ -407,7 +462,7 @@ Kila sehemu inasaidia:
 - **Maelezo** — Maandishi ya mwili
 - **Picha** — Pakia picha kwa sehemu
 - **Uonekano** — Onyesha/ficha sehemu
-- **Siri** — Buruta kusasisha siri
+- **Mpangilio** — Buruta kusasisha mpangilio
 
 ---
 
@@ -458,16 +513,50 @@ Wataalamu wana dira maalum ya usimamizi wa matengenezo.
 
 - **Ripoti Zilizopewa** — Kazi za matengenezo zilizokupewa
 - **Historia ya Ripoti** — Ripoti zilizokamilika
+- **Takwimu za Dashibodi** — Jumla ya ripoti, zinazosubiri, zilizokamilika
 
 ### Kuunda Ripoti za Matengenezo
 
 1. Nenda kwenye **Create Report**
 2. Chagua gari
-3. Ongeza vitengo vya matengenezo:
+3. Jaza maelezo ya ripoti:
+   - **Kichwa** — Maelezo fupi ya tatizo
+   - **Kipaumbele** — Chini, Wastani, Juu, au Hatari
+   - **Maelezo** — Maelezo ya kina ya tatizo la matengenezo
+   - **Matatizo Yaliyogunduliwa** — Matatizo yaliyopatikana wakati wa ukaguzi
+   - **Kilomita** — Kilomita za sasa za gari
+   - **Gharama Inayotarajiwa** — Gharama inayotarajiwa ya ukarabati
+4. Ongeza vitengo vya matengenezo (sehemu na huduma):
    - **Jina la Sehemu** — Nini kilorekebishwa/kubadilishwa
+   - **Aina** — Injini, breki, tairi, umeme, nk
    - **Gharama** — Gharama za sehemu na kazi
-   - **Vidokezo** — Maelezo ya kazi iliyofanywa
-4. Wasilisha ripoti
+   - **Wingi** — Idadi ya vitengo
+   - **Inahitajika** — Weka ikiwa ni muhimu kwa kufuata mkataba
+5. **Sahihisha** ripoti na sahihi yako ya kidijitali
+6. Wasilisha ripoti
+
+### Mtiririko wa Kazi wa Matengenezo
+
+Ripoti zinafuata mtiririko ulioratibiwa wa idhini:
+
+```
+Imewasilishwa → Imeonekana → Inachakatwa → Imethibitishwa → Imekaguliwa → Imekamilika
+```
+
+| Hatua | Nani | Maelezo |
+|-------|------|---------|
+| Imewasilishwa | Mtaalamu | Ripoti imewasilishwa na sahihi ya mtaalamu |
+| Imeonekana | Mmiliki | Mmiliki amefungua na kukagua ripoti |
+| Inachakatwa | Mfumo | Imebadilika kiotomatiki dakika 1 baada ya kuonekana |
+| Imethibitishwa | Mmiliki | Mmiliki anathibitisha huduma imaidhinishwa |
+| Imekaguliwa | Mmiliki | Mmiliki anasaini kuthibishwa kazi imeridhisha |
+| Imekamilika | Mfumo | Imekamilika kiotomatiki dakika 2 baada ya ukaguzi |
+
+### Mtaalamu Anaona Nini
+
+- **Upendo wa Mtiririko wa Kazi** — Kiashiria cha kuona cha hali ya ripoti
+- **Sahihi ya Mmiliki** — Mmiliki anapokagua, sahihi yake inaonekana kwenye ripoti
+- **Sasisho za Hali** — Hali ya wakati halisi mmiliki anapokagua
 
 ---
 
@@ -482,7 +571,7 @@ Wateja wanaweza kuomba usafiri na kulipa.
 - **Madereva wa Karibu** — Tafuta madereva walio karibu
 - **Lipa** — Lipa kupitia pesa za simu au uhamisho wa benki
 - **Safari Zangu** — Angalia historia ya safari
-- **Wacha Mapendano** — Kadiria magari na madereva
+- **Acha Maoni** — Kadiria magari na madereva
 
 ### Kuomba Safari
 
@@ -524,6 +613,45 @@ Wateja wanaweza kuomba usafiri na kulipa.
 4. Weka nenosiri jipya
 5. Thibitisha nenosiri jipya
 6. Bofya **"Update"**
+
+### Lazima Kubadilisha Nenosiri
+
+Mmiliki anapofungua kwa mara ya kwanza au baada ya kusawazisha nenosiri, ataombwa kubadilisha nenosiri kabla ya kufikia dashibodi.
+
+---
+
+## 17a. Paneli ya Msimamizi Mkuu
+
+Msimamizi mkuu ana ufikiaji kamili wa mfumo kusimamia wamiliki wote na kufuatilia jukwaa.
+
+### Dashibodi
+
+- **Wamiliki Wote** — Idadi ya wamiliki waliojisajili
+- **Watumiaji Wote** — Watumiaji wote kwa majukumu yote
+- **Takwimu za Mapato** — Mapato ya jumla ya jukwaa
+- **Shughuli za Hivi Karibuni** — Usajili na matendo ya hivi karibuni
+
+### Kusimamia Wamiliki
+
+1. Nenda kwenye **Simamia Wamiliki** kutoka kwenye upande
+2. Orodha ya wamiliki wote kwa maelezo ya biashara
+3. **Badilisha Uthibitisho** — Thibitisha au usiache akaunti ya mmiliki
+4. **Badilisha Hali** — Washa au zima mmiliki
+5. **Sawazisha Nenosiri** — Rudisha nenosiri la mmiliki jina lake kwa herufi kubwa (mf. "VICTORZACHARIA")
+6. **Hariri Mmiliki** — Sasisha jina, barua pepe, simu, au maelezo ya biashara
+7. **Futa Mmiliki** — Futa kwa urahisi mmiliki (inaweza kurejeshwa)
+
+### Kifaa cha Kusafisha
+
+Kifaa cha Kusafisha kinasaidia kusimamia kumbukumbu zilizofutwa:
+
+1. Nenda kwenye **Kusafisha** kutoka kwenye upande
+2. Angalia kadi za muhtasari zinaonyesha wamiliki, wafanyakazi, na watumiaji waliyofutwa
+3. Vinjari meza za kila aina za kumbukumbu zilizofutwa
+4. **Futa Kabisa** — Ondoa kumbukumbu moja kabisa
+5. **Ondoa Zote** — Ondoa kumbukumbu zote za aina fulani
+
+> **Ulinzi:** Mfumo hautafuta akaunti ya mtumiaji ikiwa kumbukumbu zingine zinatumia (wamiliki, wafanyakazi bado wanaonyesha).
 
 ---
 

@@ -183,6 +183,8 @@ const managementNav = [
   { to: "/owner/vehicles", label: "nav.vehicles", icon: "fa-solid fa-car" },
   { to: "/owner/employees", label: "nav.drivers", icon: "fa-solid fa-users" },
   { to: "/owner/technicians", label: "nav.technicians", icon: "fa-solid fa-user-gear" },
+  { to: "/owner/maintenance", label: "nav.maintenance", icon: "fa-solid fa-wrench" },
+  { to: "/owner/owner-reports", label: "nav.ownerReports", icon: "fa-solid fa-clipboard-list" },
   { to: "/owner/payments", label: "nav.payments", icon: "fa-solid fa-money-bill-wave" },
   { to: "/owner/reports", label: "nav.reports", icon: "fa-solid fa-chart-bar" },
   { to: "/owner/chat", label: "nav.messages", icon: "fa-solid fa-comments", get badge() { return messageStore.unreadCount || null } },

@@ -16,6 +16,11 @@ const router = createRouter({
       meta: { title: 'Vehicles', public: true }
     },
     { 
+      path: '/business/:slug', 
+      component: () => import('../views/BusinessPage.vue'),
+      meta: { title: 'Business', public: true }
+    },
+    { 
       path: '/about', 
       component: () => import('../views/About.vue'),
       meta: { title: 'About', public: true }
@@ -55,6 +60,12 @@ const router = createRouter({
         { path: 'gps', component: () => import('../views/owner/GpsTracking.vue'), meta: { title: 'GPS Tracking' } },
         { path: 'site-content', component: () => import('../views/owner/SiteContent.vue'), meta: { title: 'Site Content', role: 'owner' } },
         { path: 'chat', component: () => import('../views/ChatView.vue'), meta: { title: 'Messages' } },
+        { path: 'maintenance', component: () => import('../views/owner/OwnerMaintenance.vue'), meta: { title: 'Maintenance Reports' } },
+        { path: 'maintenance/:id', component: () => import('../views/owner/OwnerReportDetail.vue'), meta: { title: 'Report Detail' } },
+        { path: 'owner-reports', component: () => import('../views/owner/OwnerReports.vue'), meta: { title: 'Owner Reports' } },
+        { path: 'owner-reports/create', component: () => import('../views/owner/OwnerReportForm.vue'), meta: { title: 'Create Report' } },
+        { path: 'owner-reports/:id', component: () => import('../views/owner/OwnerReportDetailPage.vue'), meta: { title: 'Owner Report Detail' } },
+        { path: 'owner-reports/:id/edit', component: () => import('../views/owner/OwnerReportForm.vue'), meta: { title: 'Edit Report' } },
       ]
     },
     
