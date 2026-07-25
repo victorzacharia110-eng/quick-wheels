@@ -1082,7 +1082,9 @@
     "replyPreview": "Onyesho la Jibu",
     "textAnswerPlaceholder": "Jibu litaonekana hapa...",
     "numberAnswerPlaceholder": "0",
-    "no": "Hapana"
+    "no": "Hapana",
+    "yourAnswer": "Jibu Lako",
+    "typeYourAnswer": "Andika jibu lako..."
   },
   "techOwnerReports": {
     "title": "Ripoti za Mmiliki",

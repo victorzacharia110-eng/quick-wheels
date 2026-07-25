@@ -144,8 +144,27 @@
                   <input v-model="q.optionsRaw" type="text" :placeholder="$t('ownerReports.optionsPlaceholder')" />
                 </div>
               </div>
-              <!-- Answer Preview -->
-              <div class="answer-preview">
+              <!-- Self Mode: Live Answer Field -->
+              <div v-if="fillMode === 'self'" class="answer-field">
+                <div class="answer-label">
+                  <font-awesome-icon icon="fa-solid fa-pen" />
+                  {{ $t('ownerReports.yourAnswer') }}
+                </div>
+                <input v-if="q.type === 'text'" v-model="q.answer" type="text" class="live-answer-input" :placeholder="$t('ownerReports.typeYourAnswer')" />
+                <textarea v-else-if="q.type === 'textarea'" v-model="q.answer" class="live-answer-input live-textarea" rows="3" :placeholder="$t('ownerReports.typeYourAnswer')"></textarea>
+                <input v-else-if="q.type === 'number'" v-model="q.answer" type="number" class="live-answer-input" :placeholder="$t('ownerReports.typeYourAnswer')" />
+                <select v-else-if="q.type === 'select'" v-model="q.answer" class="live-answer-input">
+                  <option value="">{{ $t('ownerReports.selectAnswer') }}</option>
+                  <option v-for="opt in (q.optionsRaw || '').split(',').map(o => o.trim()).filter(Boolean)" :key="opt" :value="opt">{{ opt }}</option>
+                </select>
+                <label v-else-if="q.type === 'checkbox'" class="checkbox-label live-checkbox">
+                  <input type="checkbox" :checked="q.answer === 'yes'" @change="q.answer = $event.target.checked ? 'yes' : 'no'" />
+                  {{ $t('ownerReports.yes') }} / {{ $t('ownerReports.no') }}
+                </label>
+              </div>
+
+              <!-- Technician Mode: Preview Only -->
+              <div v-else class="answer-preview">
                 <div class="preview-label">
                   <font-awesome-icon icon="fa-solid fa-eye" />
                   {{ $t('ownerReports.replyPreview') }}
@@ -283,6 +302,7 @@ async function saveReport() {
         type: q.type,
         options: q.type === 'select' && q.optionsRaw ? q.optionsRaw.split(',').map(o => o.trim()).filter(Boolean) : null,
         required: q.required,
+        ...(fillMode.value === 'self' && q.answer ? { answer: q.answer } : {}),
       })),
     }
 
@@ -455,7 +475,45 @@ onMounted(() => { fetchDropdowns(); loadReport() })
 .section-hint { font-size: 0.82rem; color: rgba(255,255,255,0.35); margin: -8px 0 12px; }
 .empty-questions { text-align: center; padding: 40px; color: rgba(255,255,255,0.3); }
 
-/* Answer Preview */
+/* Live Answer Field (Self Mode) */
+.answer-field {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0,229,255,0.15);
+}
+.answer-label {
+  font-size: 0.72rem;
+  color: #00E5FF;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 600;
+}
+.live-answer-input {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(0,229,255,0.03);
+  border: 1px solid rgba(0,229,255,0.15);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 0.88rem;
+  font-family: 'Space Grotesk', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.live-answer-input:focus {
+  border-color: rgba(0,229,255,0.45);
+  background: rgba(0,229,255,0.05);
+}
+.live-answer-input::placeholder { color: rgba(255,255,255,0.25); }
+.live-textarea { min-height: 70px; resize: vertical; line-height: 1.5; }
+.live-checkbox { color: rgba(255,255,255,0.6); }
+.live-checkbox input[type="checkbox"] { accent-color: #00E5FF; }
+
+/* Answer Preview (Technician Mode) */
 .answer-preview {
   margin-top: 10px;
   padding-top: 10px;

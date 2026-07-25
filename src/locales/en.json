@@ -1170,7 +1170,9 @@
     "replyPreview": "Reply Preview",
     "textAnswerPlaceholder": "Answer will appear here...",
     "numberAnswerPlaceholder": "0",
-    "no": "No"
+    "no": "No",
+    "yourAnswer": "Your Answer",
+    "typeYourAnswer": "Type your answer..."
   },
   "techOwnerReports": {
     "title": "Owner Reports",

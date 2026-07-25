@@ -1105,7 +1105,9 @@
     "replyPreview": "Reply Preview",
     "textAnswerPlaceholder": "Answer will appear here...",
     "numberAnswerPlaceholder": "0",
-    "no": "No"
+    "no": "No",
+    "yourAnswer": "Sua Resposta",
+    "typeYourAnswer": "Digite sua resposta..."
   },
   "techOwnerReports": {
     "title": "Owner Reports",

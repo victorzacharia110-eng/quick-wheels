@@ -1105,7 +1105,9 @@
     "replyPreview": "Reply Preview",
     "textAnswerPlaceholder": "Answer will appear here...",
     "numberAnswerPlaceholder": "0",
-    "no": "No"
+    "no": "No",
+    "yourAnswer": "आपका उत्तर",
+    "typeYourAnswer": "अपना उत्तर टाइप करें..."
   },
   "techOwnerReports": {
     "title": "Owner Reports",
