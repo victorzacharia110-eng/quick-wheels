@@ -32,24 +32,31 @@
               <option v-for="t in technicians" :key="t.id" :value="t.id">{{ t.name }}</option>
             </select>
           </div>
-          <div class="form-group full-width">
-            <label>{{ $t('ownerReports.description') }}</label>
-            <textarea v-model="form.description" rows="3" :placeholder="$t('ownerReports.descriptionPlaceholder')"></textarea>
-          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3><font-awesome-icon icon="fa-solid fa-pen-to-square" /> {{ $t('ownerReports.technicianFindings') }}</h3>
+        <p class="section-hint">{{ $t('ownerReports.technicianFindingsHint') }}</p>
+        <div class="form-group full-width">
+          <textarea v-model="form.description" rows="8" class="large-notes" :placeholder="$t('ownerReports.findingsPlaceholder')"></textarea>
         </div>
       </div>
 
       <div class="form-section">
         <div class="section-header">
-          <h3>{{ $t('ownerReports.questions') }} ({{ form.questions.length }})</h3>
+          <div>
+            <h3>{{ $t('ownerReports.questions') }} ({{ form.questions.length }})</h3>
+            <p class="section-hint">{{ $t('ownerReports.questionsOptional') }}</p>
+          </div>
           <button type="button" class="btn-add" @click="addQuestion">
             <font-awesome-icon icon="fa-solid fa-plus" /> {{ $t('ownerReports.addQuestion') }}
           </button>
         </div>
 
         <div v-if="form.questions.length === 0" class="empty-questions">
-          <font-awesome-icon icon="fa-solid fa-question-circle" size="2x" />
-          <p>{{ $t('ownerReports.noQuestions') }}</p>
+          <font-awesome-icon icon="fa-solid fa-circle-question" size="2x" />
+          <p>{{ $t('ownerReports.noQuestionsHint') }}</p>
         </div>
 
         <TransitionGroup name="question" tag="div" class="questions-list">
@@ -288,6 +295,23 @@ onMounted(() => { fetchDropdowns(); loadReport() })
 .question-body { display: flex; flex-direction: column; gap: 12px; }
 .question-meta { display: flex; gap: 12px; }
 .checkbox-label { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: rgba(255,255,255,0.5); cursor: pointer; }
+.section-hint { font-size: 0.82rem; color: rgba(255,255,255,0.35); margin: -8px 0 12px; }
+.large-notes {
+  width: 100%;
+  min-height: 160px;
+  padding: 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 0.9rem;
+  font-family: 'Space Grotesk', sans-serif;
+  line-height: 1.6;
+  resize: vertical;
+  outline: none;
+}
+.large-notes:focus { border-color: rgba(0,229,255,0.3); }
+.large-notes::placeholder { color: rgba(255,255,255,0.25); }
 .empty-questions { text-align: center; padding: 40px; color: rgba(255,255,255,0.3); }
 .form-actions { display: flex; justify-content: flex-end; gap: 12px; padding-top: 16px; }
 
