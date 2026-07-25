@@ -188,6 +188,7 @@ const mainNav = [
 const workshopNav = [
   { to: "/technician/reports", label: "maintenance.reports", icon: "fa-solid fa-clipboard-list" },
   { to: "/technician/reports/create", label: "maintenance.createReport", icon: "fa-solid fa-plus-circle" },
+  { to: "/technician/owner-reports", label: "techOwnerReports.nav", icon: "fa-solid fa-file-lines" },
   { to: "/technician/chat", label: "nav.messages", icon: "fa-solid fa-comments", get badge() { return messageStore.unreadCount || null } },
 ];
 </script>

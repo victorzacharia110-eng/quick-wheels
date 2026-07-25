@@ -3,13 +3,21 @@ import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAuthStore } from '@/stores/auth'
 import { useMaintenanceStore } from '@/stores/maintenance'
+import api from '@/composables/api'
 
 const authStore = useAuthStore()
 const maintenanceStore = useMaintenanceStore()
 const { t } = useI18n()
 
+const pendingOwnerReports = ref([])
+
 onMounted(async () => {
   await maintenanceStore.fetchDashboard()
+  try {
+    const { data } = await api.get('/technician/owner-reports')
+    const all = data.data?.data || data.data || []
+    pendingOwnerReports.value = all.filter(r => r.status === 'pending_technician')
+  } catch (e) { /* backend may not have endpoint yet */ }
 })
 
 function getPriorityIcon(priority) {
@@ -129,6 +137,43 @@ function getPriorityIcon(priority) {
             <span class="status-badge" :style="{ background: maintenanceStore.getStatusColor(report.status) + '22', color: maintenanceStore.getStatusColor(report.status) }">
               {{ report.status_label }}
             </span>
+          </div>
+        </RouterLink>
+      </div>
+    </div>
+
+    <!-- Pending Owner Reports -->
+    <div class="owner-reports-section" v-if="pendingOwnerReports.length">
+      <div class="section-header">
+        <h3 class="section-title">
+          <font-awesome-icon icon="fa-solid fa-file-lines" style="color: #6C63FF;" />
+          {{ $t('techOwnerReports.pendingFromOwner') }} ({{ pendingOwnerReports.length }})
+        </h3>
+        <RouterLink to="/technician/owner-reports" class="view-all-link">
+          {{ $t('techOwnerReports.viewAll') }} <font-awesome-icon icon="fa-solid fa-arrow-right" />
+        </RouterLink>
+      </div>
+      <div class="owner-reports-list">
+        <RouterLink
+          v-for="report in pendingOwnerReports"
+          :key="report.id"
+          :to="`/technician/owner-reports/${report.id}`"
+          class="owner-report-item"
+        >
+          <div class="or-left">
+            <div class="or-title">{{ report.title }}</div>
+            <div class="or-meta">
+              <span v-if="report.vehicle">
+                <font-awesome-icon icon="fa-solid fa-car" /> {{ report.vehicle.name }}
+              </span>
+              <span>
+                <font-awesome-icon icon="fa-solid fa-circle-question" />
+                {{ (report.questions || []).length }} {{ $t('techOwnerReports.questions') }}
+              </span>
+            </div>
+          </div>
+          <div class="or-action">
+            <font-awesome-icon icon="fa-solid fa-arrow-right" />
           </div>
         </RouterLink>
       </div>
@@ -272,6 +317,57 @@ function getPriorityIcon(priority) {
   flex-direction: column;
   gap: 8px;
 }
+
+/* Owner Reports Section */
+.owner-reports-section {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(108, 99, 255, 0.15);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-top: 24px;
+}
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.view-all-link {
+  font-size: 0.82rem;
+  color: #6C63FF;
+  text-decoration: none;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.view-all-link:hover { text-decoration: underline; }
+.owner-reports-list { display: flex; flex-direction: column; gap: 8px; }
+.owner-report-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 10px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.owner-report-item:hover {
+  background: rgba(108, 99, 255, 0.08);
+  border-color: rgba(108, 99, 255, 0.2);
+}
+.or-title { font-size: 0.9rem; font-weight: 600; color: #fff; margin-bottom: 4px; }
+.or-meta {
+  display: flex; gap: 12px; font-size: 0.75rem; color: rgba(255,255,255,0.4);
+}
+.or-meta span { display: flex; align-items: center; gap: 4px; }
+.or-action { color: #6C63FF; font-size: 0.9rem; }
 .report-item {
   display: flex;
   justify-content: space-between;

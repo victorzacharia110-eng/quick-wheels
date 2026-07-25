@@ -110,6 +110,8 @@ const router = createRouter({
         { path: 'reports/create', component: () => import('../views/technician/CreateReport.vue'), meta: { title: 'Create Report' } },
         { path: 'create-report', redirect: '/technician/reports/create' },
         { path: 'reports/:id', component: () => import('../views/technician/ReportDetail.vue'), meta: { title: 'Report Detail' } },
+        { path: 'owner-reports', component: () => import('../views/technician/TechnicianOwnerReports.vue'), meta: { title: 'Owner Reports' } },
+        { path: 'owner-reports/:id', component: () => import('../views/technician/TechnicianOwnerReportDetail.vue'), meta: { title: 'Owner Report Detail' } },
         { path: 'chat', component: () => import('../views/ChatView.vue'), meta: { title: 'Messages' } },
       ]
     },
