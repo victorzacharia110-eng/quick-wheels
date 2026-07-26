@@ -623,7 +623,11 @@
     "cheque": "شيك",
     "all": "الكل",
     "refunded": "مسترجع",
-    "rejected": "مرفوض"
+    "rejected": "مرفوض",
+    "requested": "تم الطلب",
+    "accepted": "تم القبول",
+    "en_route": "السائق في الطريق",
+    "in_progress": "جاري التنفيذ"
   },
   "settings": {
     "title": "الإعدادات",
@@ -702,7 +706,17 @@
     "noVehiclesAvailable": "لا توجد مركبات متاحة الآن",
     "bookFirstRide": "احجز رحلتك الأولى",
     "bookOne": "احجز واحدة",
-    "welcomeBack": "مرحباً بعودتك"
+    "welcomeBack": "مرحباً بعودتك",
+    "rideBookingSubtitle": "أدخل وجهتك وسنجد لك رحلة",
+    "destination": "الوجهة",
+    "enterPickup": "أدخل موقع الالتقاط",
+    "enterDestination": "إلى أين تريد الذهاب؟",
+    "scheduleForLater": "جدولة لوقت لاحق",
+    "rideDate": "تاريخ الرحلة",
+    "rideTime": "وقت الرحلة",
+    "requestRide": "طلب رحلة",
+    "rideRequested": "تم طلب الرحلة! جارٍ البحث عن سائق...",
+    "noDriverAssigned": "لم يتم تعيين سائق بعد"
   },
   "profile": {
     "title": "ملفي الشخصي",

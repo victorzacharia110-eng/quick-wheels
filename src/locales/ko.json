@@ -623,7 +623,11 @@
     "cheque": "수표",
     "all": "전체",
     "refunded": "환불됨",
-    "rejected": "거부됨"
+    "rejected": "거부됨",
+    "requested": "요청됨",
+    "accepted": "수락됨",
+    "en_route": "운전자 이동 중",
+    "in_progress": "진행 중"
   },
   "settings": {
     "title": "설정",
@@ -702,7 +706,17 @@
     "noVehiclesAvailable": "현재 이용 가능한 차량 없음",
     "bookFirstRide": "첫 라이드 예약",
     "bookOne": "예약하기",
-    "welcomeBack": "돌아오신 것을 환영합니다"
+    "welcomeBack": "돌아오신 것을 환영합니다",
+    "rideBookingSubtitle": "목적지를 입력하면 라이드를 찾아드립니다",
+    "destination": "목적지",
+    "enterPickup": "픽업 장소 입력",
+    "enterDestination": "어디로 가시나요?",
+    "scheduleForLater": "나중에 예약",
+    "rideDate": "이용일",
+    "rideTime": "이용 시간",
+    "requestRide": "라이드 요청",
+    "rideRequested": "라이드가 요청되었습니다! 운전자를 찾고 있습니다...",
+    "noDriverAssigned": "운전자 미배정"
   },
   "profile": {
     "title": "내 프로필",

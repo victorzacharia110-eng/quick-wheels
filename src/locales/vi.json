@@ -623,7 +623,11 @@
     "cheque": "Séc",
     "all": "Tất cả",
     "refunded": "Đã hoàn lại",
-    "rejected": "Đã từ chối"
+    "rejected": "Đã từ chối",
+    "requested": "Đã yêu cầu",
+    "accepted": "Đã chấp nhận",
+    "en_route": "Tài xế đang đến",
+    "in_progress": "Đang thực hiện"
   },
   "settings": {
     "title": "Cài đặt",
@@ -702,7 +706,17 @@
     "noVehiclesAvailable": "Hiện không có phương tiện nào",
     "bookFirstRide": "Đặt chuyến đi đầu tiên",
     "bookOne": "Đặt một",
-    "welcomeBack": "Chào mừng trở lại"
+    "welcomeBack": "Chào mừng trở lại",
+    "rideBookingSubtitle": "Nhập điểm đến và chúng tôi sẽ tìm chuyến đi cho bạn",
+    "destination": "Điểm đến",
+    "enterPickup": "Nhập địa điểm đón",
+    "enterDestination": "Bạn muốn đi đâu?",
+    "scheduleForLater": "Đặt lịch sau",
+    "rideDate": "Ngày đi",
+    "rideTime": "Giờ đi",
+    "requestRide": "Yêu cầu chuyến đi",
+    "rideRequested": "Chuyến đi đã được yêu cầu! Đang tìm tài xế...",
+    "noDriverAssigned": "Chưa có tài xế"
   },
   "profile": {
     "title": "Hồ sơ của tôi",

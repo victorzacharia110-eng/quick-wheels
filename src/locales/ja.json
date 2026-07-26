@@ -623,7 +623,11 @@
     "cheque": "小切手",
     "all": "すべて",
     "refunded": "返金済",
-    "rejected": "拒否済み"
+    "rejected": "拒否済み",
+    "requested": "リクエスト済み",
+    "accepted": "承認済み",
+    "en_route": "ドライバー接近中",
+    "in_progress": "進行中"
   },
   "settings": {
     "title": "設定",
@@ -702,7 +706,17 @@
     "noVehiclesAvailable": "現在利用可能な車両はありません",
     "bookFirstRide": "最初のライドを予約",
     "bookOne": "予約する",
-    "welcomeBack": "おかえりなさい"
+    "welcomeBack": "おかえりなさい",
+    "rideBookingSubtitle": "行き先を入力して、ライドを見つけます",
+    "destination": "目的地",
+    "enterPickup": "接送場所を入力",
+    "enterDestination": "どこに行きますか？",
+    "scheduleForLater": "後で予約",
+    "rideDate": "旅行日",
+    "rideTime": "旅行時間",
+    "requestRide": "ライドをリクエスト",
+    "rideRequested": "ライドをリクエストしました！ドライバーを探しています...",
+    "noDriverAssigned": "ドライバー未割当"
   },
   "profile": {
     "title": "マイプロフィール",

@@ -623,7 +623,11 @@
     "cheque": "Чек",
     "all": "Все",
     "refunded": "Возвращён",
-    "rejected": "Отклонён"
+    "rejected": "Отклонён",
+    "requested": "Запрошено",
+    "accepted": "Принято",
+    "en_route": "Водитель в пути",
+    "in_progress": "В процессе"
   },
   "settings": {
     "title": "Настройки",
@@ -702,7 +706,17 @@
     "noVehiclesAvailable": "Сейчас нет доступных ТС",
     "bookFirstRide": "Забронируйте первую поездку",
     "bookOne": "Забронировать",
-    "welcomeBack": "С возвращением"
+    "welcomeBack": "С возвращением",
+    "rideBookingSubtitle": "Введите место назначения, и мы найдём вам поездку",
+    "destination": "Назначение",
+    "enterPickup": "Место посадки",
+    "enterDestination": "Куда вы едете?",
+    "scheduleForLater": "Запланировать на позже",
+    "rideDate": "Дата поездки",
+    "rideTime": "Время поездки",
+    "requestRide": "Заказать поездку",
+    "rideRequested": "Поездка заказана! Ищем водителя...",
+    "noDriverAssigned": "Водитель не назначен"
   },
   "profile": {
     "title": "Мой профиль",

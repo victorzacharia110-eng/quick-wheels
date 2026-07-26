@@ -623,7 +623,11 @@
     "cheque": "Cheque",
     "all": "Todos",
     "refunded": "Reembolsado",
-    "rejected": "Rejeitado"
+    "rejected": "Rejeitado",
+    "requested": "Solicitado",
+    "accepted": "Aceito",
+    "en_route": "Motorista a caminho",
+    "in_progress": "Em andamento"
   },
   "settings": {
     "title": "Configurações",
@@ -702,7 +706,17 @@
     "noVehiclesAvailable": "Nenhum veículo disponível neste momento",
     "bookFirstRide": "Reserve a sua primeira viagem",
     "bookOne": "Reservar Um",
-    "welcomeBack": "Bem-vindo de volta"
+    "welcomeBack": "Bem-vindo de volta",
+    "rideBookingSubtitle": "Digite seu destino e encontraremos uma carona para você",
+    "destination": "Destino",
+    "enterPickup": "Local de coleta",
+    "enterDestination": "Para onde você vai?",
+    "scheduleForLater": "Agendar para depois",
+    "rideDate": "Data da viagem",
+    "rideTime": "Horário da viagem",
+    "requestRide": "Solicitar carona",
+    "rideRequested": "Carona solicitada! Procurando motorista...",
+    "noDriverAssigned": "Nenhum motorista atribuído"
   },
   "profile": {
     "title": "Meu Perfil",

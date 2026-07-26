@@ -148,7 +148,7 @@ const sectionFields = {
 
 function syncLocal() {
   Object.keys(local).forEach(section => {
-    local[section] = { ...(store.contents[section] || {}) }
+    local[section] = { ...store.contents[section] }
   })
 }
 
@@ -157,7 +157,7 @@ watch(() => store.contents, syncLocal, { deep: true, immediate: true })
 function toggleEdit(section) {
   editing[section] = !editing[section]
   if (!editing[section]) {
-    local[section] = { ...(store.contents[section] || {}) }
+    local[section] = { ...store.contents[section] }
   }
 }
 

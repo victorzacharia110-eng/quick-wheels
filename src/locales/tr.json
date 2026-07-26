@@ -623,7 +623,11 @@
     "cheque": "Çek",
     "all": "Tümü",
     "refunded": "İade Edildi",
-    "rejected": "Reddedildi"
+    "rejected": "Reddedildi",
+    "requested": "İstendi",
+    "accepted": "Kabul Edildi",
+    "en_route": "Sürücü Yolda",
+    "in_progress": "Devam Ediyor"
   },
   "settings": {
     "title": "Ayarlar",
@@ -702,7 +706,17 @@
     "noVehiclesAvailable": "Şu anda müsait araç yok",
     "bookFirstRide": "İlk sürüşünüzü ayırtın",
     "bookOne": "Bir Tane Ayırt",
-    "welcomeBack": "Tekrar hoş geldiniz"
+    "welcomeBack": "Tekrar hoş geldiniz",
+    "rideBookingSubtitle": "Varış noktanızı girin, sizin için bir yolculuk bulalım",
+    "destination": "Varış Noktası",
+    "enterPickup": "Alış noktasını girin",
+    "enterDestination": "Nereye gidiyorsunuz?",
+    "scheduleForLater": "Daha sonra için planla",
+    "rideDate": "Yolculuk Tarihi",
+    "rideTime": "Yolculuk Saati",
+    "requestRide": "Yolculuk İste",
+    "rideRequested": "Yolculuk istendi! Sürücü aranıyor...",
+    "noDriverAssigned": "Henüz sürücü atanmadı"
   },
   "profile": {
     "title": "Profilim",

@@ -2,151 +2,121 @@
   <div class="book-ride">
     <div class="page-header">
       <h1 class="page-title">{{ $t('customer.rideBooking') }}</h1>
-      <p class="page-subtitle">{{ $t('customer.subtitle') }}</p>
+      <p class="page-subtitle">{{ $t('customer.rideBookingSubtitle') }}</p>
     </div>
 
-    <SkeletonLoader v-if="loading" variant="list" :rows="6" :cols="1" />
-
-    <template v-else>
-      <div class="booking-layout">
-        <div class="vehicles-list">
-          <div v-if="vehicles.length === 0" class="empty">
-            <font-awesome-icon icon="fa-solid fa-car" class="empty-icon" />
-            <p>{{ $t('customer.noVehicles') }}</p>
-          </div>
-          <div
-            v-for="v in vehicles"
-            :key="v.id"
-            :class="['vehicle-card', { selected: selectedVehicle?.id === v.id }]"
-            @click="selectVehicle(v)"
-          >
-            <div class="vehicle-img">
-              <font-awesome-icon icon="fa-solid fa-car-side" />
+    <div class="ride-form-card">
+      <form @submit.prevent="requestRide" class="ride-form">
+        <div class="location-section">
+          <div class="location-dot pickup-dot" />
+          <div class="location-inputs">
+            <div class="form-group">
+              <input
+                v-model="form.pickup_location"
+                type="text"
+                class="form-input pickup-input"
+                :placeholder="$t('customer.enterPickup')"
+                required
+              />
             </div>
-            <div class="vehicle-body">
-              <strong class="vehicle-name">{{ v.name }}</strong>
-              <span class="vehicle-meta">{{ v.year }} · {{ v.type }} · {{ v.registration_number }}</span>
-              <span class="vehicle-rate">TZS {{ (v.daily_rate || v.price || 0).toLocaleString() }}/day</span>
-              <span v-if="v.driver" class="vehicle-driver">
-                <font-awesome-icon icon="fa-solid fa-user" size="xs" />
-                {{ v.driver.name }} · {{ v.driver.phone }}
-              </span>
-              <span v-else class="vehicle-driver no-driver">{{ $t('customer.noDriverAssigned') }}</span>
+            <div class="location-divider" />
+            <div class="form-group">
+              <input
+                v-model="form.destination"
+                type="text"
+                class="form-input dest-input"
+                :placeholder="$t('customer.enterDestination')"
+                required
+              />
             </div>
           </div>
         </div>
 
-        <div class="booking-form-wrapper">
-          <div v-if="!selectedVehicle" class="form-placeholder">
-            <font-awesome-icon icon="fa-solid fa-hand-pointer" />
-            <p>{{ $t('customer.selectVehiclePrompt') }}</p>
-          </div>
-          <form v-else @submit.prevent="submitBooking" class="booking-form">
-            <h3 class="form-title">{{ $t('customer.bookingDetails') }}</h3>
-            <div class="selected-vehicle-badge">
-              <font-awesome-icon icon="fa-solid fa-car-side" />
-              {{ selectedVehicle.name }} — TZS {{ (selectedVehicle.daily_rate || selectedVehicle.price || 0).toLocaleString() }}/day
-              <span v-if="selectedVehicle.driver" class="badge-driver">
-                <font-awesome-icon icon="fa-solid fa-user" size="xs" />
-                {{ selectedVehicle.driver.name }}
-              </span>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label>{{ $t('customer.pickupDate') }}</label>
-                <input v-model="form.start_date" type="date" class="form-input" required />
-              </div>
-              <div class="form-group">
-                <label>{{ $t('customer.returnDate') }}</label>
-                <input v-model="form.end_date" type="date" class="form-input" required />
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label>{{ $t('customer.pickupLocation') }}</label>
-              <input v-model="form.pickup_location" type="text" class="form-input" :placeholder="$t('customer.pickupPlaceholder')" required />
-            </div>
-
-            <div class="form-group">
-              <label>{{ $t('customer.notesOptional') }}</label>
-              <textarea v-model="form.notes" class="form-input" rows="3" :placeholder="$t('customer.notesPlaceholder')"></textarea>
-            </div>
-
-            <p v-if="error" class="form-error">{{ error }}</p>
-            <p v-if="success" class="form-success">{{ success }}</p>
-
-            <button type="submit" :disabled="submitting" class="submit-btn">
-              <font-awesome-icon v-if="submitting" icon="fa-solid fa-spinner" spin />
-              {{ submitting ? $t('common.loading') : $t('customer.bookNow') }}
-            </button>
-          </form>
+        <div class="schedule-toggle">
+          <label class="toggle-label">
+            <input type="checkbox" v-model="scheduleLater" class="toggle-cb" />
+            <span class="toggle-switch" />
+            <span>{{ $t('customer.scheduleForLater') }}</span>
+          </label>
         </div>
-      </div>
-    </template>
+
+        <div v-if="scheduleLater" class="form-row">
+          <div class="form-group">
+            <label>{{ $t('customer.rideDate') }}</label>
+            <input v-model="form.ride_date" type="date" class="form-input" :min="today" required />
+          </div>
+          <div class="form-group">
+            <label>{{ $t('customer.rideTime') }}</label>
+            <input v-model="form.ride_time" type="time" class="form-input" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>{{ $t('customer.notesOptional') }}</label>
+          <textarea v-model="form.notes" class="form-input" rows="2" :placeholder="$t('customer.notesPlaceholder')"></textarea>
+        </div>
+
+        <p v-if="error" class="form-error">{{ error }}</p>
+        <p v-if="success" class="form-success">{{ success }}</p>
+
+        <button type="submit" :disabled="submitting" class="submit-btn">
+          <font-awesome-icon v-if="submitting" icon="fa-solid fa-spinner" spin />
+          <font-awesome-icon v-else icon="fa-solid fa-car" />
+          {{ submitting ? $t('common.loading') : $t('customer.requestRide') }}
+        </button>
+      </form>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import api from '@/composables/api';
-import SkeletonLoader from '@/components/common/SkeletonLoader.vue';
 
 const { t } = useI18n();
-const vehicles = ref([]);
-const selectedVehicle = ref(null);
-const loading = ref(true);
 const submitting = ref(false);
 const error = ref('');
 const success = ref('');
+const scheduleLater = ref(false);
+
+const today = new Date().toISOString().split('T')[0];
 
 const form = ref({
-  start_date: '',
-  end_date: '',
   pickup_location: '',
+  destination: '',
+  ride_date: today,
+  ride_time: '',
   notes: '',
 });
 
-onMounted(async () => {
-  try {
-    const { data: json } = await api.get('/customer/available-vehicles');
-    if (json.success) vehicles.value = json.data;
-  } catch (e) {
-    console.error('Failed to load vehicles:', e);
-  } finally {
-    loading.value = false;
-  }
-});
-
-function selectVehicle(v) {
-  selectedVehicle.value = v;
-  error.value = '';
-  success.value = '';
-}
-
-async function submitBooking() {
-  if (!selectedVehicle.value) return;
+async function requestRide() {
   submitting.value = true;
   error.value = '';
   success.value = '';
+
   try {
-    const { data: json } = await api.post('/customer/bookings', {
-      vehicle_id: selectedVehicle.value.id,
-      start_date: form.value.start_date,
-      end_date: form.value.end_date,
+    const payload = {
       pickup_location: form.value.pickup_location,
+      destination: form.value.destination,
       notes: form.value.notes || null,
-    });
+    };
+
+    if (scheduleLater.value && form.value.ride_date && form.value.ride_time) {
+      payload.scheduled_at = `${form.value.ride_date}T${form.value.ride_time}`;
+    }
+
+    const { data: json } = await api.post('/customer/bookings', payload);
+
     if (json.success) {
-      success.value = t('customer.bookingConfirmed');
-      form.value = { start_date: '', end_date: '', pickup_location: '', notes: '' };
-      selectedVehicle.value = null;
+      success.value = t('customer.rideRequested');
+      form.value = { pickup_location: '', destination: '', ride_date: today, ride_time: '', notes: '' };
+      scheduleLater.value = false;
     } else {
       error.value = json.message || t('customer.bookingFailed');
     }
   } catch (e) {
-    error.value = t('customer.networkError');
+    error.value = e.response?.data?.message || t('customer.networkError');
   } finally {
     submitting.value = false;
   }
@@ -154,47 +124,78 @@ async function submitBooking() {
 </script>
 
 <style scoped>
-.book-ride { max-width: 1100px; margin: 0 auto; }
+.book-ride { max-width: 560px; margin: 0 auto; }
 .page-header { margin-bottom: 24px; }
 .page-title { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 700; color: #fff; margin: 0 0 4px; }
 .page-subtitle { font-size: 0.9rem; color: rgba(255,255,255,0.45); margin: 0; }
-.loading-container { display: flex; justify-content: center; padding: 80px 0; }
-.loader { width: 36px; height: 36px; border: 3px solid rgba(0,229,255,0.15); border-top-color: #00e5ff; border-radius: 50%; animation: spin 0.7s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-.empty { display: flex; flex-direction: column; align-items: center; padding: 40px; color: rgba(255,255,255,0.3); }
-.empty-icon { font-size: 2rem; margin-bottom: 8px; }
-.booking-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-@media (max-width: 768px) { .booking-layout { grid-template-columns: 1fr; } }
-.vehicles-list { display: flex; flex-direction: column; gap: 10px; }
-.vehicle-card { display: flex; align-items: center; gap: 14px; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); cursor: pointer; transition: all 0.2s; }
-.vehicle-card:hover { border-color: rgba(0,229,255,0.2); background: rgba(0,229,255,0.04); }
-.vehicle-card.selected { border-color: #00e5ff; background: rgba(0,229,255,0.08); box-shadow: 0 0 20px rgba(0,229,255,0.08); }
-.vehicle-img { width: 48px; height: 48px; border-radius: 10px; background: rgba(0,229,255,0.08); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: #00e5ff; flex-shrink: 0; }
-.vehicle-body { display: flex; flex-direction: column; }
-.vehicle-name { font-size: 0.9rem; color: rgba(255,255,255,0.8); }
-.vehicle-meta { font-size: 0.75rem; color: rgba(255,255,255,0.35); }
-.vehicle-rate { font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 700; color: #22d3ee; margin-top: 2px; }
-.vehicle-driver { font-size: 0.72rem; color: rgba(255,255,255,0.45); display: flex; align-items: center; gap: 5px; margin-top: 2px; }
-.vehicle-driver.no-driver { color: rgba(255,255,255,0.2); font-style: italic; }
-.form-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; min-height: 300px; color: rgba(255,255,255,0.15); gap: 10px; border: 2px dashed rgba(255,255,255,0.06); border-radius: 12px; }
-.form-placeholder svg { font-size: 2.5rem; }
-.form-placeholder p { font-size: 0.9rem; color: rgba(255,255,255,0.25); }
-.booking-form-wrapper { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 24px; }
-.booking-form { display: flex; flex-direction: column; gap: 16px; }
-.form-title { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 600; color: rgba(255,255,255,0.8); margin: 0; }
-.selected-vehicle-badge { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 8px; background: rgba(0,229,255,0.06); border: 1px solid rgba(0,229,255,0.12); color: #00e5ff; font-size: 0.85rem; font-weight: 500; flex-wrap: wrap; }
-.badge-driver { font-size: 0.78rem; color: rgba(255,255,255,0.5); display: flex; align-items: center; gap: 4px; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-@media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
+
+.ride-form-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 24px;
+}
+.ride-form { display: flex; flex-direction: column; gap: 18px; }
+
+.location-section { display: flex; gap: 12px; align-items: stretch; }
+.location-dot { width: 12px; min-height: 100%; display: flex; flex-direction: column; align-items: center; padding: 14px 0; }
+.pickup-dot::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: #4ade80; flex-shrink: 0; }
+.pickup-dot::after { content: ''; flex: 1; width: 2px; background: rgba(255,255,255,0.1); margin-top: 4px; }
+.location-inputs { flex: 1; display: flex; flex-direction: column; gap: 0; }
+.location-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 2px 0; }
+
 .form-group { display: flex; flex-direction: column; gap: 6px; }
 .form-group label { font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.55); }
-.form-input { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 12px; color: #fff; font-size: 0.85rem; font-family: 'Space Grotesk', sans-serif; outline: none; transition: border-color 0.2s; }
+.form-input {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: #fff;
+  font-size: 0.88rem;
+  font-family: 'Space Grotesk', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
 .form-input:focus { border-color: #00e5ff; }
 .form-input::placeholder { color: rgba(255,255,255,0.2); }
-textarea.form-input { resize: vertical; min-height: 60px; }
+.pickup-input { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom: none; }
+.dest-input { border-top-left-radius: 0; border-top-right-radius: 0; }
+textarea.form-input { resize: vertical; min-height: 50px; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.schedule-toggle { display: flex; }
+.toggle-label { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 0.85rem; color: rgba(255,255,255,0.6); }
+.toggle-cb { display: none; }
+.toggle-switch {
+  width: 36px; height: 20px; border-radius: 10px;
+  background: rgba(255,255,255,0.1);
+  position: relative; transition: background 0.3s; flex-shrink: 0;
+}
+.toggle-switch::after {
+  content: ''; width: 16px; height: 16px; border-radius: 50%;
+  background: rgba(255,255,255,0.4);
+  position: absolute; top: 2px; left: 2px; transition: all 0.3s;
+}
+.toggle-cb:checked + .toggle-switch { background: rgba(0,229,255,0.3); }
+.toggle-cb:checked + .toggle-switch::after { left: 18px; background: #00e5ff; }
+
 .form-error { color: #ff6b6b; font-size: 0.82rem; margin: 0; }
 .form-success { color: #4ade80; font-size: 0.82rem; margin: 0; }
-.submit-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border-radius: 10px; border: none; background: linear-gradient(135deg, #1e1b5e, #00c4d4); color: #fff; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.3s; }
+
+.submit-btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 14px; border-radius: 12px; border: none;
+  background: linear-gradient(135deg, #1e1b5e, #00c4d4);
+  color: #fff; font-family: 'Syne', sans-serif; font-weight: 700;
+  font-size: 0.95rem; cursor: pointer; transition: all 0.3s;
+}
 .submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(0,196,212,0.25); }
 .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+@media (max-width: 480px) {
+  .form-row { grid-template-columns: 1fr; }
+  .ride-form-card { padding: 16px; }
+}
 </style>

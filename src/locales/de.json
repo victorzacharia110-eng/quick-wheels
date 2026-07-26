@@ -623,7 +623,11 @@
     "cheque": "Scheck",
     "all": "Alle",
     "refunded": "Erstattet",
-    "rejected": "Abgelehnt"
+    "rejected": "Abgelehnt",
+    "requested": "Angefragt",
+    "accepted": "Akzeptiert",
+    "en_route": "Fahrer unterwegs",
+    "in_progress": "In Bearbeitung"
   },
   "settings": {
     "title": "Einstellungen",
@@ -702,7 +706,17 @@
     "noVehiclesAvailable": "Derzeit keine Fahrzeuge verfügbar",
     "bookFirstRide": "Buchen Sie Ihre erste Fahrt",
     "bookOne": "Eine buchen",
-    "welcomeBack": "Willkommen zurück"
+    "welcomeBack": "Willkommen zurück",
+    "rideBookingSubtitle": "Gib dein Ziel ein und wir finden eine Fahrt für dich",
+    "destination": "Ziel",
+    "enterPickup": "Abholort eingeben",
+    "enterDestination": "Wohin möchtest du?",
+    "scheduleForLater": "Für später planen",
+    "rideDate": "Fahrt-Datum",
+    "rideTime": "Fahrt-Zeit",
+    "requestRide": "Fahrt anfordern",
+    "rideRequested": "Fahrt angefordert! Fahrer wird gesucht...",
+    "noDriverAssigned": "Noch kein Fahrer zugewiesen"
   },
   "profile": {
     "title": "Mein Profil",

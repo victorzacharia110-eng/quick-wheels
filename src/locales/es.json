@@ -623,7 +623,11 @@
     "cheque": "Cheque",
     "all": "Todo",
     "refunded": "Reembolsado",
-    "rejected": "Rechazado"
+    "rejected": "Rechazado",
+    "requested": "Solicitado",
+    "accepted": "Aceptado",
+    "en_route": "Conductor en camino",
+    "in_progress": "En progreso"
   },
   "settings": {
     "title": "Ajustes",
@@ -702,7 +706,17 @@
     "noVehiclesAvailable": "No hay vehículos disponibles en este momento",
     "bookFirstRide": "Reserva tu primer viaje",
     "bookOne": "Reservar Uno",
-    "welcomeBack": "Bienvenido de nuevo"
+    "welcomeBack": "Bienvenido de nuevo",
+    "rideBookingSubtitle": "Ingresa tu destino y te encontraremos un viaje",
+    "destination": "Destino",
+    "enterPickup": "Ingresa punto de recogida",
+    "enterDestination": "¿A dónde vas?",
+    "scheduleForLater": "Programar para después",
+    "rideDate": "Fecha del viaje",
+    "rideTime": "Hora del viaje",
+    "requestRide": "Solicitar viaje",
+    "rideRequested": "¡Viaje solicitado! Buscando conductor...",
+    "noDriverAssigned": "Sin conductor asignado"
   },
   "profile": {
     "title": "Mi Perfil",

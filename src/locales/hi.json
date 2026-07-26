@@ -623,7 +623,11 @@
     "cheque": "चेक",
     "all": "सभी",
     "refunded": "वापस किया गया",
-    "rejected": "अस्वीकृत"
+    "rejected": "अस्वीकृत",
+    "requested": "अनुरोधित",
+    "accepted": "स्वीकार किया गया",
+    "en_route": "ड्राइवर रास्ते में है",
+    "in_progress": "प्रगति में"
   },
   "settings": {
     "title": "सेटिंग्स",
@@ -702,7 +706,17 @@
     "noVehiclesAvailable": "अभी कोई वाहन उपलब्ध नहीं",
     "bookFirstRide": "अपनी पहली सवारी बुक करें",
     "bookOne": "एक बुक करें",
-    "welcomeBack": "वापसी पर स्वागत है"
+    "welcomeBack": "वापसी पर स्वागत है",
+    "rideBookingSubtitle": "अपना गंतव्य दर्ज करें और हम आपके लिए राइड खोजेंगे",
+    "destination": "गंतव्य",
+    "enterPickup": "पिकअप स्थान दर्ज करें",
+    "enterDestination": "आप कहाँ जा रहे हैं?",
+    "scheduleForLater": "बाद के लिए शेड्यूल करें",
+    "rideDate": "यात्रा की तिथि",
+    "rideTime": "यात्रा का समय",
+    "requestRide": "राइड का अनुरोध करें",
+    "rideRequested": "राइड का अनुरोध किया गया! ड्राइवर खोजा जा रहा है...",
+    "noDriverAssigned": "अभी तक कोई ड्राइवर नियुक्त नहीं"
   },
   "profile": {
     "title": "मेरी प्रोफ़ाइल",

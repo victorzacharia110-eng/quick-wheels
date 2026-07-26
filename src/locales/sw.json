@@ -671,7 +671,11 @@
     "all": "Zote",
     "refunded": "Imerejeshwa",
     "approved": "Imeidhinishwa",
-    "rejected": "Imekataliwa"
+    "rejected": "Imekataliwa",
+    "requested": "Imeombwa",
+    "accepted": "Imekubaliwa",
+    "en_route": "Dereva Kwenye Njia",
+    "in_progress": "Inaendelea"
   },
   "settings": {
     "title": "Mipangilio",
@@ -727,10 +731,19 @@
     "bookNow": "Kodi Sasa",
     "myRides": "Safari Zangu",
     "nearbyDrivers": "Madereva wa Karibu",
-    "rideBooking": "Kodi Gari",
+    "rideBooking": "Omba Safari",
+    "rideBookingSubtitle": "Weka unakwenda na tutakutafutia gari",
     "startDate": "Tarehe ya Kuanza",
     "endDate": "Tarehe ya Kuisha",
     "pickupLocation": "Mahali pa Kuchukua",
+    "destination": "Unakwenda Wapi",
+    "enterPickup": "Weka mahali pa kuchukua",
+    "enterDestination": "Unakwenda wapi?",
+    "scheduleForLater": "Panga kwa baadaye",
+    "rideDate": "Tarehe ya Safari",
+    "rideTime": "Wakati wa Safari",
+    "requestRide": "Omba Safari",
+    "rideRequested": "Safari imeombwa! Tafuta dereva...",
     "notes": "Maelezo",
     "totalAmount": "Jumla",
     "cancelRide": "Ghairi Safari",
@@ -760,7 +773,8 @@
     "bookOne": "Kodi Moja",
     "welcomeBack": "Karibu tena",
     "payments": "Malipo",
-    "paymentsSubtitle": "Fanya malipo kwa nafasi zako"
+    "paymentsSubtitle": "Fanya malipo kwa nafasi zako",
+    "noDriverAssigned": "noDriverAssigned"
   },
   "profile": {
     "title": "Wasifu Wangu",
