@@ -25,8 +25,13 @@
             </div>
             <div class="vehicle-body">
               <strong class="vehicle-name">{{ v.name }}</strong>
-              <span class="vehicle-meta">{{ v.year }} · {{ v.type }}</span>
-              <span class="vehicle-rate">${{ v.price }}/day</span>
+              <span class="vehicle-meta">{{ v.year }} · {{ v.type }} · {{ v.registration_number }}</span>
+              <span class="vehicle-rate">TZS {{ (v.daily_rate || v.price || 0).toLocaleString() }}/day</span>
+              <span v-if="v.driver" class="vehicle-driver">
+                <font-awesome-icon icon="fa-solid fa-user" size="xs" />
+                {{ v.driver.name }} · {{ v.driver.phone }}
+              </span>
+              <span v-else class="vehicle-driver no-driver">{{ $t('customer.noDriverAssigned') }}</span>
             </div>
           </div>
         </div>
@@ -40,7 +45,11 @@
             <h3 class="form-title">{{ $t('customer.bookingDetails') }}</h3>
             <div class="selected-vehicle-badge">
               <font-awesome-icon icon="fa-solid fa-car-side" />
-              {{ selectedVehicle.name }} — ${{ selectedVehicle.price }}/day
+              {{ selectedVehicle.name }} — TZS {{ (selectedVehicle.daily_rate || selectedVehicle.price || 0).toLocaleString() }}/day
+              <span v-if="selectedVehicle.driver" class="badge-driver">
+                <font-awesome-icon icon="fa-solid fa-user" size="xs" />
+                {{ selectedVehicle.driver.name }}
+              </span>
             </div>
 
             <div class="form-row">
@@ -81,10 +90,9 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useAuthStore } from '@/stores/auth';
+import api from '@/composables/api';
 import SkeletonLoader from '@/components/common/SkeletonLoader.vue';
 
-const authStore = useAuthStore();
 const { t } = useI18n();
 const vehicles = ref([]);
 const selectedVehicle = ref(null);
@@ -102,10 +110,7 @@ const form = ref({
 
 onMounted(async () => {
   try {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/customer/available-vehicles`, {
-      headers: { Authorization: `Bearer ${authStore.token}`, Accept: 'application/json' },
-    });
-    const json = await res.json();
+    const { data: json } = await api.get('/customer/available-vehicles');
     if (json.success) vehicles.value = json.data;
   } catch (e) {
     console.error('Failed to load vehicles:', e);
@@ -126,18 +131,13 @@ async function submitBooking() {
   error.value = '';
   success.value = '';
   try {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/customer/bookings`, {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${authStore.token}`, 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({
-        vehicle_id: selectedVehicle.value.id,
-        start_date: form.value.start_date,
-        end_date: form.value.end_date,
-        pickup_location: form.value.pickup_location,
-        notes: form.value.notes || null,
-      }),
+    const { data: json } = await api.post('/customer/bookings', {
+      vehicle_id: selectedVehicle.value.id,
+      start_date: form.value.start_date,
+      end_date: form.value.end_date,
+      pickup_location: form.value.pickup_location,
+      notes: form.value.notes || null,
     });
-    const json = await res.json();
     if (json.success) {
       success.value = t('customer.bookingConfirmed');
       form.value = { start_date: '', end_date: '', pickup_location: '', notes: '' };
@@ -174,13 +174,16 @@ async function submitBooking() {
 .vehicle-name { font-size: 0.9rem; color: rgba(255,255,255,0.8); }
 .vehicle-meta { font-size: 0.75rem; color: rgba(255,255,255,0.35); }
 .vehicle-rate { font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 700; color: #22d3ee; margin-top: 2px; }
+.vehicle-driver { font-size: 0.72rem; color: rgba(255,255,255,0.45); display: flex; align-items: center; gap: 5px; margin-top: 2px; }
+.vehicle-driver.no-driver { color: rgba(255,255,255,0.2); font-style: italic; }
 .form-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; min-height: 300px; color: rgba(255,255,255,0.15); gap: 10px; border: 2px dashed rgba(255,255,255,0.06); border-radius: 12px; }
 .form-placeholder svg { font-size: 2.5rem; }
 .form-placeholder p { font-size: 0.9rem; color: rgba(255,255,255,0.25); }
 .booking-form-wrapper { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 24px; }
 .booking-form { display: flex; flex-direction: column; gap: 16px; }
 .form-title { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 600; color: rgba(255,255,255,0.8); margin: 0; }
-.selected-vehicle-badge { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 8px; background: rgba(0,229,255,0.06); border: 1px solid rgba(0,229,255,0.12); color: #00e5ff; font-size: 0.85rem; font-weight: 500; }
+.selected-vehicle-badge { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 8px; background: rgba(0,229,255,0.06); border: 1px solid rgba(0,229,255,0.12); color: #00e5ff; font-size: 0.85rem; font-weight: 500; flex-wrap: wrap; }
+.badge-driver { font-size: 0.78rem; color: rgba(255,255,255,0.5); display: flex; align-items: center; gap: 4px; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
 .form-group { display: flex; flex-direction: column; gap: 6px; }
