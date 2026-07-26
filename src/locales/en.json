@@ -623,6 +623,7 @@
     "rejectionReason": "Rejection Reason",
     "rejectionReasonPlaceholder": "Enter reason for rejection...",
     "reject": "Reject",
+    "confirmPaid": "Confirm Payment Received",
     "creating": "Recording..."
   },
   "gps": {

@@ -187,6 +187,8 @@
     "saving": "جاري الحفظ...",
     "creating": "جاري الإنشاء...",
     "view": "عرض",
+    "approve": "موافقة",
+    "reject": "رفض",
     "driver": "سائق",
     "selectDriver": "اختر سائقاً",
     "selectVehicle": "اختر مركبة",
@@ -548,7 +550,13 @@
     "amountWithCurrency": "المبلغ (TZS)",
     "selectMethod": "اختر الطريقة",
     "record": "تسجيل الدفعة",
-    "cancel": "إلغاء"
+    "cancel": "إلغاء",
+    "rejectPayment": "رفض الدفع",
+    "rejectionReason": "سبب الرفض",
+    "rejectionReasonPlaceholder": "أدخل سبب الرفض...",
+    "reject": "رفض",
+    "confirmPaid": "تأكيد استلام الدفع",
+    "creating": "جارٍ التسجيل..."
   },
   "gps": {
     "title": "تتبع GPS",
@@ -603,7 +611,8 @@
     "mobile_money": "محفظة جوال",
     "cheque": "شيك",
     "all": "الكل",
-    "refunded": "مسترجع"
+    "refunded": "مسترجع",
+    "rejected": "مرفوض"
   },
   "settings": {
     "title": "الإعدادات",

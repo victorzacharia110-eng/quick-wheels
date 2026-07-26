@@ -113,6 +113,23 @@ export const usePaymentStore = defineStore('payments', () => {
     }
   }
 
+  async function confirmPayment(id) {
+    isLoading.value = true
+    error.value = null
+    try {
+      const res = await api.post(`/payments/${id}/confirm`)
+      const updated = res.data.data
+      const index = payments.value.findIndex(p => p.id === id)
+      if (index !== -1) payments.value[index] = updated
+      return { success: true, data: updated }
+    } catch (err) {
+      error.value = err.response?.data?.message || err.message
+      return { success: false, message: error.value }
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   async function rejectPayment(id, reason) {
     isLoading.value = true
     error.value = null
@@ -150,7 +167,12 @@ export const usePaymentStore = defineStore('payments', () => {
     const colors = {
       paid: '#00E5FF',
       pending: '#FFD93D',
-      failed: '#ff6b6b'
+      failed: '#ff6b6b',
+      approved: '#4ADE80',
+      rejected: '#ff6b6b',
+      completed: '#4ADE80',
+      cancelled: 'rgba(255,255,255,0.3)',
+      refunded: '#FFD93D'
     }
     return colors[status] || 'rgba(255,255,255,0.3)'
   }
@@ -185,6 +207,7 @@ export const usePaymentStore = defineStore('payments', () => {
     updatePayment,
     deletePayment,
     approvePayment,
+    confirmPayment,
     rejectPayment,
     getPaymentsByContract,
     getPaymentsByDriver,

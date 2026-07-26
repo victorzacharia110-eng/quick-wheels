@@ -187,6 +187,8 @@
     "saving": "Wird gespeichert...",
     "creating": "Wird erstellt...",
     "view": "Ansehen",
+    "approve": "Genehmigen",
+    "reject": "Ablehnen",
     "driver": "Fahrer",
     "selectDriver": "Fahrer auswählen",
     "selectVehicle": "Fahrzeug auswählen",
@@ -548,7 +550,13 @@
     "amountWithCurrency": "Betrag (TZS)",
     "selectMethod": "Methode auswählen",
     "record": "Zahlung erfassen",
-    "cancel": "Abbrechen"
+    "cancel": "Abbrechen",
+    "rejectPayment": "Zahlung ablehnen",
+    "rejectionReason": "Ablehnungsgrund",
+    "rejectionReasonPlaceholder": "Grund für die Ablehnung eingeben...",
+    "reject": "Ablehnen",
+    "confirmPaid": "Zahlungseingang bestätigen",
+    "creating": "Wird erfasst..."
   },
   "gps": {
     "title": "GPS-Verfolgung",
@@ -603,7 +611,8 @@
     "mobile_money": "Mobiles Geld",
     "cheque": "Scheck",
     "all": "Alle",
-    "refunded": "Erstattet"
+    "refunded": "Erstattet",
+    "rejected": "Abgelehnt"
   },
   "settings": {
     "title": "Einstellungen",

@@ -187,6 +187,8 @@
     "saving": "保存中...",
     "creating": "创建中...",
     "view": "查看",
+    "approve": "批准",
+    "reject": "拒绝",
     "driver": "司机",
     "selectDriver": "选择司机",
     "selectVehicle": "选择车辆",
@@ -548,7 +550,13 @@
     "amountWithCurrency": "金额（TZS）",
     "selectMethod": "选择方式",
     "record": "记录付款",
-    "cancel": "取消"
+    "cancel": "取消",
+    "rejectPayment": "拒绝付款",
+    "rejectionReason": "拒绝原因",
+    "rejectionReasonPlaceholder": "输入拒绝原因...",
+    "reject": "拒绝",
+    "confirmPaid": "确认已收到付款",
+    "creating": "记录中..."
   },
   "gps": {
     "title": "GPS追踪",
@@ -603,7 +611,8 @@
     "mobile_money": "手机支付",
     "cheque": "支票",
     "all": "全部",
-    "refunded": "已退款"
+    "refunded": "已退款",
+    "rejected": "已拒绝"
   },
   "settings": {
     "title": "设置",

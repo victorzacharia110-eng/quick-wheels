@@ -187,6 +187,8 @@
     "saving": "Salvataggio...",
     "creating": "Creazione...",
     "view": "Visualizza",
+    "approve": "Approva",
+    "reject": "Rifiuta",
     "driver": "Autista",
     "selectDriver": "Seleziona autista",
     "selectVehicle": "Seleziona veicolo",
@@ -548,7 +550,13 @@
     "amountWithCurrency": "Importo (TZS)",
     "selectMethod": "Seleziona metodo",
     "record": "Registra pagamento",
-    "cancel": "Annulla"
+    "cancel": "Annulla",
+    "rejectPayment": "Rifiuta Pagamento",
+    "rejectionReason": "Motivo del Rifiuto",
+    "rejectionReasonPlaceholder": "Inserisci il motivo del rifiuto...",
+    "reject": "Rifiuta",
+    "confirmPaid": "Conferma Pagamento Ricevuto",
+    "creating": "Registrazione in corso..."
   },
   "gps": {
     "title": "Tracciamento GPS",
@@ -603,7 +611,8 @@
     "mobile_money": "Denaro mobile",
     "cheque": "Assegno",
     "all": "Tutti",
-    "refunded": "Rimborsato"
+    "refunded": "Rimborsato",
+    "rejected": "Rifiutato"
   },
   "settings": {
     "title": "Impostazioni",

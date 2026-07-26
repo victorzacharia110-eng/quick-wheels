@@ -206,6 +206,8 @@
     "saving": "Inahifadhi...",
     "creating": "Inaunda...",
     "view": "Tazama",
+    "approve": "Idhinisha",
+    "reject": "Kataa",
     "driver": "Dereva",
     "selectDriver": "Chagua Dereva",
     "selectVehicle": "Chagua Gari",
@@ -595,7 +597,13 @@
     "phonePlaceholder": "mf. 0712 345 678",
     "payWithClickPesa": "Lipa kwa ClickPesa",
     "clickPesaSuccess": "Malipo yameanzishwa! Kamilisha malipo kwenye ClickPesa.",
-    "history": "Historia ya Malipo"
+    "history": "Historia ya Malipo",
+    "rejectPayment": "Kataa Malipo",
+    "rejectionReason": "Sababu ya Kataa",
+    "rejectionReasonPlaceholder": "Weka sababu ya kataa...",
+    "reject": "Kataa",
+    "confirmPaid": "Thibitisha Malipo Yamepokelewa",
+    "creating": "Inarekodi..."
   },
   "gps": {
     "title": "Ufuatiliaji GPS",
@@ -651,7 +659,8 @@
     "cheque": "Hundi",
     "all": "Zote",
     "refunded": "Imerejeshwa",
-    "approved": "Imeidhinishwa"
+    "approved": "Imeidhinishwa",
+    "rejected": "Imekataliwa"
   },
   "settings": {
     "title": "Mipangilio",

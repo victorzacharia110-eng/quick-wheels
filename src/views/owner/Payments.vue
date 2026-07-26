@@ -80,6 +80,14 @@
                         <font-awesome-icon icon="fa-solid fa-times" />
                       </button>
                     </template>
+                    <template v-if="payment.status === 'approved'">
+                      <button @click="handleConfirm(payment.id)" class="btn-icon confirm" :title="$t('payment.confirmPaid')">
+                        <font-awesome-icon icon="fa-solid fa-money-bill-wave" />
+                      </button>
+                      <button @click="openRejectModal(payment)" class="btn-icon reject" :title="$t('common.reject')">
+                        <font-awesome-icon icon="fa-solid fa-times" />
+                      </button>
+                    </template>
                     <button @click="deletePayment(payment.id)" class="btn-icon danger" :title="$t('common.delete')">
                       <font-awesome-icon icon="fa-solid fa-trash" />
                     </button>
@@ -264,6 +272,10 @@ async function handleApprove(id) {
   await paymentStore.approvePayment(id)
 }
 
+async function handleConfirm(id) {
+  await paymentStore.confirmPayment(id)
+}
+
 async function handleReject() {
   if (!rejectTarget.value || !rejectReason.value.trim()) return
   await paymentStore.rejectPayment(rejectTarget.value.id, { reason: rejectReason.value })
@@ -414,6 +426,8 @@ onMounted(() => { paymentStore.fetchPayments() })
 .btn-icon.danger:hover { background: rgba(255,107,107,0.15); color: #ff6b6b; }
 .btn-icon.approve { color: #4ADE80; }
 .btn-icon.approve:hover { background: rgba(74,222,128,0.15); color: #4ADE80; }
+.btn-icon.confirm { color: #00E5FF; }
+.btn-icon.confirm:hover { background: rgba(0,229,255,0.15); color: #00E5FF; }
 .btn-icon.reject { color: #ff6b6b; }
 .btn-icon.reject:hover { background: rgba(255,107,107,0.15); color: #ff6b6b; }
 .action-btns { display: flex; gap: 6px; }

@@ -187,6 +187,8 @@
     "saving": "保存中...",
     "creating": "作成中...",
     "view": "表示",
+    "approve": "承認",
+    "reject": "拒否",
     "driver": "ドライバー",
     "selectDriver": "ドライバーを選択",
     "selectVehicle": "車両を選択",
@@ -548,7 +550,13 @@
     "amountWithCurrency": "金額（TZS）",
     "selectMethod": "方法を選択",
     "record": "支払いを記録",
-    "cancel": "キャンセル"
+    "cancel": "キャンセル",
+    "rejectPayment": "支払いを拒否",
+    "rejectionReason": "拒否理由",
+    "rejectionReasonPlaceholder": "拒否理由を入力してください...",
+    "reject": "拒否",
+    "confirmPaid": "支払い受領を確認",
+    "creating": "記録中..."
   },
   "gps": {
     "title": "GPS追跡",
@@ -603,7 +611,8 @@
     "mobile_money": "モバイルマネー",
     "cheque": "小切手",
     "all": "すべて",
-    "refunded": "返金済"
+    "refunded": "返金済",
+    "rejected": "拒否済み"
   },
   "settings": {
     "title": "設定",

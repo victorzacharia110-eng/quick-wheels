@@ -187,6 +187,8 @@
     "saving": "Kaydediliyor...",
     "creating": "Oluşturuluyor...",
     "view": "Görüntüle",
+    "approve": "Onayla",
+    "reject": "Reddet",
     "driver": "Sürücü",
     "selectDriver": "Sürücü Seç",
     "selectVehicle": "Araç Seç",
@@ -548,7 +550,13 @@
     "amountWithCurrency": "Tutar (TZS)",
     "selectMethod": "Yöntem seç",
     "record": "Ödemeyi Kaydet",
-    "cancel": "İptal"
+    "cancel": "İptal",
+    "rejectPayment": "Ödemeyi Reddet",
+    "rejectionReason": "Red Nedeni",
+    "rejectionReasonPlaceholder": "Red nedenini girin...",
+    "reject": "Reddet",
+    "confirmPaid": "Ödeme Alındığını Onayla",
+    "creating": "Kaydediliyor..."
   },
   "gps": {
     "title": "GPS Takibi",
@@ -603,7 +611,8 @@
     "mobile_money": "Mobil Para",
     "cheque": "Çek",
     "all": "Tümü",
-    "refunded": "İade Edildi"
+    "refunded": "İade Edildi",
+    "rejected": "Reddedildi"
   },
   "settings": {
     "title": "Ayarlar",

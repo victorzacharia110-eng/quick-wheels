@@ -187,6 +187,8 @@
     "saving": "Сохранение...",
     "creating": "Создание...",
     "view": "Просмотр",
+    "approve": "Одобрить",
+    "reject": "Отклонить",
     "driver": "Водитель",
     "selectDriver": "Выбрать водителя",
     "selectVehicle": "Выбрать ТС",
@@ -548,7 +550,13 @@
     "amountWithCurrency": "Сумма (TZS)",
     "selectMethod": "Выберите способ",
     "record": "Записать платёж",
-    "cancel": "Отмена"
+    "cancel": "Отмена",
+    "rejectPayment": "Отклонить платёж",
+    "rejectionReason": "Причина отклонения",
+    "rejectionReasonPlaceholder": "Введите причину отклонения...",
+    "reject": "Отклонить",
+    "confirmPaid": "Подтвердить получение оплаты",
+    "creating": "Запись..."
   },
   "gps": {
     "title": "GPS-слежение",
@@ -603,7 +611,8 @@
     "mobile_money": "Мобильные деньги",
     "cheque": "Чек",
     "all": "Все",
-    "refunded": "Возвращён"
+    "refunded": "Возвращён",
+    "rejected": "Отклонён"
   },
   "settings": {
     "title": "Настройки",

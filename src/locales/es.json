@@ -187,6 +187,8 @@
     "saving": "Guardando...",
     "creating": "Creando...",
     "view": "Ver",
+    "approve": "Aprobar",
+    "reject": "Rechazar",
     "driver": "Conductor",
     "selectDriver": "Seleccionar Conductor",
     "selectVehicle": "Seleccionar Vehículo",
@@ -548,7 +550,13 @@
     "amountWithCurrency": "Monto (TZS)",
     "selectMethod": "Seleccionar método",
     "record": "Registrar Pago",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "rejectPayment": "Rechazar Pago",
+    "rejectionReason": "Motivo de Rechazo",
+    "rejectionReasonPlaceholder": "Ingrese el motivo del rechazo...",
+    "reject": "Rechazar",
+    "confirmPaid": "Confirmar Pago Recibido",
+    "creating": "Registrando..."
   },
   "gps": {
     "title": "Seguimiento GPS",
@@ -603,7 +611,8 @@
     "mobile_money": "Dinero Móvil",
     "cheque": "Cheque",
     "all": "Todo",
-    "refunded": "Reembolsado"
+    "refunded": "Reembolsado",
+    "rejected": "Rechazado"
   },
   "settings": {
     "title": "Ajustes",

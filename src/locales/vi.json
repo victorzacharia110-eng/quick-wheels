@@ -187,6 +187,8 @@
     "saving": "Đang lưu...",
     "creating": "Đang tạo...",
     "view": "Xem",
+    "approve": "Phê duyệt",
+    "reject": "Từ chối",
     "driver": "Tài xế",
     "selectDriver": "Chọn tài xế",
     "selectVehicle": "Chọn phương tiện",
@@ -548,7 +550,13 @@
     "amountWithCurrency": "Số tiền (TZS)",
     "selectMethod": "Chọn phương thức",
     "record": "Ghi nhận thanh toán",
-    "cancel": "Hủy"
+    "cancel": "Hủy",
+    "rejectPayment": "Từ chối thanh toán",
+    "rejectionReason": "Lý do từ chối",
+    "rejectionReasonPlaceholder": "Nhập lý do từ chối...",
+    "reject": "Từ chối",
+    "confirmPaid": "Xác nhận đã nhận thanh toán",
+    "creating": "Đang ghi nhận..."
   },
   "gps": {
     "title": "Theo dõi GPS",
@@ -603,7 +611,8 @@
     "mobile_money": "Ví di động",
     "cheque": "Séc",
     "all": "Tất cả",
-    "refunded": "Đã hoàn lại"
+    "refunded": "Đã hoàn lại",
+    "rejected": "Đã từ chối"
   },
   "settings": {
     "title": "Cài đặt",

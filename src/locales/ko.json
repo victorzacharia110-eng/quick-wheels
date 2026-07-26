@@ -187,6 +187,8 @@
     "saving": "저장 중...",
     "creating": "생성 중...",
     "view": "보기",
+    "approve": "승인",
+    "reject": "거부",
     "driver": "기사",
     "selectDriver": "기사 선택",
     "selectVehicle": "차량 선택",
@@ -548,7 +550,13 @@
     "amountWithCurrency": "금액 (TZS)",
     "selectMethod": "방법 선택",
     "record": "결제 기록",
-    "cancel": "취소"
+    "cancel": "취소",
+    "rejectPayment": "결제 거부",
+    "rejectionReason": "거부 사유",
+    "rejectionReasonPlaceholder": "거부 사유를 입력하세요...",
+    "reject": "거부",
+    "confirmPaid": "결제 수령 확인",
+    "creating": "기록 중..."
   },
   "gps": {
     "title": "GPS 추적",
@@ -603,7 +611,8 @@
     "mobile_money": "모바일 머니",
     "cheque": "수표",
     "all": "전체",
-    "refunded": "환불됨"
+    "refunded": "환불됨",
+    "rejected": "거부됨"
   },
   "settings": {
     "title": "설정",
