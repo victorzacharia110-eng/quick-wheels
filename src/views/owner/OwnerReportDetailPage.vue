@@ -128,13 +128,17 @@
         <div v-if="report.technician_signature" class="signature-card">
           <div class="sig-icon tech"><font-awesome-icon icon="fa-solid fa-pen-nib" /></div>
           <div class="sig-label">{{ $t('ownerReports.technicianSignature') }}</div>
-          <div class="sig-value">{{ report.technician_signature }}</div>
+          <div class="sig-value">
+            <img :src="report.technician_signature" alt="Technician Signature" class="signature-img" />
+          </div>
           <div class="sig-time" v-if="report.technician_signed_at">{{ formatDate(report.technician_signed_at) }}</div>
         </div>
         <div v-if="report.owner_signature" class="signature-card">
           <div class="sig-icon owner"><font-awesome-icon icon="fa-solid fa-pen-nib" /></div>
           <div class="sig-label">{{ $t('ownerReports.ownerSignature') }}</div>
-          <div class="sig-value">{{ report.owner_signature }}</div>
+          <div class="sig-value">
+            <img :src="report.owner_signature" alt="Owner Signature" class="signature-img" />
+          </div>
           <div class="sig-time" v-if="report.owner_signed_at">{{ formatDate(report.owner_signed_at) }}</div>
         </div>
       </div>
@@ -542,6 +546,7 @@ onMounted(fetchReport)
 .sig-icon.owner { background: rgba(74,222,128,0.1); color: #4ADE80; }
 .sig-label { font-size: 0.8rem; color: rgba(255,255,255,0.4); text-transform: uppercase; font-weight: 600; }
 .sig-value { font-size: 1.1rem; font-weight: 600; color: #fff; font-style: italic; margin-top: 4px; }
+.signature-img { max-width: 100%; height: auto; max-height: 120px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.06); margin-top: 8px; }
 .sig-time { font-size: 0.75rem; color: rgba(255,255,255,0.25); margin-top: 4px; }
 
 /* Notes */
