@@ -64,7 +64,8 @@
     "homepage": "होम",
     "profile": "प्रोफ़ाइल",
     "myAccount": "मेरा खाता",
-    "ownerReports": "मालिक रिपोर्ट"
+    "ownerReports": "मालिक रिपोर्ट",
+    "rideRequests": "राइड अनुरोध"
   },
   "hero": {
     "quickWheels": "क्विक-व्हील्स",
@@ -1177,5 +1178,23 @@
     "submittedOn": "Submitted on",
     "pendingFromOwner": "Pending Owner Reports",
     "viewAll": "View All"
+  },
+  "driver": {
+    "rideRequests": "राइड अनुरोध",
+    "rideRequestsDesc": "ग्राहकों से राइड अनुरोध",
+    "active": "सक्रिय",
+    "history": "इतिहास",
+    "noActiveRides": "कोई सक्रिय यात्रा नहीं",
+    "waitingForRequests": "राइड अनुरोधों की प्रतीक्षा है...",
+    "noHistory": "अभी तक कोई इतिहास नहीं",
+    "accept": "राइड स्वीकार करें",
+    "decline": "अस्वीकार करें",
+    "cancel": "रद्द करें",
+    "headingToPickup": "पिकअप की ओर जा रहे हैं",
+    "passengerPickedUp": "यात्री उठाया गया",
+    "completeRide": "यात्रा पूरी करें",
+    "enterFare": "किराया दर्ज करें",
+    "rideAccepted": "राइड स्वीकार!",
+    "rideCompleted": "यात्रा पूरी!"
   }
 }

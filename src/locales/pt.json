@@ -64,7 +64,8 @@
     "homepage": "Início",
     "profile": "Perfil",
     "myAccount": "Minha conta",
-    "ownerReports": "Relatórios do Proprietário"
+    "ownerReports": "Relatórios do Proprietário",
+    "rideRequests": "Solicitações de Carona"
   },
   "hero": {
     "quickWheels": "Quick-Wheels",
@@ -1177,5 +1178,23 @@
     "submittedOn": "Submitted on",
     "pendingFromOwner": "Pending Owner Reports",
     "viewAll": "View All"
+  },
+  "driver": {
+    "rideRequests": "Solicitações de Carona",
+    "rideRequestsDesc": "Solicitações de carona de clientes",
+    "active": "Ativo",
+    "history": "Histórico",
+    "noActiveRides": "Nenhuma carona ativa",
+    "waitingForRequests": "Aguardando solicitações...",
+    "noHistory": "Nenhum histórico ainda",
+    "accept": "Aceitar",
+    "decline": "Recusar",
+    "cancel": "Cancelar",
+    "headingToPickup": "A caminho da coleta",
+    "passengerPickedUp": "Passageiro a bordo",
+    "completeRide": "Concluir carona",
+    "enterFare": "Inserir tarifa",
+    "rideAccepted": "Carona aceita!",
+    "rideCompleted": "Carona concluída!"
   }
 }

@@ -274,7 +274,10 @@ watch(mobileOpen, (newVal) => {
   document.body.style.overflow = newVal ? "hidden" : "";
 });
 
-const mainNav = [{ to: "/employee", label: "nav.dashboard", icon: "fa-solid fa-th-large" }];
+const mainNav = [
+  { to: "/employee", label: "nav.dashboard", icon: "fa-solid fa-th-large" },
+  { to: "/employee/ride-requests", label: "nav.rideRequests", icon: "fa-solid fa-car" },
+];
 const accountNav = [
   { to: "/employee/my-contract", label: "nav.myContract", icon: "fa-solid fa-file-contract" },
   { to: "/employee/payments", label: "nav.myPayments", icon: "fa-solid fa-money-bill-wave" },

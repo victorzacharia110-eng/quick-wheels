@@ -64,7 +64,8 @@
     "homepage": "Ana Sayfa",
     "profile": "Profil",
     "myAccount": "Hesabım",
-    "ownerReports": "Sahip Raporları"
+    "ownerReports": "Sahip Raporları",
+    "rideRequests": "Yolculuk İstekleri"
   },
   "hero": {
     "quickWheels": "Quick-Wheels",
@@ -1177,5 +1178,23 @@
     "submittedOn": "Submitted on",
     "pendingFromOwner": "Pending Owner Reports",
     "viewAll": "View All"
+  },
+  "driver": {
+    "rideRequests": "Yolculuk İstekleri",
+    "rideRequestsDesc": "Müşterilerden gelen yolculuk istekleri",
+    "active": "Aktif",
+    "history": "Geçmiş",
+    "noActiveRides": "Aktif yolculuk yok",
+    "waitingForRequests": "Yolculuk istekleri bekleniyor...",
+    "noHistory": "Henüz yolculuk geçmişi yok",
+    "accept": "Kabul Et",
+    "decline": "Reddet",
+    "cancel": "İptal",
+    "headingToPickup": "Alış noktasına gidiyor",
+    "passengerPickedUp": "Yolcu alındı",
+    "completeRide": "Yolculuğu Bitir",
+    "enterFare": "Ücreti girin",
+    "rideAccepted": "Yolculuk kabul edildi!",
+    "rideCompleted": "Yolculuk tamamlandı!"
   }
 }

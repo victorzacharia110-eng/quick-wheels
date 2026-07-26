@@ -64,7 +64,8 @@
     "homepage": "Accueil",
     "profile": "Profil",
     "myAccount": "Mon compte",
-    "ownerReports": "Rapports Propriétaire"
+    "ownerReports": "Rapports Propriétaire",
+    "rideRequests": "Demandes de trajet"
   },
   "hero": {
     "quickWheels": "Quick-Wheels",
@@ -1177,5 +1178,23 @@
     "submittedOn": "Soumis le",
     "pendingFromOwner": "Rapports du Propriétaire en Attente",
     "viewAll": "Voir Tout"
+  },
+  "driver": {
+    "rideRequests": "Demandes de trajet",
+    "rideRequestsDesc": "Demandes de trajet des clients",
+    "active": "Actif",
+    "history": "Historique",
+    "noActiveRides": "Aucun trajet actif",
+    "waitingForRequests": "En attente de demandes...",
+    "noHistory": "Pas encore d'historique",
+    "accept": "Accepter",
+    "decline": "Refuser",
+    "cancel": "Annuler",
+    "headingToPickup": "En route vers le point de prise",
+    "passengerPickedUp": "Passager récupéré",
+    "completeRide": "Terminer le trajet",
+    "enterFare": "Entrez le tarif",
+    "rideAccepted": "Trajet accepté!",
+    "rideCompleted": "Trajet terminé!"
   }
 }

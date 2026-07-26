@@ -95,6 +95,7 @@ const router = createRouter({
         { path: 'payments', component: () => import('../views/employee/Payments.vue'), meta: { title: 'My Payments' } },
         { path: 'profile', component: () => import('../views/employee/EmployeeProfile.vue'), meta: { title: 'Profile' } },
         { path: 'clients', component: () => import('../views/employee/EmployeeClients.vue'), meta: { title: 'Clients' } },
+        { path: 'ride-requests', component: () => import('../views/employee/RideRequests.vue'), meta: { title: 'Ride Requests' } },
         { path: 'chat', component: () => import('../views/ChatView.vue'), meta: { title: 'Messages' } },
       ]
     },

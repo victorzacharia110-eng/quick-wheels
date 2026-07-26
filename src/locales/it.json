@@ -64,7 +64,8 @@
     "homepage": "Home",
     "profile": "Profilo",
     "myAccount": "Il mio account",
-    "ownerReports": "Report Proprietario"
+    "ownerReports": "Report Proprietario",
+    "rideRequests": "Richieste di passaggio"
   },
   "hero": {
     "quickWheels": "Quick-Wheels",
@@ -1177,5 +1178,23 @@
     "submittedOn": "Submitted on",
     "pendingFromOwner": "Pending Owner Reports",
     "viewAll": "View All"
+  },
+  "driver": {
+    "rideRequests": "Richieste di passaggio",
+    "rideRequestsDesc": "Richieste di passaggio dai clienti",
+    "active": "Attivo",
+    "history": "Cronologia",
+    "noActiveRides": "Nessun viaggio attivo",
+    "waitingForRequests": "In attesa di richieste...",
+    "noHistory": "Nessuna cronologia",
+    "accept": "Accetta",
+    "decline": "Rifiuta",
+    "cancel": "Annulla",
+    "headingToPickup": "In percorso verso il ritiro",
+    "passengerPickedUp": "Passeggero recuperato",
+    "completeRide": "Completa viaggio",
+    "enterFare": "Inserisci tariffa",
+    "rideAccepted": "Passaggio accettato!",
+    "rideCompleted": "Viaggio completato!"
   }
 }

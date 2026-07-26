@@ -64,7 +64,8 @@
     "homepage": "홈",
     "profile": "프로필",
     "myAccount": "내 계정",
-    "ownerReports": "소유자 보고서"
+    "ownerReports": "소유자 보고서",
+    "rideRequests": "라이드 요청"
   },
   "hero": {
     "quickWheels": "Quick-Wheels",
@@ -1177,5 +1178,23 @@
     "submittedOn": "Submitted on",
     "pendingFromOwner": "Pending Owner Reports",
     "viewAll": "View All"
+  },
+  "driver": {
+    "rideRequests": "라이드 요청",
+    "rideRequestsDesc": "고객의 라이드 요청",
+    "active": "활성",
+    "history": "기록",
+    "noActiveRides": "활성 라이드 없음",
+    "waitingForRequests": "요청을 기다리는 중...",
+    "noHistory": "라이드 기록 없음",
+    "accept": "수락",
+    "decline": "거절",
+    "cancel": "취소",
+    "headingToPickup": "픽업 장소로 이동 중",
+    "passengerPickedUp": "승객 탑승 완료",
+    "completeRide": "라이드 완료",
+    "enterFare": "요금 입력",
+    "rideAccepted": "라이드 수락됨!",
+    "rideCompleted": "라이드 완료!"
   }
 }

@@ -64,7 +64,8 @@
     "homepage": "ホーム",
     "profile": "プロフィール",
     "myAccount": "マイアカウント",
-    "ownerReports": "オーナーレポート"
+    "ownerReports": "オーナーレポート",
+    "rideRequests": "ライドリクエスト"
   },
   "hero": {
     "quickWheels": "Quick-Wheels",
@@ -1177,5 +1178,23 @@
     "submittedOn": "Submitted on",
     "pendingFromOwner": "Pending Owner Reports",
     "viewAll": "View All"
+  },
+  "driver": {
+    "rideRequests": "ライドリクエスト",
+    "rideRequestsDesc": "お客様からのライドリクエスト",
+    "active": "アクティブ",
+    "history": "履歴",
+    "noActiveRides": "アクティブなライドなし",
+    "waitingForRequests": "リクエストを待っています...",
+    "noHistory": "ライド履歴なし",
+    "accept": "承認",
+    "decline": "拒否",
+    "cancel": "キャンセル",
+    "headingToPickup": "ピックアップ先へ向かう中",
+    "passengerPickedUp": "乗客を乗せた",
+    "completeRide": "ライド完了",
+    "enterFare": "料金を入力",
+    "rideAccepted": "ライド承認済み!",
+    "rideCompleted": "ライド完了!"
   }
 }

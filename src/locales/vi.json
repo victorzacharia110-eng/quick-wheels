@@ -64,7 +64,8 @@
     "homepage": "Trang chủ",
     "profile": "Hồ sơ",
     "myAccount": "Tài khoản của tôi",
-    "ownerReports": "Báo cáo Chủ sở hữu"
+    "ownerReports": "Báo cáo Chủ sở hữu",
+    "rideRequests": "Yêu cầu chuyến đi"
   },
   "hero": {
     "quickWheels": "Quick-Wheels",
@@ -1177,5 +1178,23 @@
     "submittedOn": "Submitted on",
     "pendingFromOwner": "Pending Owner Reports",
     "viewAll": "View All"
+  },
+  "driver": {
+    "rideRequests": "Yêu cầu chuyến đi",
+    "rideRequestsDesc": "Yêu cầu chuyến đi từ khách hàng",
+    "active": "Đang hoạt động",
+    "history": "Lịch sử",
+    "noActiveRides": "Không có chuyến đi đang hoạt động",
+    "waitingForRequests": "Đang chờ yêu cầu...",
+    "noHistory": "Chưa có lịch sử chuyến đi",
+    "accept": "Chấp nhận",
+    "decline": "Từ chối",
+    "cancel": "Hủy",
+    "headingToPickup": "Đang đến đón",
+    "passengerPickedUp": "Đã đón hành khách",
+    "completeRide": "Hoàn tất chuyến đi",
+    "enterFare": "Nhập tiền cước",
+    "rideAccepted": "Chuyến đi đã được chấp nhận!",
+    "rideCompleted": "Chuyến đi hoàn tất!"
   }
 }

@@ -64,7 +64,8 @@
     "homepage": "首页",
     "profile": "个人资料",
     "myAccount": "我的账户",
-    "ownerReports": "车主报告"
+    "ownerReports": "车主报告",
+    "rideRequests": "出行请求"
   },
   "hero": {
     "quickWheels": "Quick-Wheels",
@@ -1177,5 +1178,23 @@
     "submittedOn": "Submitted on",
     "pendingFromOwner": "Pending Owner Reports",
     "viewAll": "View All"
+  },
+  "driver": {
+    "rideRequests": "出行请求",
+    "rideRequestsDesc": "来自客户的出行请求",
+    "active": "进行中",
+    "history": "历史",
+    "noActiveRides": "没有进行中的出行",
+    "waitingForRequests": "等待出行请求...",
+    "noHistory": "暂无出行记录",
+    "accept": "接受",
+    "decline": "拒绝",
+    "cancel": "取消",
+    "headingToPickup": "前往接客途中",
+    "passengerPickedUp": "乘客已上车",
+    "completeRide": "完成出行",
+    "enterFare": "输入车费",
+    "rideAccepted": "出行已接受!",
+    "rideCompleted": "出行已完成!"
   }
 }

@@ -59,6 +59,7 @@
     "nearbyDrivers": "Nearby Drivers",
     "bookRide": "Book a Ride",
     "bookings": "Bookings",
+    "rideRequests": "Ride Requests",
     "clients": "Clients",
     "finance": "Finance",
     "discover": "Discover",
@@ -1113,6 +1114,25 @@
     "scheduleService": "Schedule Service",
     "serviceDate": "Service Date",
     "serviceNotes": "Service Notes"
+  },
+  "driver": {
+    "rideRequests": "Ride Requests",
+    "rideRequestsDesc": "Incoming ride requests from customers",
+    "active": "Active",
+    "history": "History",
+    "noActiveRides": "No Active Rides",
+    "waitingForRequests": "Waiting for ride requests...",
+    "noHistory": "No ride history yet",
+    "accept": "Accept Ride",
+    "decline": "Decline",
+    "cancel": "Cancel",
+    "headingToPickup": "Heading to Pickup",
+    "passengerPickedUp": "Passenger Picked Up",
+    "completeRide": "Complete Ride",
+    "enterFare": "Enter fare (TZS)",
+    "rideAccepted": "Ride accepted!",
+    "rideStarted": "Ride started!",
+    "rideCompleted": "Ride completed!"
   },
   "ownerReports": {
     "title": "Owner Reports",

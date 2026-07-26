@@ -64,7 +64,8 @@
     "homepage": "Главная",
     "profile": "Профиль",
     "myAccount": "Мой аккаунт",
-    "ownerReports": "Отчёты владельца"
+    "ownerReports": "Отчёты владельца",
+    "rideRequests": "Запросы на поездку"
   },
   "hero": {
     "quickWheels": "Quick-Wheels",
@@ -1177,5 +1178,23 @@
     "submittedOn": "Submitted on",
     "pendingFromOwner": "Pending Owner Reports",
     "viewAll": "View All"
+  },
+  "driver": {
+    "rideRequests": "Запросы на поездку",
+    "rideRequestsDesc": "Запросы на поездку от клиентов",
+    "active": "Активные",
+    "history": "История",
+    "noActiveRides": "Нет активных поездок",
+    "waitingForRequests": "Ожидание запросов...",
+    "noHistory": "История поездок пуста",
+    "accept": "Принять",
+    "decline": "Отклонить",
+    "cancel": "Отмена",
+    "headingToPickup": "Еду на место посадки",
+    "passengerPickedUp": "Пассажир забран",
+    "completeRide": "Завершить поездку",
+    "enterFare": "Введите стоимость",
+    "rideAccepted": "Поездка принята!",
+    "rideCompleted": "Поездка завершена!"
   }
 }

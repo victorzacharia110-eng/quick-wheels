@@ -65,7 +65,8 @@
     "homepage": "Nyumbani",
     "profile": "Wasifu",
     "myAccount": "Akaunti Yangu",
-    "ownerReports": "Ripoti za Mmiliki"
+    "ownerReports": "Ripoti za Mmiliki",
+    "rideRequests": "Maombi ya Safari"
   },
   "hero": {
     "quickWheels": "Quick-Wheels",
@@ -1154,5 +1155,23 @@
     "submittedOn": "Imetumwa tarehe",
     "pendingFromOwner": "Ripoti za Mmiliki Zinazosubiri",
     "viewAll": "Ona Zote"
+  },
+  "driver": {
+    "rideRequests": "Maombi ya Safari",
+    "rideRequestsDesc": "Maombi ya safari kutoka kwa wateja",
+    "active": "Inatumika",
+    "history": "Historia",
+    "noActiveRides": "Hakuna Safari Zinazoendelea",
+    "waitingForRequests": "Kusubiri maombi ya safari...",
+    "noHistory": "Hakuna historia ya safari bado",
+    "accept": "Kubali Safari",
+    "decline": "Kataa",
+    "cancel": "Ghairi",
+    "headingToPickup": "Ninaelekea Kuchukua",
+    "passengerPickedUp": "Abirwa Amechukuliwa",
+    "completeRide": "Maliza Safari",
+    "enterFare": "Weka nauli (TZS)",
+    "rideAccepted": "Safari imekubaliwa!",
+    "rideCompleted": "Safari imekamilika!"
   }
 }

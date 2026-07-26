@@ -64,7 +64,8 @@
     "homepage": "الرئيسية",
     "profile": "الملف",
     "myAccount": "حسابي",
-    "ownerReports": "تقارير المالك"
+    "ownerReports": "تقارير المالك",
+    "rideRequests": "طلبات الرحلة"
   },
   "hero": {
     "quickWheels": "كويك-ويلز",
@@ -1177,5 +1178,23 @@
     "submittedOn": "Submitted on",
     "pendingFromOwner": "Pending Owner Reports",
     "viewAll": "View All"
+  },
+  "driver": {
+    "rideRequests": "طلبات الرحلة",
+    "rideRequestsDesc": "طلبات رحلة من العملاء",
+    "active": "نشط",
+    "history": "السجل",
+    "noActiveRides": "لا توجد رحلات نشطة",
+    "waitingForRequests": "في انتظار طلبات الرحلة...",
+    "noHistory": "لا يوجد سجل رحلات بعد",
+    "accept": "قبول الرحلة",
+    "decline": "رفض",
+    "cancel": "إلغاء",
+    "headingToPickup": "في الطريق للاستلام",
+    "passengerPickedUp": "تم استلام الراكب",
+    "completeRide": "إتمام الرحلة",
+    "enterFare": "أدخل الأجرة",
+    "rideAccepted": "تم قبول الرحلة!",
+    "rideCompleted": "اكتملت الرحلة!"
   }
 }
