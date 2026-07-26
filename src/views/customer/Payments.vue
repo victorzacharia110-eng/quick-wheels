@@ -178,13 +178,17 @@ async function fetchData() {
     ])
     if (bookRes.success) bookings.value = bookRes.data
     if (payRes.success) payments.value = payRes.data
+  } catch (e) {
+    console.error('Failed to load bookings/payments:', e)
+  }
 
+  try {
     const ownerId = bookings.value[0]?.owner_id
     const accUrl = ownerId ? `/customer/payments/accounts?owner_id=${ownerId}` : '/customer/payments/accounts'
     const accRes = await apiGet(accUrl)
     if (accRes.success) accounts.value = accRes.data
   } catch (e) {
-    console.error('Failed to load payment data:', e)
+    console.error('Failed to load payment accounts:', e)
   } finally {
     loading.value = false
   }
