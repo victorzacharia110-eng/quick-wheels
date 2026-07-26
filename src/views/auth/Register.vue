@@ -75,12 +75,12 @@
           </div>
 
           <div class="form-group" :class="{ 'has-error': errors.nida_number }">
-            <label for="nida_number">{{ $t('common.nida') }} <span class="required">*</span></label>
+            <label for="nida_number">{{ $t('auth.nidaOrVotingId') }} <span class="required">*</span></label>
             <input
               id="nida_number"
               v-model="form.nida_number"
               type="text"
-              :placeholder="$t('auth.nidaPlaceholder')"
+              :placeholder="$t('auth.nidaOrVotingIdPlaceholder')"
               required
               class="form-input"
               :class="{ 'input-error': errors.nida_number }"
@@ -91,27 +91,7 @@
               <font-awesome-icon icon="fa-solid fa-circle-exclamation" size="xs" />
               {{ errors.nida_number }}
             </span>
-            <span class="form-hint">{{ $t('auth.nidaHint') }}</span>
-          </div>
-
-          <div class="form-group" :class="{ 'has-error': errors.voting_id }">
-            <label for="voting_id">{{ $t('auth.votingId') }} <span class="required">*</span></label>
-            <input
-              id="voting_id"
-              v-model="form.voting_id"
-              type="text"
-              :placeholder="$t('auth.votingIdPlaceholder')"
-              required
-              class="form-input"
-              :class="{ 'input-error': errors.voting_id }"
-              @blur="validateField('voting_id')"
-              @input="clearError('voting_id')"
-            />
-            <span v-if="errors.voting_id" class="field-error">
-              <font-awesome-icon icon="fa-solid fa-circle-exclamation" size="xs" />
-              {{ errors.voting_id }}
-            </span>
-            <span class="form-hint">{{ $t('auth.votingIdHint') }}</span>
+            <span class="form-hint">{{ $t('auth.nidaOrVotingIdHint') }}</span>
           </div>
 
           <div class="form-group" :class="{ 'has-error': errors.password }">
@@ -212,7 +192,6 @@ const form = reactive({
   email: '',
   phone_number: '',
   nida_number: '',
-  voting_id: '',
   password: '',
   password_confirmation: ''
 })
@@ -240,14 +219,8 @@ const validationRules = {
     { pattern: /^(\+?255|0)[0-9]{9}$/, messageKey: 'auth.validation.phoneInvalid' }
   ],
   nida_number: [
-    { required: true, messageKey: 'auth.validation.nidaRequired' },
-    { pattern: /^[0-9]{20}$/, messageKey: 'auth.validation.nidaLength' },
-    { pattern: /^(?!0+$)[0-9]+$/, messageKey: 'auth.validation.nidaZeros' }
-  ],
-  voting_id: [
-    { required: true, messageKey: 'auth.validation.votingIdRequired' },
-    { min: 4, messageKey: 'auth.validation.votingIdMin' },
-    { max: 50, messageKey: 'auth.validation.votingIdMax' }
+    { required: true, messageKey: 'auth.validation.nidaOrVotingRequired' },
+    { pattern: /^[0-9]{20}$|^[A-Za-z0-9\-\/\.\s]{4,50}$/, messageKey: 'auth.validation.nidaOrVotingInvalid' }
   ],
   password: [
     { required: true, messageKey: 'auth.validation.passwordRequired' },
@@ -307,7 +280,7 @@ function clearError(field) {
 }
 
 function validateAll() {
-  const fields = ['name', 'email', 'phone_number', 'nida_number', 'voting_id', 'password', 'password_confirmation']
+  const fields = ['name', 'email', 'phone_number', 'nida_number', 'password', 'password_confirmation']
   fields.forEach(field => validateField(field))
   return Object.keys(errors.value).length === 0
 }
