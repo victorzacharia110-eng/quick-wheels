@@ -111,6 +111,54 @@
         <p v-if="aiError" class="error-text">{{ aiError }}</p>
       </div>
 
+      <!-- Payment Accounts -->
+      <div class="settings-card glass-card" style="grid-column: 1 / -1;">
+        <h3><font-awesome-icon icon="fa-solid fa-money-bill-wave" /> {{ $t('settings.paymentAccounts') }}</h3>
+        <p class="settings-desc">{{ $t('settings.paymentAccountsDesc') }}</p>
+        <div class="payment-accounts-list">
+          <div v-for="(acct, idx) in paymentAccounts" :key="idx" class="payment-account-row">
+            <div class="account-fields">
+              <div class="field-group">
+                <label>{{ $t('settings.provider') }}</label>
+                <select v-model="acct.provider" class="form-input">
+                  <option value="M-Pesa">M-Pesa</option>
+                  <option value="Airtel Money">Airtel Money</option>
+                  <option value="Mixx By Yas">Mixx By Yas</option>
+                  <option value="Halopesa">Halopesa</option>
+                  <option value="Tigo Pesa">Tigo Pesa</option>
+                  <option value="NMB Bank">NMB Bank</option>
+                  <option value="CRDB Bank">CRDB Bank</option>
+                  <option value="NBC Bank">NBC Bank</option>
+                  <option value="Other">{{ $t('settings.other') }}</option>
+                </select>
+              </div>
+              <div class="field-group">
+                <label>{{ $t('settings.phoneNumber') }}</label>
+                <input v-model="acct.number" type="text" class="form-input" :placeholder="$t('settings.phoneNumberPlaceholder')" />
+              </div>
+              <div class="field-group">
+                <label>{{ $t('settings.instructions') }}</label>
+                <input v-model="acct.instructions" type="text" class="form-input" :placeholder="$t('settings.instructionsPlaceholder')" />
+              </div>
+              <button class="btn-icon danger" @click="removeAccount(idx)" :title="$t('common.delete')">
+                <font-awesome-icon icon="fa-solid fa-trash" />
+              </button>
+            </div>
+          </div>
+        </div>
+        <button class="btn-secondary" @click="addAccount">
+          <font-awesome-icon icon="fa-solid fa-plus" /> {{ $t('settings.addAccount') }}
+        </button>
+        <div class="account-actions">
+          <button class="btn-primary" @click="savePaymentAccounts" :disabled="accountsSaving">
+            <span v-if="accountsSaving">{{ $t('common.saving') }}</span>
+            <span v-else>{{ $t('settings.savePaymentSettings') }}</span>
+          </button>
+        </div>
+        <p v-if="accountsSuccess" class="success-text">{{ $t('settings.accountsSaved') }}</p>
+        <p v-if="accountsError" class="error-text">{{ accountsError }}</p>
+      </div>
+
       <!-- Danger Zone -->
       <div class="settings-card danger-zone">
         <h3>{{ $t('settings.dangerZone') }}</h3>
@@ -205,6 +253,60 @@ async function toggleAi() {
 }
 
 onMounted(loadProfile)
+onMounted(loadPaymentAccounts)
+
+const paymentAccounts = ref([])
+const accountsSaving = ref(false)
+const accountsSuccess = ref(false)
+const accountsError = ref('')
+
+function addAccount() {
+  paymentAccounts.value.push({ provider: 'M-Pesa', number: '', instructions: '' })
+}
+
+function removeAccount(idx) {
+  paymentAccounts.value.splice(idx, 1)
+}
+
+async function loadPaymentAccounts() {
+  try {
+    const { data } = await api.get('/owner/payment-accounts')
+    if (data.success && data.data?.length) {
+      paymentAccounts.value = data.data
+    } else {
+      paymentAccounts.value = [
+        { provider: 'M-Pesa', number: '', instructions: 'Send via M-Pesa' },
+        { provider: 'Airtel Money', number: '', instructions: 'Send via Airtel Money' },
+        { provider: 'NMB Bank', number: '', instructions: 'Bank transfer to NMB' },
+      ]
+    }
+  } catch (e) {
+    paymentAccounts.value = [
+      { provider: 'M-Pesa', number: '', instructions: 'Send via M-Pesa' },
+      { provider: 'Airtel Money', number: '', instructions: 'Send via Airtel Money' },
+      { provider: 'NMB Bank', number: '', instructions: 'Bank transfer to NMB' },
+    ]
+  }
+}
+
+async function savePaymentAccounts() {
+  accountsSaving.value = true
+  accountsSuccess.value = false
+  accountsError.value = ''
+  try {
+    const { data } = await api.put('/owner/payment-accounts', { accounts: paymentAccounts.value })
+    if (data.success) {
+      accountsSuccess.value = true
+      paymentAccounts.value = data.data
+    } else {
+      accountsError.value = data.message || 'Failed to save'
+    }
+  } catch (err) {
+    accountsError.value = err.response?.data?.message || 'Failed to save'
+  } finally {
+    accountsSaving.value = false
+  }
+}
 </script>
 
 <style scoped>
@@ -371,9 +473,26 @@ select.form-input {
   font-size: 0.85rem; color: rgba(255,255,255,0.55);
 }
 .ai-feature svg { color: #00E5FF; font-size: 0.75rem; }
+.settings-desc { font-size: 0.85rem; color: rgba(255,255,255,0.4); margin-bottom: 16px; }
+.payment-accounts-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px; }
+.payment-account-row { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 14px; }
+.account-fields { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 12px; align-items: end; }
+.field-group { display: flex; flex-direction: column; gap: 4px; }
+.field-group label { font-size: 0.78rem; font-weight: 500; color: rgba(255,255,255,0.5); }
+.account-actions { margin-top: 16px; display: flex; gap: 10px; }
+.success-text { color: #4ADE80; font-size: 0.85rem; margin-top: 8px; }
+.error-text { color: #ff6b6b; font-size: 0.85rem; margin-top: 8px; }
+.btn-secondary { display: flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.7); font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
+.btn-secondary:hover { background: rgba(255,255,255,0.08); color: #fff; }
+.btn-primary { padding: 10px 20px; border-radius: 8px; border: none; background: linear-gradient(135deg, #1e1b5e, #00c4d4); color: #fff; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
+.btn-primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,196,212,0.3); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-icon.danger { background: none; border: none; color: rgba(255,107,107,0.6); cursor: pointer; padding: 8px; border-radius: 6px; transition: all 0.2s; }
+.btn-icon.danger:hover { background: rgba(255,107,107,0.12); color: #ff6b6b; }
 
 @media (max-width: 768px) {
   .settings-grid { grid-template-columns: 1fr; }
   .page-header { flex-direction: column; align-items: stretch; }
+  .account-fields { grid-template-columns: 1fr; }
 }
 </style>
