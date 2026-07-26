@@ -94,6 +94,26 @@
             <span class="form-hint">{{ $t('auth.nidaHint') }}</span>
           </div>
 
+          <div class="form-group" :class="{ 'has-error': errors.voting_id }">
+            <label for="voting_id">{{ $t('auth.votingId') }} <span class="required">*</span></label>
+            <input
+              id="voting_id"
+              v-model="form.voting_id"
+              type="text"
+              :placeholder="$t('auth.votingIdPlaceholder')"
+              required
+              class="form-input"
+              :class="{ 'input-error': errors.voting_id }"
+              @blur="validateField('voting_id')"
+              @input="clearError('voting_id')"
+            />
+            <span v-if="errors.voting_id" class="field-error">
+              <font-awesome-icon icon="fa-solid fa-circle-exclamation" size="xs" />
+              {{ errors.voting_id }}
+            </span>
+            <span class="form-hint">{{ $t('auth.votingIdHint') }}</span>
+          </div>
+
           <div class="form-group" :class="{ 'has-error': errors.password }">
             <label for="password">{{ $t('auth.password') }} <span class="required">*</span></label>
             <div class="password-wrapper">
@@ -192,6 +212,7 @@ const form = reactive({
   email: '',
   phone_number: '',
   nida_number: '',
+  voting_id: '',
   password: '',
   password_confirmation: ''
 })
@@ -223,6 +244,11 @@ const validationRules = {
     { pattern: /^[0-9]{20}$/, messageKey: 'auth.validation.nidaLength' },
     { pattern: /^(?!0+$)[0-9]+$/, messageKey: 'auth.validation.nidaZeros' }
   ],
+  voting_id: [
+    { required: true, messageKey: 'auth.validation.votingIdRequired' },
+    { min: 4, messageKey: 'auth.validation.votingIdMin' },
+    { max: 50, messageKey: 'auth.validation.votingIdMax' }
+  ],
   password: [
     { required: true, messageKey: 'auth.validation.passwordRequired' },
     { min: 8, messageKey: 'auth.validation.passwordMin' },
@@ -240,7 +266,7 @@ const validationRules = {
 const isFormValid = computed(() => {
   return Object.keys(errors.value).length === 0 && 
     form.name && form.email && form.phone_number && 
-    form.nida_number && form.password && form.password_confirmation
+    form.nida_number && form.voting_id && form.password && form.password_confirmation
 })
 
 function validateField(field) {
@@ -281,7 +307,7 @@ function clearError(field) {
 }
 
 function validateAll() {
-  const fields = ['name', 'email', 'phone_number', 'nida_number', 'password', 'password_confirmation']
+  const fields = ['name', 'email', 'phone_number', 'nida_number', 'voting_id', 'password', 'password_confirmation']
   fields.forEach(field => validateField(field))
   return Object.keys(errors.value).length === 0
 }
