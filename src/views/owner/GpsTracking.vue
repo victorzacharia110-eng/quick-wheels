@@ -76,11 +76,10 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useAuthStore } from '@/stores/auth'
+import api from '@/composables/api'
 import SkeletonLoader from '@/components/common/SkeletonLoader.vue'
 
 const { t } = useI18n()
-const authStore = useAuthStore()
 const vehicles = ref([])
 const loading = ref(true)
 const refreshing = ref(false)
@@ -106,11 +105,8 @@ async function centerMap(v) {
 
 async function fetchLocations() {
   try {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/owner/gps/all-latest`, {
-      headers: { Authorization: `Bearer ${authStore.token}`, Accept: 'application/json' }
-    })
-    const json = await res.json()
-    if (json.success) vehicles.value = json.data
+    const res = await api.get('/owner/gps/all-latest')
+    if (res.data.success) vehicles.value = res.data.data
   } catch (_) {} finally { loading.value = false; refreshing.value = false }
 }
 
