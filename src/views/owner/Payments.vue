@@ -35,8 +35,11 @@
       </div>
       <select v-model="filterStatus" class="filter-select">
         <option value="all">{{ $t('payment.allStatus') }}</option>
-        <option value="paid">{{ $t('payment.paid') }}</option>
         <option value="pending">{{ $t('payment.pending') }}</option>
+        <option value="paid">{{ $t('payment.paid') }}</option>
+        <option value="approved">{{ $t('status.approved') }}</option>
+        <option value="rejected">{{ $t('status.rejected') }}</option>
+        <option value="failed">{{ $t('status.failed') }}</option>
       </select>
     </div>
 
@@ -68,9 +71,19 @@
                   </span>
                 </td>
                 <td>
-                  <button @click="deletePayment(payment.id)" class="btn-icon danger" :title="$t('common.delete')">
-                    <font-awesome-icon icon="fa-solid fa-trash" />
-                  </button>
+                  <div class="action-btns">
+                    <template v-if="payment.status === 'pending'">
+                      <button @click="handleApprove(payment.id)" class="btn-icon approve" :title="$t('common.approve')">
+                        <font-awesome-icon icon="fa-solid fa-check" />
+                      </button>
+                      <button @click="openRejectModal(payment)" class="btn-icon reject" :title="$t('common.reject')">
+                        <font-awesome-icon icon="fa-solid fa-times" />
+                      </button>
+                    </template>
+                    <button @click="deletePayment(payment.id)" class="btn-icon danger" :title="$t('common.delete')">
+                      <font-awesome-icon icon="fa-solid fa-trash" />
+                    </button>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -143,6 +156,33 @@
         </div>
       </div>
     </Transition>
+
+    <!-- Reject Modal -->
+    <Transition name="modal">
+      <div v-if="showRejectModal" class="modal-overlay" @click.self="showRejectModal = false">
+        <div class="modal-box">
+          <div class="modal-header">
+            <h3>{{ $t('payment.rejectPayment') }}</h3>
+            <button class="modal-close" @click="showRejectModal = false">
+              <font-awesome-icon icon="fa-solid fa-times" />
+            </button>
+          </div>
+          <div v-if="rejectTarget" class="reject-info">
+            <p><strong>{{ rejectTarget.driver_name }}</strong> — TZS {{ rejectTarget.amount.toLocaleString() }}</p>
+          </div>
+          <div class="form-group">
+            <label>{{ $t('payment.rejectionReason') }} <span class="required">*</span></label>
+            <textarea v-model="rejectReason" class="form-input" rows="3" :placeholder="$t('payment.rejectionReasonPlaceholder')"></textarea>
+          </div>
+          <div class="modal-actions">
+            <button class="btn-outline" @click="showRejectModal = false">{{ $t('common.cancel') }}</button>
+            <button class="btn-danger" @click="handleReject" :disabled="!rejectReason.trim()">
+              <font-awesome-icon icon="fa-solid fa-times" /> {{ $t('payment.reject') }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -158,6 +198,9 @@ const paymentStore = usePaymentStore()
 const searchQuery = ref('')
 const filterStatus = ref('all')
 const showCreateModal = ref(false)
+const showRejectModal = ref(false)
+const rejectTarget = ref(null)
+const rejectReason = ref('')
 const saving = ref(false)
 
 const page = ref(1)
@@ -209,6 +252,24 @@ async function deletePayment(id) {
   if (confirm(t('payment.deleteConfirm'))) {
     await paymentStore.deletePayment(id)
   }
+}
+
+function openRejectModal(payment) {
+  rejectTarget.value = payment
+  rejectReason.value = ''
+  showRejectModal.value = true
+}
+
+async function handleApprove(id) {
+  await paymentStore.approvePayment(id)
+}
+
+async function handleReject() {
+  if (!rejectTarget.value || !rejectReason.value.trim()) return
+  await paymentStore.rejectPayment(rejectTarget.value.id, { reason: rejectReason.value })
+  showRejectModal.value = false
+  rejectTarget.value = null
+  rejectReason.value = ''
 }
 
 onMounted(() => { paymentStore.fetchPayments() })
@@ -351,6 +412,39 @@ onMounted(() => { paymentStore.fetchPayments() })
 }
 .btn-icon:hover { background: rgba(255,255,255,0.1); color: #fff; }
 .btn-icon.danger:hover { background: rgba(255,107,107,0.15); color: #ff6b6b; }
+.btn-icon.approve { color: #4ADE80; }
+.btn-icon.approve:hover { background: rgba(74,222,128,0.15); color: #4ADE80; }
+.btn-icon.reject { color: #ff6b6b; }
+.btn-icon.reject:hover { background: rgba(255,107,107,0.15); color: #ff6b6b; }
+.action-btns { display: flex; gap: 6px; }
+
+.btn-danger {
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: rgba(255, 107, 107, 0.15);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  color: #ff6b6b;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-family: 'Space Grotesk', sans-serif;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-danger:hover { background: rgba(255,107,107,0.25); }
+.btn-danger:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.reject-info {
+  background: rgba(255,107,107,0.06);
+  border: 1px solid rgba(255,107,107,0.15);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  color: rgba(255,255,255,0.7);
+  font-size: 0.9rem;
+}
 
 .empty-state {
   text-align: center;

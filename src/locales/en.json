@@ -208,6 +208,8 @@
     "saving": "Saving...",
     "creating": "Creating...",
     "view": "View",
+    "approve": "Approve",
+    "reject": "Reject",
     "driver": "Driver",
     "selectDriver": "Select Driver",
     "selectVehicle": "Select Vehicle",
@@ -616,7 +618,12 @@
     "phonePlaceholder": "e.g. 0712 345 678",
     "payWithClickPesa": "Pay with ClickPesa",
     "clickPesaSuccess": "Payment initiated! Complete payment on ClickPesa.",
-    "history": "Payment History"
+    "history": "Payment History",
+    "rejectPayment": "Reject Payment",
+    "rejectionReason": "Rejection Reason",
+    "rejectionReasonPlaceholder": "Enter reason for rejection...",
+    "reject": "Reject",
+    "creating": "Recording..."
   },
   "gps": {
     "title": "GPS Tracking",
@@ -672,7 +679,8 @@
     "cheque": "Cheque",
     "all": "All",
     "refunded": "Refunded",
-    "approved": "Approved"
+    "approved": "Approved",
+    "rejected": "Rejected"
   },
   "settings": {
     "title": "Settings",

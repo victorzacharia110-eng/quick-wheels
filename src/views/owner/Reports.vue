@@ -141,7 +141,7 @@ onMounted(async () => {
   ])
 
   try {
-    const { data } = await api.get('/owner/reports')
+    const { data } = await api.get('/owner/analytics')
     if (data.success) {
       monthlyRevenue.value = data.data.monthly_revenue || []
       recentActivity.value = (data.data.recent_activity || []).map(a => ({

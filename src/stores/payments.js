@@ -113,11 +113,11 @@ export const usePaymentStore = defineStore('payments', () => {
     }
   }
 
-  async function rejectPayment(id) {
+  async function rejectPayment(id, reason) {
     isLoading.value = true
     error.value = null
     try {
-      const res = await api.post(`/payments/${id}/reject`)
+      const res = await api.post(`/payments/${id}/reject`, reason || {})
       const updated = res.data.data
       const index = payments.value.findIndex(p => p.id === id)
       if (index !== -1) payments.value[index] = updated

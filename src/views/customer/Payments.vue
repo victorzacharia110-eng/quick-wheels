@@ -131,12 +131,10 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useAuthStore } from '@/stores/auth'
+import api from '@/composables/api'
 import SkeletonLoader from '@/components/common/SkeletonLoader.vue'
 
 const { t } = useI18n()
-const authStore = useAuthStore()
-const API = import.meta.env.VITE_API_URL
 
 const loading = ref(true)
 const activeTab = ref('manual')
@@ -163,19 +161,13 @@ const clickForm = ref({
 })
 
 async function apiGet(path) {
-  const res = await fetch(`${API}${path}`, {
-    headers: { Authorization: `Bearer ${authStore.token}`, Accept: 'application/json' },
-  })
-  return res.json()
+  const res = await api.get(path)
+  return res.data
 }
 
 async function apiPost(path, body) {
-  const res = await fetch(`${API}${path}`, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${authStore.token}`, 'Content-Type': 'application/json', Accept: 'application/json' },
-    body: JSON.stringify(body),
-  })
-  return res.json()
+  const res = await api.post(path, body)
+  return res.data
 }
 
 async function fetchData() {
