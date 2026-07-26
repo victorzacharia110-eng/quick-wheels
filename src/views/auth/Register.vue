@@ -239,7 +239,7 @@ const validationRules = {
 const isFormValid = computed(() => {
   return Object.keys(errors.value).length === 0 && 
     form.name && form.email && form.phone_number && 
-    form.nida_number && form.voting_id && form.password && form.password_confirmation
+    form.nida_number && form.password && form.password_confirmation
 })
 
 function validateField(field) {
