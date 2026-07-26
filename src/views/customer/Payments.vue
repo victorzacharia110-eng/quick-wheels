@@ -172,14 +172,17 @@ async function apiPost(path, body) {
 
 async function fetchData() {
   try {
-    const [accRes, bookRes, payRes] = await Promise.all([
-      apiGet('/customer/payments/accounts'),
+    const [bookRes, payRes] = await Promise.all([
       apiGet('/customer/my-rides'),
       apiGet('/customer/payments'),
     ])
-    if (accRes.success) accounts.value = accRes.data
     if (bookRes.success) bookings.value = bookRes.data
     if (payRes.success) payments.value = payRes.data
+
+    const ownerId = bookings.value[0]?.owner_id
+    const accUrl = ownerId ? `/customer/payments/accounts?owner_id=${ownerId}` : '/customer/payments/accounts'
+    const accRes = await apiGet(accUrl)
+    if (accRes.success) accounts.value = accRes.data
   } catch (e) {
     console.error('Failed to load payment data:', e)
   } finally {
